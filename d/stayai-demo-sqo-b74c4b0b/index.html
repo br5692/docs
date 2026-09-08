@@ -152,7 +152,7 @@
     <div class="meta-cell"><div class="k">Built in</div><div class="v mono">stayai-sandbox (domestdev2)</div></div>
     <div class="meta-cell"><div class="k">Production</div><div class="v">Untouched, read only</div></div>
     <div class="meta-cell"><div class="k">Branch</div><div class="v mono">feat/demo-sqo-fields</div></div>
-    <div class="meta-cell"><div class="k">Commit</div><div class="v mono">98de58f</div></div>
+    <div class="meta-cell"><div class="k">Commit</div><div class="v mono">review-loop pass 1</div></div>
     <div class="meta-cell"><div class="k">Compiled</div><div class="v mono">2026-09-08</div></div>
   </div>
 </div></header>
@@ -191,7 +191,7 @@
         <tr>
           <td class="name">Sales Qualified Date, one to one with Date Entered: Discovery</td>
           <td class="mono">Opportunity.Sales_Qualified_Date__c<br><span style="color:var(--ink-faint)">Formula (Date)</span></td>
-          <td>Literally <code>Date_Entered_Discovery__c</code>. A formula rather than a stored field, so the two can never drift apart and no backfill is needed. 1,639 Opportunities already carry that stamp.</td>
+          <td>One to one with <code>Date_Entered_Discovery__c</code> whenever that field is populated, which is 1,640 Opportunities today. A formula rather than a stored field, so the two can never drift apart and no backfill is needed. For older deals that reached Solution Validation or beyond without a Discovery stamp it falls back to the earliest later-stage date, so the date is never blank on a deal the Sales Qualified box has ticked.</td>
         </tr>
         <tr>
           <td class="name">Disqualified Date, possibly one to one with Closed Lost date</td>
@@ -224,13 +224,13 @@
     </div>
     <p class="sec-sub">Six fields, one Custom Metadata Type, one validation rule, two edited flows and one new flow. Nothing outside those was touched.</p>
 
-    <h3>The five fields <span class="tag">low level</span></h3>
+    <h3>The six fields <span class="tag">low level</span></h3>
     <div class="card flush"><div style="padding:20px 24px"><div class="fields">
       <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Demo_Date__c</div><div class="desc"><strong>Date.</strong> Help text: "Date of the first booked demo (from the Chilipiper meeting)." Writable by hand.</div></div>
       <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Demo_Status__c</div><div class="desc"><strong>Restricted picklist.</strong> Scheduled, Completed, No Show, Cancelled. Restricted so no fifth value can be typed in by an integration.</div></div>
-      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Sales_Qualified_Date__c</div><div class="desc"><strong>Formula (Date)</strong> = <code>Date_Entered_Discovery__c</code></div></div>
-      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Disqualified_Date__c</div><div class="desc"><strong>Formula (Date).</strong> Disqualified stage date first, Closed Lost date second, and only for the two disqualification reasons. Full expression below.</div></div>
-      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Sales_Qualified__c</div><div class="desc"><strong>Formula (Checkbox)</strong> = <code>NOT(ISBLANK(Date_Entered_Discovery__c))</code>. True once the deal has ever reached Discovery.</div></div>
+      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Sales_Qualified_Date__c</div><div class="desc"><strong>Formula (Date).</strong> <code>Date_Entered_Discovery__c</code> first, then the earliest of the Solution Validation, Proposal, Verbal and Closed Won entry dates for legacy deals with no Discovery stamp.</div></div>
+      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Disqualified_Date__c</div><div class="desc"><strong>Formula (Date).</strong> Disqualified stage date first; then, for deals sitting at the Disqualified stage with no stamp, the Closed Lost date or Close Date; then the Closed Lost date for the two disqualification reasons. Full expression below.</div></div>
+      <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Sales_Qualified__c</div><div class="desc"><strong>Formula (Checkbox).</strong> True once the deal has demonstrably reached Discovery or later, by stage-entry date or by current stage. The current-stage clauses are what keep pre-2023 deals honest, since the stage-date fields only start on 2023-04-12.</div></div>
       <div class="field-row"><div class="api"><span class="obj">Opportunity.</span>Amount_Is_Placeholder__c</div><div class="desc"><strong>Formula (Checkbox).</strong> True when the Amount still equals the configured placeholder and that placeholder is above zero. Full expression in section 02 below.</div></div>
       <div class="field-row"><div class="api"><span class="obj">Opportunity_Default__mdt.</span>Pre_Qual_Amount__c</div><div class="desc"><strong>Number(18,2)</strong> on the single Custom Metadata record named Default. Number rather than Currency because Custom Metadata Types do not support Currency fields. Seeded at 0.</div></div>
     </div></div></div>
@@ -239,6 +239,9 @@
 IF(
   NOT(ISBLANK(Date_Entered_Disqualified__c)),
   Date_Entered_Disqualified__c,
+  IF(
+    ISPICKVAL(StageName, "Disqualified"),
+    BLANKVALUE( Date_Entered_Closed_Lost__c, CloseDate ),
   IF(
     ISPICKVAL(StageName, "Closed Lost") &amp;&amp;
       ( ISPICKVAL(Closed_Lost_Reason__c, "Pre-Qual") || ISPICKVAL(Closed_Lost_Reason__c, "Disqualified") ),
@@ -272,7 +275,7 @@ AND(
 )</code></pre>
 <p class="shot-cap"><b>Why the placeholder appears in both.</b> A blank Amount and a placeholder Amount are the same problem wearing different clothes: nobody has said what the deal is worth. The rule treats them the same way, and the flag makes the second one visible in a report rather than hiding behind a real-looking number.</p>
 
-    <p><strong>Field visibility.</strong> Read access on all five went to the ten profiles that carry real users: System Administrator, GTM - AE, GTM - General, GTM - Events, Leadership, CX - Success, CX - Onboarding, Partnerships, Sales and Solution Manager. Edit access on the two writable fields went to System Administrator, GTM - AE, GTM - General, GTM - Events and Leadership, so a rep can correct a demo status by hand. The three formula fields are read only by nature. This mirrors how <code>Date_Entered_Discovery__c</code> is granted today, with edit added where the request calls for manual correction.</p>
+    <p><strong>Field visibility.</strong> Read access on all six went to the ten profiles that carry real users: System Administrator, GTM - AE, GTM - General, GTM - Events, Leadership, CX - Success, CX - Onboarding, Partnerships, Sales and Solution Manager. Edit access on the two writable fields went to System Administrator, GTM - AE, GTM - General, GTM - Events and Leadership, so a rep can correct a demo status by hand. The three formula fields are read only by nature. This mirrors how <code>Date_Entered_Discovery__c</code> is granted today, with edit added where the request calls for manual correction.</p>
 
     <h3>Flow 1 of 3 &nbsp;&middot;&nbsp; Opportunity [BS] - Stamp Stage Change <span class="tag">v11 &rarr; v12</span></h3>
     <p><b>Before (v11).</b> The before-save stamper handled seven stages: Pre Qualification, Discovery, Solution Validation, Proposal, Verbal, Closed Won and Closed Lost. Disqualified was missing, even though the stage is active on the Opportunity picklist and the field <code>Date_Entered_Disqualified__c</code> already existed. Every deal moved to Disqualified left that date blank.</p>
@@ -312,7 +315,7 @@ AND(
 +     &lt;value&gt;&lt;elementReference&gt;fx_DemoDate&lt;/elementReference&gt;&lt;/value&gt;&lt;/inputAssignments&gt;
 + &lt;inputAssignments&gt;&lt;field&gt;Demo_Status__c&lt;/field&gt;
 +     &lt;value&gt;&lt;stringValue&gt;Scheduled&lt;/stringValue&gt;&lt;/value&gt;&lt;/inputAssignments&gt;</span></code></pre>
-    <p class="shot-cap"><b>One thing to know about the date.</b> <code>DATEVALUE</code> reads the meeting's start time in GMT, so a demo booked late in the evening Pacific time can land on the following calendar day. That matters for day-level reporting and is worth a ruling before production.</p>
+    <p class="shot-cap"><b>One thing to know about the date.</b> Inside a flow, <code>DATEVALUE</code> resolves against the time zone of the user whose save fires the flow, not GMT. Tested in the sandbox: a meeting starting 6:00 PM Pacific (01:00 GMT the next day) stamped the Pacific calendar day, not the following one. In production 284 of the 285 Chili Piper events were created by one America/Los_Angeles user, so the stamp follows the Pacific calendar day in practice. The one exception was created by an America/Dawson_Creek user, where a late-evening meeting could land a day either side. Worth knowing rather than worth blocking on.</p>
 
     <p><b>Then v8, for the Pre-Qual Amount.</b> One record lookup on the Custom Metadata record, one decision, one assignment, and one more field on the same create element. The decision is what keeps this inert: while the configured number is zero, the flow takes the default branch, the Amount variable is never set, and the Opportunity is created exactly as it was in v7.</p>
 
@@ -336,9 +339,9 @@ AND(
     &lt;value&gt;&lt;elementReference&gt;varPreQualAmount&lt;/elementReference&gt;&lt;/value&gt;&lt;/inputAssignments&gt;</code></pre>
     <p class="shot-cap"><b>Read this as:</b> the account lookup, the ownership branches, the open-Opportunity guard, the event association and the v7 demo assignments are all unchanged. The only new path is the one that reads the configured number.</p>
 
-    <h3>Flow 3 of 3 &nbsp;&middot;&nbsp; Event [AS] - Demo Status to Opportunity <span class="tag">new, v1</span></h3>
+    <h3>Flow 3 of 3 &nbsp;&middot;&nbsp; Event [AS] - Demo Status to Opportunity <span class="tag">new, v3</span></h3>
     <p><b>Before.</b> Nothing existed. Chili Piper writes <code>Canceled_CP__c</code> and <code>No_Show_CP__c</code> back onto the event, and those two facts died on the event record. Neither reached the Opportunity, so a pipeline report could not tell a demo that happened from one nobody showed up to.</p>
-    <p><b>After (v1).</b> A record-triggered after-save flow on the Event, entered when the event is a Chili Piper event and its <code>WhatId</code> points at an Opportunity. It reads the Opportunity, takes one of three immediate branches, and carries a fourth branch on a scheduled path.</p>
+    <p><b>After (v3).</b> A record-triggered after-save flow on the Event, entered when the event is a Chili Piper event and its <code>WhatId</code> points at an Opportunity. It reads the Opportunity, takes one of four immediate branches, and carries a fifth branch on a scheduled path. Both Opportunity updates carry a fault path, so a failed update can never roll the Chili Piper event insert back and lose the booking.</p>
 
     <div class="tbl-scroll"><table>
       <thead><tr><th style="width:20%">Branch</th><th style="width:34%">Fires when</th><th>Writes</th></tr></thead>
@@ -346,6 +349,7 @@ AND(
         <tr><td class="name">Cancelled</td><td class="mono">Canceled_CP__c = true</td><td>Demo Status = Cancelled</td></tr>
         <tr><td class="name">No Show</td><td class="mono">No_Show_CP__c = true</td><td>Demo Status = No Show</td></tr>
         <tr><td class="name">Booked</td><td class="mono">neither flag set, and the Opportunity has no Demo Date yet</td><td>Demo Date = meeting start date, Demo Status = Scheduled</td></tr>
+        <tr><td class="name">Rebooked After Cancellation</td><td class="mono">neither flag set, the Opportunity already has a Demo Date, and Demo Status is Cancelled</td><td>Demo Status = Scheduled. Demo Date deliberately untouched, so it keeps the first booked date</td></tr>
         <tr><td class="name">Day After Demo</td><td class="mono">scheduled path, EndDateTime + 1 day, neither flag set, and Demo Status is still Scheduled</td><td>Demo Status = Completed</td></tr>
       </tbody>
     </table></div>
@@ -376,16 +380,16 @@ AND(
     <div class="sec-head">
       <span class="sec-num">03</span>
       <h2 class="sec-title">Proof and deploy state</h2>
-      <span class="pill live">10 of 10 cases pass</span>
+      <span class="pill live">19 of 19 runnable cases pass</span>
       <span class="pill pending">Not in production</span>
     </div>
-    <p class="sec-sub">Every case run against real records in the sandbox on 8 September, with the values before and after the trigger. All test records were deleted afterwards.</p>
+    <p class="sec-sub">Every case run against real records in the sandbox on 8 September, with the values before and after the trigger. Cases n to s were added by an adversarial review pass over the same day's request. All test records were deleted afterwards and the deletion was verified by query.</p>
 
     <div class="metrics">
       <div class="metric"><div class="val">6</div><div class="cap">new Opportunity fields</div></div>
       <div class="metric"><div class="val">3</div><div class="cap">flows changed, two edited and one new</div></div>
       <div class="metric"><div class="val">67<small> / 85</small></div><div class="cap">open Pre Qualification deals in production with no usable Amount</div></div>
-      <div class="metric"><div class="val">10<small> / 10</small></div><div class="cap">test cases passing</div></div>
+      <div class="metric"><div class="val">19<small> / 19</small></div><div class="cap">runnable test cases passing, plus one that needs a one-day wait</div></div>
       <div class="metric"><div class="val">0</div><div class="cap">production changes</div></div>
     </div>
 
@@ -406,6 +410,13 @@ AND(
         <tr><td class="mono">k</td><td>A second placeholder opp moved straight to Disqualified</td><td class="mono">Pre Qualification, Amount 1234, placeholder true</td><td class="mono"><strong>Allowed.</strong> Disqualified, Date Entered Disqualified 2026-09-08, Disqualified Date 2026-09-08</td><td><span class="pill live">Pass</span></td></tr>
         <tr><td class="mono">l</td><td>A third placeholder opp moved to Closed Lost with reason Pre-Qual</td><td class="mono">Pre Qualification, Amount 1234, placeholder true</td><td class="mono"><strong>Allowed.</strong> Closed Lost, Disqualified Date 2026-09-08</td><td><span class="pill live">Pass</span></td></tr>
         <tr><td class="mono">m</td><td>Placeholder reset to 0, then another Chili Piper booking</td><td class="mono">placeholder configured at 0</td><td class="mono">Opp created with <strong>no Amount</strong>, placeholder false, Demo Date and Demo Status still set. Confirms the shipped state is a no-op</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">n</td><td>A second demo booked on an Opportunity that already has a Demo Date</td><td class="mono">Demo Date 2026-10-01, Demo Status Scheduled</td><td class="mono">Demo Date still 2026-10-01. The first booked date survives, exactly as "date the first call is booked for" asks</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">o</td><td>A cancelled demo then rebooked in Chili Piper (reschedule)</td><td class="mono">Demo Status Cancelled, Demo Date 2026-10-01</td><td class="mono">Demo Status back to Scheduled, Demo Date still 2026-10-01. Before this review the status stayed Cancelled forever</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">p</td><td>Rep marks Demo Status No Show by hand, then the event is updated again</td><td class="mono">Demo Status No Show</td><td class="mono">Demo Status still No Show. The automation never overwrites a manual value</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">q</td><td>Opportunity skips Discovery: Pre Qualification straight to Solution Validation</td><td class="mono">Date Entered Discovery blank, Sales Qualified false</td><td class="mono">Date Entered Discovery backfilled 2026-09-08, Sales Qualified true, Sales Qualified Date 2026-09-08</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">r</td><td>New Opportunity created at Pre Qualification with a blank Amount</td><td class="mono">n/a</td><td class="mono">Created. The validation rule keys on a stage <em>change</em>, so it can never block the Chili Piper flow creating an Opportunity</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">s</td><td>Pre Qualification to Nurture with a blank Amount</td><td class="mono">Pre Qualification, Amount blank</td><td class="mono">Blocked. This is the behaviour behind the Nurture ruling below, now confirmed by test rather than by reading the formula</td><td><span class="pill live">Pass</span></td></tr>
+        <tr><td class="mono">t</td><td>Demo booked for 6:00 PM Pacific, which is 01:00 GMT the next day</td><td class="mono">n/a</td><td class="mono">Demo Date stamped the Pacific calendar day, not the following one. Corrects the earlier GMT note</td><td><span class="pill live">Pass</span></td></tr>
       </tbody>
     </table></div>
     <p class="shot-cap"><b>Case e is the one worth noticing.</b> Before this change, moving a deal to Disqualified left every date field blank, so the deal simply vanished from any date-based funnel report. It now stamps on the way in, and the Disqualified Date formula picks it up with no backfill.</p>
@@ -416,24 +427,31 @@ AND(
     <h3>Deploy state <span class="tag">high level</span></h3>
     <ul class="tight">
       <li><strong>Production is untouched.</strong> The only production traffic in this build was metadata retrieval. Production still runs Opportunity [BS] - Stamp Stage Change v11 and Event - Process Chilipiper Event v6, with no Demo, Sales Qualified or Disqualified fields.</li>
-      <li><strong>Sandbox is live and at parity.</strong> Before any edit, all four related flows and the Opportunity object were retrieved from both orgs and diffed. They matched byte for byte, so the sandbox baseline was the true production baseline. Deploy IDs: <code>0Afcb00000BQuHxCAL</code> (fields), <code>0Afcb00000BQuY5CAL</code> and <code>0Afcb00000BQwjbCAD</code> (field visibility), <code>0Afcb00000BQv4LCAT</code> and <code>0Afcb00000BR9t0CAD</code> (flows), <code>0Afcb00000BRC0LCAX</code> (Custom Metadata Type), <code>0Afcb00000BR53iCAD</code> (the Default record at 0), <code>0Afcb00000BRCDFCA5</code> (placeholder flag and validation rule).</li>
+      <li><strong>Sandbox is live and at parity.</strong> Before any edit, all four related flows and the Opportunity object were retrieved from both orgs and diffed. They matched byte for byte, so the sandbox baseline was the true production baseline. Deploy IDs: <code>0Afcb00000BQuHxCAL</code> (fields), <code>0Afcb00000BQuY5CAL</code> and <code>0Afcb00000BQwjbCAD</code> (field visibility), <code>0Afcb00000BQv4LCAT</code> and <code>0Afcb00000BR9t0CAD</code> (flows), <code>0Afcb00000BRC0LCAX</code> (Custom Metadata Type), <code>0Afcb00000BR53iCAD</code> (the Default record at 0), <code>0Afcb00000BRCDFCA5</code> (placeholder flag and validation rule), <code>0Afcb00000BR9k2CAD</code> (the review-pass corrections to three formula fields and the demo-status flow).</li>
       <li><strong>The Pre-Qual Amount is off until someone turns it on.</strong> <code>Pre_Qual_Amount__c</code> ships at 0. Until it is changed, no Amount is stamped and the placeholder flag is false everywhere, so the only live piece is the validation rule, which requires a real Amount to leave Pre Qualification. Production today has <strong>67 of 85</strong> open Pre Qualification deals with no usable Amount, 65 blank and 2 at or below zero. Those are the backfill population once the number exists. Read-only count, no writes.</li>
+      <div class="callout"><div class="lbl">What the review pass changed</div><p>The build was re-scored line by line against the original request, with every claim checked against the org rather than against the deploy log. Five things changed. <b>One.</b> Sales Qualified read false on 243 production deals that had plainly been qualified: 165 Closed Lost or Disqualified deals that reached Solution Validation or beyond without a Discovery stamp, and 78 Closed Won deals with no stage dates at all. Those 165 were sitting inside the "lost without ever becoming SQO" bucket the request asked for, which made the bucket 20% wrong. The formula now reads later-stage dates and current stage as well. <b>Two.</b> Sales Qualified Date now falls back to the earliest later-stage date, so it is never blank where the box is ticked. <b>Three.</b> Disqualified Date was blank for 10 of the 12 deals sitting at the Disqualified stage, because the stage stamp only starts from this change; it now falls back to the Close Date for those. <b>Four.</b> A demo cancelled and then rebooked in Chili Piper stayed Cancelled forever; it now returns to Scheduled while keeping the first booked date. <b>Five.</b> Both Opportunity updates in the new flow now have a fault path, so a failed update cannot roll back the Chili Piper event insert and lose the booking.</p></div>
+
+    <div class="callout warn"><div class="lbl">Four things worth an owner's eyes, none of them touched</div><p>All four predate this work and were left exactly as found. <b>Ensure_Opp_has_amount</b> is an active validation rule that can never fire: it tests for the stages "Value Creation", "Technical Validation" and "Negotiation", none of which are on the Opportunity stage picklist any more. Its error message, "Enter an Amount before moving stage past discovery", describes the job the new rule now actually does. <b>Disqualified__c</b> is a checkbox with its own required-details rule and zero records using it, running in parallel with the Disqualified stage. <b>Nurture</b> is an active stage that the stage stamper never records: the flow carries an <code>fx_NurtureDate</code> formula that nothing uses, so <code>Date_Entered_Nurture__c</code> is never written. <b>Five record updates</b> in the Chili Piper subflow have no fault path, the same gap that was just closed in the new flow.</p></div>
+
       <li><strong>Rollback is one deploy.</strong> Reactivating v11 and v6 reverts both edited flows, deactivating Event [AS] - Demo Status to Opportunity stops the new one, the validation rule can be deactivated on its own, and the six fields are additive so leaving them in place breaks nothing. The production baseline is preserved on branch <code>feat/demo-sqo-fields</code> at commit <code>7326b47</code>, ahead of any edit.</li>
     </ul>
 
     <h3>Open for a ruling <span class="tag">high level</span></h3>
     <ul class="tight">
       <li><strong>Disqualified Reason.</strong> The build reuses Closed Lost Reason rather than adding a second reason field. Confirm, or say what a separate field would carry that the existing picklist does not.</li>
-      <li><strong>Time zone on Demo Date.</strong> The date comes from the meeting start in GMT. If evening Pacific demos should report on the Pacific calendar day, that is a small change to the formula and worth making before any data accumulates.</li>
+      <li><strong>Time zone on Demo Date.</strong> Settled by test, not open: the stamp follows the Pacific calendar day for the user who books almost every Chili Piper meeting. Left here only so nobody re-opens it on the strength of the earlier GMT note.</li>
       <li><strong>Who edits Demo Status.</strong> Edit access currently sits with System Administrator, GTM - AE, GTM - General, GTM - Events and Leadership. CX and Partnerships have read only. Confirm that split.</li>
       <li><strong>The Pre-Qual Amount number.</strong> Still unset. One edit to the Opportunity Default record in Setup switches it on, in the sandbox and later in production, with no deployment. Nothing else is waiting on anything.</li>
       <li><strong>Whether Nurture should be exempt too.</strong> The rule blocks any forward move out of Pre Qualification, which includes Pre Qualification to Nurture. Parking a deal is not the same as advancing it, so Nurture may belong on the exempt list beside Closed Lost and Disqualified.</li>
-      <li><strong>Backfill.</strong> Sales Qualified Date and Sales Qualified are formulas, so history is already correct on all 1,639 stamped deals. Demo Date and Demo Status are stored fields with no history behind them. Decide whether past Chili Piper events should be backfilled or whether tracking starts from go-live.</li>
+      <li><strong>Backfill.</strong> Sales Qualified Date and Sales Qualified are formulas, so the 1,640 deals carrying a Discovery stamp are correct with no backfill. The 243 deals with no Discovery stamp were fixed in the formula rather than in the data. Demo Date and Demo Status are stored fields with no history behind them: 93 past Chili Piper events are linked to Opportunities and could be backfilled in one pass. Decide whether to backfill those or start tracking at go-live.</li>
+      <li><strong>Whether Sales Qualified Date must stay strictly one to one with Date Entered: Discovery.</strong> The request said it "should be 1-1 with 'Date Entered Discovery'", and it is, for every deal that has that stamp. The review pass added a fallback for the 165 older deals that reached Solution Validation or beyond without one, because otherwise the Sales Qualified box reads true while the date sits blank. Say if the strict copy is preferred and the blanks are acceptable.</li>
+      <li><strong>What a second demo should do to Demo Status.</strong> Demo Date is settled: the first booked date stands. Status is not. A demo that was cancelled and then rebooked now returns to Scheduled, but a demo already marked Completed or No Show keeps that value when a later demo books onto the same deal. That is deliberate, so the first demo's outcome is not erased, but it means Demo Status can lag a live booking. Say whether a second demo should reset the status.</li>
+      <li><strong>Closed Lost out of Pre Qualification does not require a reason.</strong> The existing <code>Stage_Lost_Required_Fields</code> rule exempts deals lost straight out of Pre Qualification from giving a Closed Lost Reason. 190 Closed Lost deals carry no reason and 180 of them never reached Discovery, which is precisely the bucket the request asked to delineate. The bucket itself is safe because it keys on Sales Qualified rather than on the reason, but Disqualified Date stays blank for those deals. Say whether the reason should become mandatory there.</li>
     </ul>
   </section>
 
   <footer>
-    <p class="fmono">Compiled 2026-09-08 &middot; stayai-sandbox &middot; branch feat/demo-sqo-fields &middot; baseline 7326b47 &middot; build 98de58f</p>
+    <p class="fmono">Compiled 2026-09-08 &middot; stayai-sandbox &middot; branch feat/demo-sqo-fields &middot; baseline 7326b47 &middot; revised after adversarial review, 2026-09-08</p>
     <p>Six fields, one Custom Metadata Type, one validation rule and three flows are active in the sandbox and pass every case that can be run inside a session. Production is unchanged and waiting on the rulings above, the Pre-Qual Amount number first.</p>
   </footer>
 </main>
