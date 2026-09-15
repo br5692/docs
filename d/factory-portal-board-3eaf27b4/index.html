@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sept-9 Demo Board</title>
+<style>
+  :root {
+    --paper:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec;
+    --ink:#16201d; --ink-soft:#3c4a45; --ink-faint:#6d7b75;
+    --line:#d7ddd4; --line-soft:#e5e9e1;
+    --accent:#0d7a6e; --accent-2:#0a5f56; --accent-wash:#e2efeb;
+    --amber:#a35a12; --amber-wash:#f4e9d9; --rose:#a3323f; --rose-wash:#f3e0e1;
+    --code-bg:#f0f3ee;
+    --shadow:0 1px 2px rgba(22,32,29,.05), 0 8px 28px -18px rgba(22,32,29,.35);
+    --serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723;
+    --ink:#e7ede9; --ink-soft:#b3c0ba; --ink-faint:#7f8f88;
+    --line:#2a3631; --line-soft:#222d29;
+    --accent:#4fd0be; --accent-2:#6fdccb; --accent-wash:#16302b;
+    --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }}
+  :root[data-theme="dark"]{
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723; --ink:#e7ede9; --ink-soft:#b3c0ba;
+    --ink-faint:#7f8f88; --line:#2a3631; --line-soft:#222d29; --accent:#4fd0be; --accent-2:#6fdccb;
+    --accent-wash:#16302b; --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18; --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none !important;} }
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  .wrap{max-width:1060px; margin:0 auto; padding:0 28px;}
+  header.mast{border-bottom:1px solid var(--line);
+    background:radial-gradient(120% 140% at 88% -20%, var(--accent-wash) 0%, transparent 55%), var(--surface);}
+  .mast-inner{padding:52px 0 40px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent-2); margin:0 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--accent);}
+  h1.title{font-family:var(--serif); font-weight:600; font-size:clamp(2.3rem,5.4vw,3.5rem);
+    line-height:1.04; letter-spacing:-.015em; margin:0 0 18px; text-wrap:balance;}
+  h1.title span{color:var(--accent-2);}
+  .lede{font-size:1.12rem; color:var(--ink-soft); max-width:62ch; margin:0 0 30px; line-height:1.6;}
+  .meta-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .meta-cell{background:var(--surface); padding:14px 16px;}
+  .meta-cell .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:5px;}
+  .meta-cell .v{font-size:.92rem; font-weight:600; color:var(--ink);}
+  .meta-cell .v.mono{font-family:var(--mono); font-weight:500; font-size:.82rem;}
+  nav.toc{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .toc-inner{display:flex; gap:4px; flex-wrap:wrap; padding:10px 0; align-items:center;}
+  .toc a{font-size:.82rem; color:var(--ink-soft); text-decoration:none; padding:6px 12px;
+    border-radius:999px; font-weight:500; transition:background .15s,color .15s; white-space:nowrap;}
+  .toc a:hover{background:var(--surface-2); color:var(--ink);}
+  .toc a .num{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); margin-right:6px;}
+  .toc .spacer{flex:1;}
+  #themeToggle{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer;}
+  #themeToggle:hover{color:var(--ink); border-color:var(--accent);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;}
+  section.stream{padding:56px 0 12px; border-bottom:1px solid var(--line-soft);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px; flex-wrap:wrap;}
+  .sec-num{font-family:var(--mono); font-size:.9rem; color:var(--accent-2); font-weight:600;}
+  h2.sec-title{font-family:var(--serif); font-weight:600; font-size:clamp(1.7rem,3.6vw,2.25rem);
+    letter-spacing:-.01em; margin:0; line-height:1.1; text-wrap:balance;}
+  .sec-sub{color:var(--ink-faint); font-size:.95rem; margin:6px 0 24px; max-width:66ch;}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+    letter-spacing:.05em; text-transform:uppercase; font-weight:600; padding:4px 10px; border-radius:999px;
+    border:1px solid transparent; white-space:nowrap;}
+  .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .pill.live{color:var(--accent-2); background:var(--accent-wash); border-color:color-mix(in srgb, var(--accent) 30%, transparent);}
+  .pill.sandbox{color:var(--amber); background:var(--amber-wash); border-color:color-mix(in srgb, var(--amber) 30%, transparent);}
+  .pill.pending{color:var(--rose); background:var(--rose-wash); border-color:color-mix(in srgb, var(--rose) 30%, transparent);}
+  p{margin:0 0 14px;} p,li{color:var(--ink-soft);}
+  strong{color:var(--ink); font-weight:650;}
+  code{font-family:var(--mono); font-size:.84em; background:var(--code-bg); padding:1.5px 6px; border-radius:5px; color:var(--ink); border:1px solid var(--line-soft);}
+  .callout{border-left:3px solid var(--accent); background:var(--accent-wash); padding:14px 18px; border-radius:0 10px 10px 0; margin:18px 0;}
+  .callout .lbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  .callout p{margin:0; font-size:.92rem; color:var(--ink-soft);}
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--surface); box-shadow:var(--shadow);}
+  table{width:100%; border-collapse:collapse; font-size:.88rem; min-width:460px;}
+  thead th{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-faint);
+    text-align:left; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface-2); font-weight:600;}
+  tbody td{padding:11px 16px; border-bottom:1px solid var(--line-soft); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-variant-numeric:tabular-nums; font-family:var(--mono); font-size:.8rem; white-space:nowrap; color:var(--accent-2);}
+  td.name{color:var(--ink); font-weight:600;}
+  tbody tr:hover td{background:color-mix(in srgb, var(--accent-wash) 40%, transparent);}
+  .drill-head{display:flex; justify-content:flex-end; gap:22px; padding:2px 20px 8px; color:var(--ink-faint);
+    font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;}
+  .dnums{font-family:var(--mono); font-variant-numeric:tabular-nums; display:inline-flex; gap:22px;}
+  .dnums .c,.drill-head .c{width:56px; text-align:right;}
+  details.drill{border:1px solid var(--line); border-radius:12px; margin:12px 0; background:var(--surface); box-shadow:var(--shadow); overflow:hidden;}
+  details.drill>summary{cursor:pointer; padding:14px 20px; font-family:var(--serif); font-size:1.15rem; font-weight:600;
+    color:var(--ink); list-style:none; display:flex; justify-content:space-between; gap:16px; align-items:baseline; background:var(--surface-2);}
+  details.drill>summary::-webkit-details-marker{display:none;} details.drill>summary .dnums{color:var(--ink-soft);}
+  .drill-leaf{display:flex; justify-content:space-between; gap:16px; padding:10px 20px 10px 34px;
+    border-top:1px solid var(--line-soft); color:var(--ink-soft); font-size:.9rem;}
+  .drill-leaf .why{color:var(--ink-faint); font-size:.82rem;}
+  .metrics{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:18px 0;}
+  .metric{background:var(--surface); padding:18px 16px;}
+  .metric .val{font-family:var(--serif); font-size:1.9rem; font-weight:600; color:var(--ink); line-height:1; letter-spacing:-.02em;}
+  .metric .val small{font-size:.95rem; color:var(--accent-2); font-weight:600;}
+  .metric .cap{font-size:.78rem; color:var(--ink-faint); margin-top:7px; line-height:1.35;}
+  .kicker{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-2); font-weight:600; margin:40px 0 2px;}
+  .src-list{display:grid; gap:10px;}
+  .src{display:flex; align-items:flex-start; gap:14px; padding:13px 16px; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; text-decoration:none; transition:border-color .15s, transform .12s;}
+  .src:hover{border-color:var(--accent); transform:translateX(2px);}
+  .src .gid{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); background:var(--accent-wash); padding:3px 8px; border-radius:6px; white-space:nowrap; margin-top:1px;}
+  .src .st{flex:1;} .src .st .nm{color:var(--ink); font-weight:600; font-size:.92rem;}
+  .src .st .dt{color:var(--ink-faint); font-size:.78rem; font-family:var(--mono); margin-top:2px;}
+  .src .arr{color:var(--ink-faint); font-size:1.1rem;}
+  footer{padding:44px 0 60px; color:var(--ink-faint); font-size:.84rem;}
+  footer .fmono{font-family:var(--mono); font-size:.78rem;}
+</style>
+
+</head>
+<body>
+
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal MVP · work graph</p>
+  <h1 class="title">Where the Partner Portal MVP <span>stands</span></h1>
+  <p class="lede">The whole program on one page: what is proven, what is running right now, what starts next, what is blocked and by which item, and the short list that only the owner can move. Every state on this page comes from the checker reading real evidence in the repo and the Salesforce sandbox, not from a status someone typed.</p>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="k">Proven</div><div class="v">12 of 48 nodes</div></div>
+    <div class="meta-cell"><div class="k">Running now</div><div class="v">0 lanes</div></div>
+    <div class="meta-cell"><div class="k">Up next</div><div class="v">0 ready</div></div>
+    <div class="meta-cell"><div class="k">Needs Blair this week</div><div class="v">35</div></div>
+    <div class="meta-cell"><div class="k">Generated</div><div class="v mono">2026-09-15 05:32Z</div></div>
+    <div class="meta-cell"><div class="k">Graph at</div><div class="v mono">a897cfd</div></div>
+  </div>
+</div></header>
+
+<nav class="toc"><div class="wrap toc-inner">
+  <a href="#s1"><span class="num">01</span>The seven-week path to October 31</a>
+  <a href="#s2"><span class="num">02</span>Running</a>
+  <a href="#s3"><span class="num">03</span>Up next</a>
+  <a href="#s4"><span class="num">04</span>Blocked</a>
+  <a href="#s5"><span class="num">05</span>This week</a>
+  <a href="#s6"><span class="num">06</span>Later</a>
+  <a href="#s7"><span class="num">07</span>By area</a>
+  <a href="#s8"><span class="num">08</span>Proven lately</a>
+  <a href="#sources"><span class="num">09</span>Sources</a>
+  <span class="spacer"></span>
+  <button id="themeToggle" aria-label="Toggle colour theme">Theme</button>
+</div></nav>
+
+<main class="wrap">
+  <section class="stream" id="s1">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">The seven-week path to October 31</h2>
+      <span class="pill sandbox">in order</span></div>
+    <p class="sec-sub">The steps in the order they can happen. Everything else on this page is either feeding these steps or waiting until later.</p>
+    <div class="tbl-scroll"><table><thead><tr><th>Node</th><th>What</th><th>Area</th><th>State</th><th>Who and what</th></tr></thead><tbody><tr><td class="num">W1-spec</td><td class="name">Week 1 foundation spec written, reviewed against Roman&#x27;s export, locked</td><td>Weekly timeline</td><td><span class="pill live">proven</span></td><td>planner. contract proven</td></tr><tr><td class="num">W1-D1</td><td class="name">Week 1 D1: repo scaffold + free hosting (br5692/factory-partner-portal, Dockerfile, Render free, Cloudflare Pages, runbook)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. Blair attests the two public URLs and the runbook path</td></tr><tr><td class="num">W1-D2</td><td class="name">Week 1 D2: Salesforce data model in the sandbox (Roman&#x27;s export verbatim + our fields + Portal_Audit_Log__c + custom permission)</td><td>Weekly timeline</td><td><span class="pill live">proven</span></td><td>planner. contract proven</td></tr><tr><td class="num">W1-D3</td><td class="name">Week 1 D3: integration user + permission set + External Client App in the sandbox (Factory naming convention)</td><td>Weekly timeline</td><td><span class="pill live">proven</span></td><td>planner. contract proven</td></tr><tr><td class="num">W1-D4</td><td class="name">Week 1 D4: tool-layer adapter (Hono skeleton, SF client, StorageAdapter port, audit middleware, MCP whoami, 7 contract tests green)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. Blair attests the contract-test output</td></tr><tr><td class="num">W2</td><td class="name">Week 2 (Sept 21-25): sign-in and registration — email-link sign-in, dashboard shell, registration form, review list, Account and Contact</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr><tr><td class="num">W3</td><td class="name">Week 3 (Sept 28-Oct 2): registration complete — e-signature link and status sync, pre-approved invite, timestamps</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr><tr><td class="num">W4</td><td class="name">Week 4 (Oct 5-9): deal registration — customer match/create/dedup, queue routing, Partner Influence pending record, pending list, partner approval process, email alerts</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr><tr><td class="num">W5</td><td class="name">Week 5 (Oct 12-16): deal registration complete — KPI reports, multi-partner and reseller rules, attribution and role, AE approve/deny, status write-back, decision emails</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr><tr><td class="num">W6</td><td class="name">Week 6 (Oct 19-23): dashboard tiles, Droid pre-screening and scoring, end-to-end tests, operator permset and list views, UAT starts (Render pinger on before UAT)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr><tr><td class="num">W7</td><td class="name">Week 7 (Oct 26-30): launch — security review, UAT fixes, production deploy; hypercare follows</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>planner. manual &#x27;manual attestation&#x27;: awaiting attestation by Droid</td></tr></tbody></table></div>
+    <div class="callout"><div class="lbl">What unlocks the rest</div><p>Week 1 is Foundation: repo, hosting, data model, integration user, tool-layer adapter. Every later week builds on it and none is a rework.</p></div>
+  </section>
+
+  <section class="stream" id="s2">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Running right now</h2><span class="pill sandbox">0 lanes</span></div>
+    <p class="sec-sub">Each lane owns one node and one seam. It closes the node by landing evidence the checker can read, never by reporting.</p>
+    <p>Nothing running.</p>
+  </section>
+
+  <section class="stream" id="s3">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Up next</h2><span class="pill sandbox">0 ready</span></div>
+    <p class="sec-sub">Dependencies met, contract not yet proven, no lane on it. These are dispatched as lanes free up.</p>
+    <p>Nothing waiting for a lane.</p>
+  </section>
+
+  <section class="stream" id="s4">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Blocked, and by what</h2><span class="pill pending">1 nodes</span></div>
+    <p class="sec-sub">Each line names the first unmet dependency. Clear that item and the node moves to Up next on its own.</p>
+    <div class="drill-head"><span class="c">Nodes</span></div>
+    <details class="drill"><summary><span>Weekly timeline</span><span class="dnums"><span class="c">1</span></span></summary><div class="drill-leaf"><span><strong>W2-spec</strong> Week 2 spec written at Week 1 close: magic-link and session behavior, public form fields, dedup rules, field mappings, OQ-4 applied<br><span class="why">blocked by W1-D4 (Week 1 D4: tool-layer adapter (Hono skeleton, SF client, StorageAdapter port, audit middleware, MCP whoami, 7 contract tests green))</span></span></div></details>
+  </section>
+
+  <section class="stream" id="s5">
+    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Needs Blair this week</h2><span class="pill pending">35</span></div>
+    <p class="sec-sub">Only the items that change what happens before the demo. Actions, not readings.</p>
+    <div class="tbl-scroll"><table><thead><tr><th>Node</th><th>What</th><th>Area</th><th>State</th><th>The ask</th></tr></thead><tbody><tr><td class="num">OQ-1</td><td class="name">Who creates the Opportunity at deal registration (tool layer, AE on approval, or must pre-exist)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai (Ashley or AE lead); blocks Week 4, not Week 1</td></tr><tr><td class="num">OQ-2</td><td class="name">Account Partner: custom Factory object or the standard Salesforce one (export has none; sandbox has standard only)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Roman; Week 1 builds on the standard object</td></tr><tr><td class="num">OQ-3</td><td class="name">Partner tier: values and source (plan Section 2 lists it on Partner Influence; export has no tier field)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Ashley; blocks Week 5 KPI reports</td></tr><tr><td class="num">OQ-5</td><td class="name">UAT participants + acceptance criteria (Week 6) and cutover, security review, rollback, monitoring (Week 7): Factory names people by 10/10, Domestique writes the documents in Week 5</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai operator names and a security reviewer by 10/10</td></tr><tr><td class="num">dec-hosting-accounts</td><td class="name">Render + Cloudflare accounts created under Domestique; deploy tokens on the build machine (never in the repo)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>Blair creates both accounts and sets RENDER_API_KEY, CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID</td></tr><tr><td class="num">dec-mcp-audit-object</td><td class="name">Confirm the MCP Layer&#x27;s 3rd custom object (audit log) with Roman</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>name Portal_Audit_Log__c approved by Blair 9/14; Roman still to be informed</td></tr><tr><td class="num">plan-board-update</td><td class="name">Teamwork board: drop &#x27;Persona views + permission sets&#x27; (43977792); add MCP Layer audit-log note</td><td>Plan</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">plan-build-script-decision</td><td class="name">Decide: port 9/10-11 rulings into docs/teamwork/build_project_plan_v2.py, or retire it in favour of the live docx</td><td>Plan</td><td><span class="pill pending">needs Blair</span></td><td>needs Blair&#x27;s call: port rulings into the build script, or retire it</td></tr><tr><td class="num">dec-commission-definition</td><td class="name">Commission definition confirmed by Factory (attributed revenue vs. rate-adjusted)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai confirmation of the commission-rate field / definition</td></tr><tr><td class="num">dec-consumption-attribution</td><td class="name">Consumption attribution approach confirmed by Factory&#x27;s post-sales team (out of MVP and full plan; sized once confirmed)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai post-sales team to confirm approach</td></tr><tr><td class="num">dec-esign-tool</td><td class="name">E-sign tool confirmed by Factory (or explicit fallback to signed-PDF-on-Account)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai to confirm/name the e-sign tool</td></tr><tr><td class="num">dec-scoring-rules</td><td class="name">Scoring / auto-reject rules confirmed by Factory (needed by 10/10 for Droid pre-screening)</td><td>Decisions and open questions</td><td><span class="pill pending">needs Blair</span></td><td>needs Factory.ai confirmation of scoring/auto-reject rules by 10/10</td></tr><tr><td class="num">W1-D1</td><td class="name">Week 1 D1: repo scaffold + free hosting (br5692/factory-partner-portal, Dockerfile, Render free, Cloudflare Pages, runbook)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>Blair attests the two public URLs and the runbook path</td></tr><tr><td class="num">W1-D4</td><td class="name">Week 1 D4: tool-layer adapter (Hono skeleton, SF client, StorageAdapter port, audit middleware, MCP whoami, 7 contract tests green)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td>Blair attests the contract-test output</td></tr><tr><td class="num">WS1</td><td class="name">Workstream 1 — Portal Infrastructure (login, hosting, dashboard shell, commission/close-rate tiles, MCP layer, operator permset) — 50-60h</td><td>MVP workstreams</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W2</td><td class="name">Week 2 (Sept 21-25): sign-in and registration — email-link sign-in, dashboard shell, registration form, review list, Account and Contact</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">WS2</td><td class="name">Workstream 2 — Partner Registration (request, validation, account/contact creation, pre-approved invite, contract signature, timestamps, review list) — 26-32h</td><td>MVP workstreams</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W3</td><td class="name">Week 3 (Sept 28-Oct 2): registration complete — e-signature link and status sync, pre-approved invite, timestamps</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">WS3</td><td class="name">Workstream 3 — Deal Registration (create account/contact, queue routing, Partner Influence junction, AE approve/deny, KPI surfacing, multi-partner rules, attribution) — 32-39h</td><td>MVP workstreams</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W4</td><td class="name">Week 4 (Oct 5-9): deal registration — customer match/create/dedup, queue routing, Partner Influence pending record, pending list, partner approval process, email alerts</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">WS4</td><td class="name">Workstream 4 — Droid Integration (pre-screening and scoring, calibration) — 16-19h</td><td>MVP workstreams</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W5</td><td class="name">Week 5 (Oct 12-16): deal registration complete — KPI reports, multi-partner and reseller rules, attribution and role, AE approve/deny, status write-back, decision emails</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">WS5</td><td class="name">Workstream 5 — QA, UAT, Deploy (security review, e2e tests, UAT support, prod deploy, hypercare) — 31h flat, no +20%</td><td>MVP workstreams</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W6</td><td class="name">Week 6 (Oct 19-23): dashboard tiles, Droid pre-screening and scoring, end-to-end tests, operator permset and list views, UAT starts (Render pinger on before UAT)</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-commission-split-override</td><td class="name">Add-on — Commission split override (leadership-only permission, audit of overrides) — 3-4h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-contract-visible</td><td class="name">Add-on — Contract visible in the portal (signed file reference, secure fetch, contract card) — 3-4h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-granola-gong-sync</td><td class="name">Add-on — Granola / Gong call context synced to registered deals — 8-12h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-partner-admin-users</td><td class="name">Add-on — Partner admin manages users (invite/deactivate contacts under the partner Account) — 4-5h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-partner-matching</td><td class="name">Add-on — Partner matching on new opportunities (similarity features, suggested status, Droid trigger) — 14-17h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-partner-org-profile</td><td class="name">Add-on — Partner org profile and partnership status page — 3-4h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-register-from-call</td><td class="name">Add-on — Register from call (Granola, Gong, or pasted text) — 14-17h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-rejection-cooldown</td><td class="name">Add-on — Rejection tracking and cooldown (reapply block/cooldown check) — 2h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-resources-area</td><td class="name">Add-on — Resources area (pages and links, resource item object, operator content load) — 6-7h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">addon-rolling-commission-report</td><td class="name">Add-on — Rolling commission report (YoY, QoQ) — 4-5h</td><td>Add-ons after launch</td><td><span class="pill pending">needs Blair</span></td><td></td></tr><tr><td class="num">W7</td><td class="name">Week 7 (Oct 26-30): launch — security review, UAT fixes, production deploy; hypercare follows</td><td>Weekly timeline</td><td><span class="pill pending">needs Blair</span></td><td></td></tr></tbody></table></div>
+  </section>
+
+  <section class="stream" id="s6">
+    <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Later</h2><span class="pill pending">0 rulings parked</span></div>
+    <p class="sec-sub">Audit-era questions and program decisions. Tracked so nothing is lost, batched for rulings after the demo.</p>
+    <div class="drill-head"><span class="c">Items</span></div>
+    
+  </section>
+
+  <section class="stream" id="s7">
+    <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">Proven by area</h2></div>
+    <p class="sec-sub">Nodes proven over nodes tracked. The program area holds the roll-ups and is last to close by design.</p>
+    <div class="metrics"><div class="metric"><div class="val">6<small> / 8</small></div><div class="cap">Plan · 75% proven</div></div><div class="metric"><div class="val">3<small> / 12</small></div><div class="cap">Weekly timeline · 25% proven</div></div><div class="metric"><div class="val">3<small> / 13</small></div><div class="cap">Decisions and open questions · 23% proven</div></div><div class="metric"><div class="val">0<small> / 10</small></div><div class="cap">Add-ons after launch · 0% proven</div></div><div class="metric"><div class="val">0<small> / 5</small></div><div class="cap">MVP workstreams · 0% proven</div></div></div>
+  </section>
+
+  <section class="stream" id="s8">
+    <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">Proven lately</h2></div>
+    <p class="sec-sub">The most recent landings, newest receipt first. Each one is a commit, a deploy id or a frame the checker verified.</p>
+    <div class="tbl-scroll"><table><thead><tr><th>Node</th><th>What</th><th>Area</th><th>State</th><th>Receipt</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="stream" id="sources" style="border-bottom:none">
+    <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">Sources</h2></div>
+    <p class="kicker">The graph</p>
+    <div class="src-list"><a class="src" href="https://github.com/br5692/factory-ai/blob/main/docs/strategy/factory_graph.yaml"><span class="gid">yaml</span><span class="st"><div class="nm">factory_graph.yaml</div><div class="dt">the working list · every node and contract</div></span><span class="arr">→</span></a><a class="src" href="https://github.com/br5692/factory-ai/blob/main/scripts/gate/graph_check.py"><span class="gid">checker</span><span class="st"><div class="nm">graph_check.py</div><div class="dt">proves every node from git and the sandbox</div></span><span class="arr">→</span></a><a class="src" href="https://github.com/br5692/factory-ai/blob/main/docs/specs/2026-09-14_week1-foundation-spec.md"><span class="gid">spec</span><span class="st"><div class="nm">Week 1 spec</div><div class="dt">locked, rev 4</div></span><span class="arr">→</span></a><a class="src" href="https://github.com/br5692/factory-ai/blob/main/docs/2026-09-11_FactoryAI-Partner-Portal-Project-Plan-v2-REVIEWED-live.md"><span class="gid">plan</span><span class="st"><div class="nm">Project plan v2</div><div class="dt">approved 2026-09-14</div></span><span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <p class="fmono">Generated 2026-09-15 05:32Z · graph at a897cfd · 48 nodes · 12 proven</p>
+    <p>Regenerate with the checker and this page builder after any landing. The page is a reading of the graph, never a second list.</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    var btn=document.getElementById('themeToggle'), root=document.documentElement;
+    btn.addEventListener('click', function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur) cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      var next=cur==='dark'?'light':'dark';
+      root.setAttribute('data-theme', next);
+      btn.textContent=next==='dark'?'Light':'Dark';
+    });
+  })();
+</script>
+
+</body>
+</html>
