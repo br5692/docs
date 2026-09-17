@@ -58,14 +58,14 @@
     <li>Portal, Week 2 build: <code>https://factory-partner-portal.pages.dev</code>. Portal, all weeks: <code>https://latest.factory-partner-portal.pages.dev</code>.</li>
     <li>Web service health: <code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code>.</li>
     <li>Salesforce partial sandbox: <code>https://factoryai--partial.sandbox.my.salesforce.com</code> (log in through <code>https://test.salesforce.com</code>), app Factory Sales, tab Partner Applications.</li>
-    <li>Two sandbox logins, ask Blair: an operator with the Portal Admin Fields permission set, and a plain user without it for the permission checks. Use Setup, Users, Login As rather than sharing passwords.</li>
+    <li>Two test users already exist in the sandbox: <code>[TEST] Operator</code> (holds the Portal Admin Fields permission set) and <code>[TEST] No Review</code> (no portal permissions). Reach either through Setup, Users, Login As from the admin login in the handoff. No passwords change hands.</li>
     <li>An email address you own, for the partner side. Nothing here emails anyone else.</li>
-    <li>Path B sign-in links come out of the hosted service log; ask Blair to read them to you, or use Path A.</li>
+    <li>Path B sign-in links are in the hosted service log: Render, service <code>factory-partner-portal-tool-layer</code>, Logs, search for the address; the line carries <code>"event":"sign_in_email"</code> and the link. Render access is in the handoff. Otherwise use Path A.</li>
     <li>Reference pages: <a href="https://br5692.github.io/docs/d/factory-progress-20626663/">progress by week with clips</a>, <a href="https://br5692.github.io/docs/d/factory-decisions-log-abe5c745/">decisions log</a>, <a href="https://br5692.github.io/docs/d/factory-week2-how-it-fits-85fe7bc3/">how Week 2 fits together</a>.</li>
   </ul>
   <h3>Automated suites on another machine (portability check)</h3>
   <ul>
-    <li>Read access to <code>https://github.com/br5692/factory-partner-portal</code> (private; Blair invites you).</li>
+    <li>Read access to <code>https://github.com/br5692/factory-partner-portal</code> (private; granted in the handoff).</li>
     <li>git, Node 22 or newer, pnpm 10.12.4 (<code>corepack enable &amp;&amp; corepack prepare pnpm@10.12.4 --activate</code>). No secrets, no Salesforce tooling: the sandbox suites skip themselves when the Salesforce variables are absent.</li>
   </ul>
   <div class="tbl-scroll"><pre><code>git clone https://github.com/br5692/factory-partner-portal.git
@@ -79,7 +79,7 @@ pnpm -r test
   <h3>Things that trip people up</h3>
   <ul>
     <li>Rate limits: five sign-in requests per address and twenty per network address per hour. The reply looks the same; the next hour clears it.</li>
-    <li>Path A emails need the sandbox deliverability set to All email for the session and revert after; Blair switches it. Only send to addresses you own.</li>
+    <li>Path A: before the session, in the sandbox, Setup, Email, Deliverability, set Access level to All email; set it back to System email only afterwards. The hosted service's mail transport (Render environment, <code>MAIL_TRANSPORT</code>) is switched to <code>salesforce</code> for the session and back to <code>log</code> after, as part of the handoff. Only send to addresses you own.</li>
     <li>The main portal address stays at Week 2 on purpose. Weeks 3 to 5 run on the preview address.</li>
     <li>Start every test record's name with <code>[TEST]</code> so it is easy to find. Leave them; nothing needs deleting.</li>
   </ul>
