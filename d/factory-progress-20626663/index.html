@@ -50,9 +50,9 @@
   <div class="meta-grid">
     <div class="meta-cell"><div class="k">Plan</div><div class="v">Workstreams 1 to 3, seven weeks</div></div>
     <div class="meta-cell"><div class="k">Calendar</div><div class="v">Week 1 of 7</div></div>
-    <div class="meta-cell"><div class="k">Built and verified</div><div class="v">Weeks 1, 2, 3</div></div>
-    <div class="meta-cell"><div class="k">Closing</div><div class="v">Week 4</div></div>
-    <div class="meta-cell"><div class="k">Updated</div><div class="v">2026-09-16</div></div>
+    <div class="meta-cell"><div class="k">Built and verified</div><div class="v">Weeks 1 to 4</div></div>
+    <div class="meta-cell"><div class="k">Next</div><div class="v">Week 5, spec locked</div></div>
+    <div class="meta-cell"><div class="k">Updated</div><div class="v">2026-09-17</div></div>
   </div>
 </div></header>
 <nav class="toc"><div class="wrap toc-inner">
@@ -63,13 +63,13 @@
 
 <section class="stream" id="glance">
   <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">At a glance</h2></div>
-  <p class="sec-sub">The build runs ahead of the plan calendar. Three weeks of scope are built and verified in the sandbox and on the hosted stack. Week 4 is in build.</p>
+  <p class="sec-sub">The build runs ahead of the plan calendar. Four weeks of scope are built and verified in the sandbox and on the hosted stack. Week 5 starts after a short list of review fixes.</p>
   <div class="weeks">
     <div class="wk"><div class="n">Week 1</div><div class="t">Foundation</div><span class="pill live">verified</span></div>
     <div class="wk"><div class="n">Week 2</div><div class="t">Registration and sign-in</div><span class="pill live">verified</span></div>
     <div class="wk"><div class="n">Week 3</div><div class="t">Contract signature</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill sandbox">built, closing</span></div>
-    <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill later">spec ready</span></div>
+    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill live">verified</span></div>
+    <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill sandbox">spec locked, in build</span></div>
     <div class="wk"><div class="n">Week 6</div><div class="t">Dashboard tiles, UAT starts</div><span class="pill later">later</span></div>
     <div class="wk"><div class="n">Week 7</div><div class="t">Launch</div><span class="pill later">later</span></div>
   </div>
@@ -142,17 +142,17 @@
 </section>
 
 <section class="stream" id="w4">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill sandbox">built · checkpoint verified 2026-09-17</span></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill live">verified 2026-09-17</span></div>
   <p class="sec-sub">Workstream 3, the registration half. A partner registers a deal, the customer is matched or created, and the registration waits as Pending for the decision work in Week 5.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>State</th></tr></thead>
     <tbody>
-      <tr><td class="req">Create Account and Contact if not in CRM</td><td>A customer match step and a create step in the web service.</td><td class="how">Match by website domain, then by name, then the contact by email. Create only when nothing matches. New customer Accounts are marked as portal-created.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
-      <tr><td class="req">Net-new routed for assignment</td><td>An Unassigned Customers list on the operator tab.</td><td class="how">Accounts cannot be owned by a queue on the platform, so new customers are owned by the integration user and listed for leadership to reassign.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
-      <tr><td class="req">Partner Influence record created Pending</td><td>The registration row on Factory's junction object.</td><td class="how">Deal name, value, close date, partner role, attribution (Sourced or Influenced), submitted by and when. The Opportunity is matched or created in the first open stage.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
-      <tr><td class="req">Surface the junction on the Opportunity</td><td>The link from the registration to the Opportunity.</td><td class="how">Queryable now. A related list on Factory's Opportunity page needs Factory's yes.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
-      <tr><td class="req">Pending registrations on the dashboard</td><td>A Register a deal form and the registrations list and detail.</td><td class="how">Three steps: customer, deal, attribution. A duplicate registration for the same contact is refused with a plain sentence.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
-      <tr><td class="req">Received email</td><td>A confirmation email when a registration is created.</td><td class="how">A flow on the junction sends it from a template and writes an audit row.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Create Account and Contact if not in CRM</td><td>A customer match step and a create step in the web service.</td><td class="how">Match by website domain, then by name, then the contact by email. Create only when nothing matches. New customer Accounts are marked as portal-created.</td><td>Verified</td></tr>
+      <tr><td class="req">Net-new routed for assignment</td><td>An Unassigned Customers list on the operator tab.</td><td class="how">Accounts cannot be owned by a queue on the platform, so new customers are owned by the integration user and listed for leadership to reassign.</td><td>Verified</td></tr>
+      <tr><td class="req">Partner Influence record created Pending</td><td>The registration row on Factory's junction object.</td><td class="how">Deal name, value, close date, partner role, attribution (Sourced or Influenced), submitted by and when. The Opportunity is matched or created in the first open stage.</td><td>Verified</td></tr>
+      <tr><td class="req">Surface the junction on the Opportunity</td><td>The link from the registration to the Opportunity.</td><td class="how">Queryable now. A related list on Factory's Opportunity page needs Factory's yes.</td><td>Verified</td></tr>
+      <tr><td class="req">Pending registrations on the dashboard</td><td>A Register a deal form and the registrations list and detail.</td><td class="how">Three steps: customer, deal, attribution. A duplicate registration for the same contact is refused with a plain sentence.</td><td>Verified</td></tr>
+      <tr><td class="req">Received email</td><td>A confirmation email when a registration is created.</td><td class="how">A flow on the junction sends it from a template and writes an audit row.</td><td>Verified</td></tr>
       <tr><td class="req">Week toggle</td><td>The portal shows only the weeks Factory is meant to see.</td><td class="how">One setting per side hides later weeks' pages and refuses their actions. The main portal address shows Week 2 alone; a separate preview shows everything.</td><td>Built, verified on the hosted stack</td></tr>
     </tbody>
   </table></div>
@@ -164,7 +164,7 @@
 
 <section class="stream" id="open">
   <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Open questions for Factory</h2></div>
-  <p class="sec-sub">None of these blocks the build. Each has a working assumption and a single place to change when answered.</p>
+  <p class="sec-sub">None of these blocks the build. Each has a working assumption and a single place to change when answered. Updated 2026-09-17 after a review of Weeks 1 to 3 against the plan and the call notes.</p>
   <ul>
     <li><strong>E-sign tool.</strong> Which tool Factory uses. Assumed: manual link until named.</li>
     <li><strong>One person, two partners.</strong> Can one contact act for more than one partner company. Assumed: one contact per email, one company per session.</li>
@@ -172,6 +172,10 @@
     <li><strong>Opportunity page.</strong> Whether a Partner Influence related list may be added to Factory's Opportunity layout. Assumed: not yet.</li>
     <li><strong>New customers.</strong> Whether leadership wants a queue or an alert instead of the unassigned list. Assumed: the list.</li>
     <li><strong>Commission and partner tier.</strong> The commission definition and where partner tier lives. Needed for Week 6 tiles, not before.</li>
+    <li><strong>Our components on Factory's page layouts.</strong> Whether we may add our own actions, field sections and one related list to the Account, Opportunity and Partner Influence layouts. Until answered, six things live on our own tab instead of the records.</li>
+    <li><strong>What "accepted" means.</strong> The plan stamps acceptance when the contract is signed and sets a partner status on the Contact; the build stamps it at operator approval and keeps status on the Account. Assumed: approval.</li>
+    <li><strong>Where the portal lives on factory.com.</strong> A page inside the marketing site or a separate site, and who routes to it. Assumed: a standalone site linked from the partner page.</li>
+    <li><strong>Design kit.</strong> Factory's design team provides the kit; the Week 2 screens page stands in for the wireframe. Assumed: placeholders until it lands, polish before UAT.</li>
   </ul>
 </section>
 
@@ -182,7 +186,7 @@
     <li><strong>Week 5, deal decisions.</strong> Approve, deny and needs-information inside Salesforce, decision emails, dashboard tiles, and the multi-partner rules enforced at decision time. Spec ready.</li>
     <li><strong>Walk-through.</strong> Weeks 1 and 2 live, with Week 3 and 4 shown as built if wanted.</li>
   </ul>
-  <footer><p class="fmono">Updated 2026-09-16 · Weeks 1 to 3 verified, Week 4 in build</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+  <footer><p class="fmono">Updated 2026-09-17 · Weeks 1 to 4 verified, Week 5 locked</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
 </section>
 </main>
 <script>
