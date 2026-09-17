@@ -94,7 +94,7 @@ pnpm -r test
       <tr><td class="n">2.9</td><td>Pick your application, Approve, add a note, Next.</td><td class="exp">Status Approved, Partner Accepted At stamped, the note saved. The application leaves the pending list.</td><td class="why">Approval updates status, stamps time, saves the note.</td><td>Salesforce Account</td></tr>
       <tr><td class="n">2.10</td><td><a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log, All</a>.</td><td class="exp">partner_invite row. Path A: Success. Path B: Error email_send_failed (deliverability off), which is expected.</td><td class="why">Approval triggers the invite and audits the outcome.</td><td>Salesforce</td></tr>
       <tr><td class="n">2.11</td><td>Path A only: check the inbox.</td><td class="exp">"Your Factory partner application is approved" with a sign-in line.</td><td class="why">The invite email reaches the partner.</td><td>Inbox</td></tr>
-      <tr><td class="n">2.12</td><td>Deny a second fictional application with a note.</td><td class="exp">Status Denied, note saved, no email today (rejection letter is a queued fix).</td><td class="why">Denial records the decision without emailing anyone.</td><td>Salesforce Account</td></tr>
+      <tr><td class="n">2.12</td><td>Deny a second fictional application with a note.</td><td class="exp">Status Denied, note saved. A denial email goes out from its template; on Path B the audit shows partner_denied with Error email_send_failed, which is expected.</td><td class="why">Denial records the decision and sends the letter.</td><td>Salesforce Account</td></tr>
     </tbody>
   </table></div>
 </section>
