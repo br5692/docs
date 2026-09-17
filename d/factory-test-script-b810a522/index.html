@@ -27,6 +27,7 @@
   .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
   footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
   @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
 </style>
 </head>
 <body>
@@ -52,14 +53,14 @@
   <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Week 1: Foundation</h2></div>
   <p class="sec-sub">Mostly seen from inside Salesforce and the health check. Ten minutes.</p>
   <div class="tbl-scroll"><table>
-    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td class="n">1.1</td><td>Open the portal address in a private window.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">1.2</td><td>Open <code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code>.</td><td class="exp">ok true, a version, and sf ok.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">1.3</td><td>Setup, Users: find the integration user.</td><td class="exp">API-only profile; one permission set, Integration Access - Partner Portal; no other sets.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
-      <tr><td class="n">1.4</td><td>Setup, Certificate and Key Management.</td><td class="exp">A certificate named for the portal web service. That is the sign-on; there is no password.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
-      <tr><td class="n">1.5</td><td>Setup, Object Manager, Account: filter fields by Portal or Partner.</td><td class="exp">Our fields carry help text. Factory's own fields unchanged.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
-      <tr><td class="n">1.6</td><td>App Launcher, Portal Audit Log, All.</td><td class="exp">One row per call: action, actor, outcome, request id, occurred at. Denied and Error rows exist next to Success rows.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">1.1</td><td>Open the portal address in a private window.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td class="why">Public surface is only what Week 1 promised.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">1.2</td><td>Open <code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code>.</td><td class="exp">ok true, a version, and sf ok.</td><td class="why">Hosted service is up and talks to Salesforce.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">1.3</td><td>Setup, Users: find the integration user.</td><td class="exp">API-only profile; one permission set, Integration Access - Partner Portal; no other sets.</td><td class="why">Integration user has least privilege, nothing extra.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
+      <tr><td class="n">1.4</td><td>Setup, Certificate and Key Management.</td><td class="exp">A certificate named for the portal web service. That is the sign-on; there is no password.</td><td class="why">Sign-on is certificate based. No stored password anywhere.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
+      <tr><td class="n">1.5</td><td>Setup, Object Manager, Account: filter fields by Portal or Partner.</td><td class="exp">Our fields carry help text. Factory's own fields unchanged.</td><td class="why">Our schema is additive and documented. Theirs untouched.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
+      <tr><td class="n">1.6</td><td>App Launcher, Portal Audit Log, All.</td><td class="exp">One row per call: action, actor, outcome, request id, occurred at. Denied and Error rows exist next to Success rows.</td><td class="why">Every call, including failures, leaves an audit trail.</td><td>Salesforce</td><td class="chk"></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -68,20 +69,20 @@
   <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Week 2: Apply and review</h2></div>
   <p class="sec-sub">You are the partner, then the Factory operator. Fifteen minutes.</p>
   <div class="tbl-scroll"><table>
-    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td class="n">2.1</td><td>Apply. Submit with a required field empty.</td><td class="exp">The form refuses with a plain message. Nothing is created.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">2.2</td><td>Fill all fields with a fictional company and your test address. Submit.</td><td class="exp">"Thanks. Factory will review your application and email you."</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">2.3</td><td>Submit the same application again.</td><td class="exp">The same thank-you. No second Account.</td><td>Browser, then Salesforce Accounts</td><td class="chk"></td></tr>
-      <tr><td class="n">2.4</td><td>Open the Account in Salesforce.</td><td class="exp">Portal Application Status Applied, Partner Applied At stamped, Partner Type set, Portal Primary Contact filled, one Contact with your address.</td><td>Salesforce Account</td><td class="chk"></td></tr>
-      <tr><td class="n">2.5</td><td>Portal Audit Log, newest rows.</td><td class="exp">submit_partner_application Success with the Account as target; the duplicate attempt as a second row.</td><td>Salesforce</td><td class="chk"></td></tr>
-      <tr><td class="n">2.6</td><td>Log in as the test user with no review permission. App Launcher.</td><td class="exp">No Partner Applications tab.</td><td>Salesforce</td><td class="chk"></td></tr>
-      <tr><td class="n">2.7</td><td>As an operator with the permission, open Partner Applications.</td><td class="exp">The pending list shows your application. The decision box is beside it.</td><td>Salesforce tab</td><td class="chk"></td></tr>
-      <tr><td class="n">2.8</td><td>In the decision box, try Approve on an application whose primary contact is blank (or clear it on a test Account first).</td><td class="exp">Refused with one sentence: a primary contact is required.</td><td>Salesforce tab</td><td class="chk"></td></tr>
-      <tr><td class="n">2.9</td><td>Pick your application, Approve, add a note, Next.</td><td class="exp">Status Approved, Partner Accepted At stamped, the note saved. The application leaves the pending list.</td><td>Salesforce Account</td><td class="chk"></td></tr>
-      <tr><td class="n">2.10</td><td>Portal Audit Log.</td><td class="exp">partner_invite row. Path A: Success. Path B: Error email_send_failed (deliverability off), which is expected.</td><td>Salesforce</td><td class="chk"></td></tr>
-      <tr><td class="n">2.11</td><td>Path A only: check the inbox.</td><td class="exp">"Your Factory partner application is approved" with a sign-in line.</td><td>Inbox</td><td class="chk"></td></tr>
-      <tr><td class="n">2.12</td><td>Deny a second fictional application with a note.</td><td class="exp">Status Denied, note saved, no email today (rejection letter is a queued fix).</td><td>Salesforce Account</td><td class="chk"></td></tr>
+      <tr><td class="n">2.1</td><td>Apply. Submit with a required field empty.</td><td class="exp">The form refuses with a plain message. Nothing is created.</td><td class="why">Validation blocks bad input before anything is written.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">2.2</td><td>Fill all fields with a fictional company and your test address. Submit.</td><td class="exp">"Thanks. Factory will review your application and email you."</td><td class="why">A real application creates the Account and Contact.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">2.3</td><td>Submit the same application again.</td><td class="exp">The same thank-you. No second Account.</td><td class="why">Duplicate submissions do not create duplicate records.</td><td>Browser, then Salesforce Accounts</td><td class="chk"></td></tr>
+      <tr><td class="n">2.4</td><td>Open the Account in Salesforce.</td><td class="exp">Portal Application Status Applied, Partner Applied At stamped, Partner Type set, Portal Primary Contact filled, one Contact with your address.</td><td class="why">Salesforce holds the full application, correctly stamped.</td><td>Salesforce Account</td><td class="chk"></td></tr>
+      <tr><td class="n">2.5</td><td>Portal Audit Log, newest rows.</td><td class="exp">submit_partner_application Success with the Account as target; the duplicate attempt as a second row.</td><td class="why">Applications and duplicates are both audited.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">2.6</td><td>Log in as the test user with no review permission. App Launcher.</td><td class="exp">No Partner Applications tab.</td><td class="why">Review page is hidden without the permission.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">2.7</td><td>As an operator with the permission, open Partner Applications.</td><td class="exp">The pending list shows your application. The decision box is beside it.</td><td class="why">Reviewers see a queue, not a search.</td><td>Salesforce tab</td><td class="chk"></td></tr>
+      <tr><td class="n">2.8</td><td>In the decision box, try Approve on an application whose primary contact is blank (or clear it on a test Account first).</td><td class="exp">Refused with one sentence: a primary contact is required.</td><td class="why">Approval cannot proceed without a contact to invite.</td><td>Salesforce tab</td><td class="chk"></td></tr>
+      <tr><td class="n">2.9</td><td>Pick your application, Approve, add a note, Next.</td><td class="exp">Status Approved, Partner Accepted At stamped, the note saved. The application leaves the pending list.</td><td class="why">Approval updates status, stamps time, saves the note.</td><td>Salesforce Account</td><td class="chk"></td></tr>
+      <tr><td class="n">2.10</td><td>Portal Audit Log.</td><td class="exp">partner_invite row. Path A: Success. Path B: Error email_send_failed (deliverability off), which is expected.</td><td class="why">Approval triggers the invite and audits the outcome.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">2.11</td><td>Path A only: check the inbox.</td><td class="exp">"Your Factory partner application is approved" with a sign-in line.</td><td class="why">The invite email reaches the partner.</td><td>Inbox</td><td class="chk"></td></tr>
+      <tr><td class="n">2.12</td><td>Deny a second fictional application with a note.</td><td class="exp">Status Denied, note saved, no email today (rejection letter is a queued fix).</td><td class="why">Denial records the decision without emailing anyone.</td><td>Salesforce Account</td><td class="chk"></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -90,20 +91,20 @@
   <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Week 2: Sign in and dashboard</h2></div>
   <p class="sec-sub">You are the approved partner. Fifteen minutes.</p>
   <div class="tbl-scroll"><table>
-    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td class="n">3.1</td><td>Sign in with an address that is not a partner.</td><td class="exp">"If that address belongs to an approved partner, a sign-in link is on its way." No email, nothing created.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.2</td><td>Sign in with the address of a Denied or Applied (not yet approved) account.</td><td class="exp">The same sentence. No link.</td><td>Browser, Audit Log shows sign_in_request Denied</td><td class="chk"></td></tr>
-      <tr><td class="n">3.3</td><td>Sign in with your approved address.</td><td class="exp">The same sentence. Path A: the link arrives. Path B: the link is in the hosted service log.</td><td>Inbox or log</td><td class="chk"></td></tr>
-      <tr><td class="n">3.4</td><td>Open the link.</td><td class="exp">Dashboard: your company name top right, Dashboard and Sign out in the nav, "No deal registrations yet."</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.5</td><td>Open the same link again in a new private window.</td><td class="exp">Refused: the link has been used or expired.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.6</td><td>Request a link, wait 16 minutes, open it.</td><td class="exp">Refused as expired.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.7</td><td>Browser dev tools, Application, Cookies.</td><td class="exp">One cookie, fp_session, HttpOnly and Secure. Nothing in local storage.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.8</td><td>Type the dashboard address in a fresh private window with no cookie.</td><td class="exp">Sent to Sign in.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.9</td><td>In Salesforce set your Account's application status to Inactive, then reload the dashboard.</td><td class="exp">Signed out on the next call. Set it back to Approved after.</td><td>Browser, Salesforce</td><td class="chk"></td></tr>
-      <tr><td class="n">3.10</td><td>Sign out. Use the back button.</td><td class="exp">Sign in page, not the dashboard.</td><td>Browser</td><td class="chk"></td></tr>
-      <tr><td class="n">3.11</td><td>Portal Audit Log, newest rows.</td><td class="exp">sign_in_request rows for each request; sign_in Success with your Contact as actor; the refused reuse as a Denied row.</td><td>Salesforce</td><td class="chk"></td></tr>
-      <tr><td class="n">3.12</td><td>On a phone, open the landing page, apply page and sign-in page.</td><td class="exp">Readable at phone width, nothing cut off.</td><td>Phone</td><td class="chk"></td></tr>
+      <tr><td class="n">3.1</td><td>Sign in with an address that is not a partner.</td><td class="exp">"If that address belongs to an approved partner, a sign-in link is on its way." No email, nothing created.</td><td class="why">Sign-in never reveals whether an address exists.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.2</td><td>Sign in with the address of a Denied or Applied (not yet approved) account.</td><td class="exp">The same sentence. No link.</td><td class="why">Only approved partners can get a link.</td><td>Browser, Audit Log shows sign_in_request Denied</td><td class="chk"></td></tr>
+      <tr><td class="n">3.3</td><td>Sign in with your approved address.</td><td class="exp">The same sentence. Path A: the link arrives. Path B: the link is in the hosted service log.</td><td class="why">Approved partners receive a working link.</td><td>Inbox or log</td><td class="chk"></td></tr>
+      <tr><td class="n">3.4</td><td>Open the link.</td><td class="exp">Dashboard: your company name top right, Dashboard and Sign out in the nav, "No deal registrations yet."</td><td class="why">The link signs in the right company.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.5</td><td>Open the same link again in a new private window.</td><td class="exp">Refused: the link has been used or expired.</td><td class="why">A link works exactly once.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.6</td><td>Request a link, wait 16 minutes, open it.</td><td class="exp">Refused as expired.</td><td class="why">A link dies after fifteen minutes.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.7</td><td>Browser dev tools, Application, Cookies.</td><td class="exp">One cookie, fp_session, HttpOnly and Secure. Nothing in local storage.</td><td class="why">Session is a secure cookie. Nothing stored client side.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.8</td><td>Type the dashboard address in a fresh private window with no cookie.</td><td class="exp">Sent to Sign in.</td><td class="why">Dashboard is unreachable without a session.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.9</td><td>In Salesforce set your Account's application status to Inactive, then reload the dashboard.</td><td class="exp">Signed out on the next call. Set it back to Approved after.</td><td class="why">Deactivating a partner ends their access immediately.</td><td>Browser, Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">3.10</td><td>Sign out. Use the back button.</td><td class="exp">Sign in page, not the dashboard.</td><td class="why">Sign out truly ends the session.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">3.11</td><td>Portal Audit Log, newest rows.</td><td class="exp">sign_in_request rows for each request; sign_in Success with your Contact as actor; the refused reuse as a Denied row.</td><td class="why">Every sign-in attempt, good or refused, is audited.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">3.12</td><td>On a phone, open the landing page, apply page and sign-in page.</td><td class="exp">Readable at phone width, nothing cut off.</td><td class="why">Partners can apply and sign in from a phone.</td><td>Phone</td><td class="chk"></td></tr>
     </tbody>
   </table></div>
 </section>
