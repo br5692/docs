@@ -28,6 +28,7 @@
   footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
   @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
   td.why{color:var(--ink-faint);font-size:.88rem}
+  a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -41,7 +42,7 @@
 <section class="stream" id="setup">
   <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Before you start</h2></div>
   <ul>
-    <li>Portal for Weeks 1 and 2: <a href="https://factory-partner-portal.pages.dev"><code>https://factory-partner-portal.pages.dev</code></a> (Week 2 build). Portal for Weeks 3 to 5: <a href="https://latest.factory-partner-portal.pages.dev"><code>https://latest.factory-partner-portal.pages.dev</code></a> (all weeks; same sign-in, same data). Salesforce: the partial sandbox, Factory Sales app, Partner Applications tab from the App Launcher.</li>
+    <li>Portal for Weeks 1 and 2: <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a> (Week 2 build). Portal for Weeks 3 to 5: <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a> (all weeks; same sign-in, same data). Salesforce: the partial sandbox, Factory Sales app, Partner Applications tab from the App Launcher.</li>
     <li>Use a fictional company and a test address you own. Nothing here emails anyone else.</li>
     <li>Two paths for the two emails (invite and sign-in link). <strong>Path A, real inbox:</strong> deliverability set to All email in the sandbox and the hosted mail transport switched to Salesforce for the hour; both revert after. <strong>Path B, no email:</strong> the link is read from the hosted service log instead. Say which path before you start; the rows below say where each applies.</li>
     <li>Weeks 1 and 2 take about 45 minutes. Weeks 3 to 5 add about 40 minutes and need the same approved partner from Week 2. Two full passes on different days is a solid review.</li>
@@ -55,9 +56,9 @@
   <h3>Manual pass (this script)</h3>
   <ul>
     <li>Nothing to install. A browser.</li>
-    <li>Portal, Week 2 build: <a href="https://factory-partner-portal.pages.dev"><code>https://factory-partner-portal.pages.dev</code></a>. Portal, all weeks: <a href="https://latest.factory-partner-portal.pages.dev"><code>https://latest.factory-partner-portal.pages.dev</code></a>.</li>
-    <li>Web service health: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1"><code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code></a>.</li>
-    <li>Salesforce partial sandbox: <a href="https://factoryai--partial.sandbox.my.salesforce.com"><code>https://factoryai--partial.sandbox.my.salesforce.com</code></a> (log in through <a href="https://test.salesforce.com"><code>https://test.salesforce.com</code></a>), app Factory Sales, tab Partner Applications.</li>
+    <li>Portal, Week 2 build: <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a>. Portal, all weeks: <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a>.</li>
+    <li>Web service health: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</a>.</li>
+    <li>Salesforce partial sandbox: <a href="https://factoryai--partial.sandbox.my.salesforce.com">https://factoryai--partial.sandbox.my.salesforce.com</a> (log in through <a href="https://test.salesforce.com">https://test.salesforce.com</a>), app Factory Sales, tab Partner Applications.</li>
     <li>Two test users already exist in the sandbox: <code>[TEST] Operator</code> (holds the Portal Admin Fields permission set) and <code>[TEST] No Review</code> (no portal permissions). Reach either through Setup, Users, Login As from the admin login in the handoff. No passwords change hands.</li>
     <li>An email address you own, for the partner side. Nothing here emails anyone else.</li>
     <li>Path B sign-in links are in the hosted service log: Render, service <code>factory-partner-portal-tool-layer</code>, Logs, search for the address; the line carries <code>"event":"sign_in_email"</code> and the link. Render access is in the handoff. Otherwise use Path A.</li>
@@ -65,7 +66,7 @@
   </ul>
   <h3>Automated suites on another machine (portability check)</h3>
   <ul>
-    <li>Read access to <a href="https://github.com/br5692/factory-partner-portal"><code>https://github.com/br5692/factory-partner-portal</code></a> (private; granted in the handoff).</li>
+    <li>Read access to <a href="https://github.com/br5692/factory-partner-portal">https://github.com/br5692/factory-partner-portal</a> (private; granted in the handoff).</li>
     <li>git, Node 22 or newer, pnpm 10.12.4 (<code>corepack enable &amp;&amp; corepack prepare pnpm@10.12.4 --activate</code>). No secrets, no Salesforce tooling: the sandbox suites skip themselves when the Salesforce variables are absent.</li>
   </ul>
   <div class="tbl-scroll"><pre><code>git clone https://github.com/br5692/factory-partner-portal.git
@@ -91,8 +92,8 @@ pnpm -r test
   <div class="tbl-scroll"><table>
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
-      <tr><td class="n">1.1</td><td>Open the portal address <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a> in a private window.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td class="why">Public surface is only what Week 1 promised.</td><td>Browser</td></tr>
-      <tr><td class="n">1.2</td><td>Open <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1"><code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code></a>.</td><td class="exp">ok true, a version, and sf ok.</td><td class="why">Hosted service is up and talks to Salesforce.</td><td>Browser</td></tr>
+      <tr><td class="n">1.1</td><td>Open the portal address <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a>.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td class="why">Public surface is only what Week 1 promised.</td><td>Browser</td></tr>
+      <tr><td class="n">1.2</td><td>Open <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</a>.</td><td class="exp">ok true, a version, and sf ok.</td><td class="why">Hosted service is up and talks to Salesforce.</td><td>Browser</td></tr>
       <tr><td class="n">1.3</td><td>Setup, Users: find the integration user.</td><td class="exp">API-only profile; one permission set, Integration Access - Partner Portal; no other sets.</td><td class="why">Integration user has least privilege, nothing extra.</td><td>Salesforce Setup</td></tr>
       <tr><td class="n">1.4</td><td>Setup, Certificate and Key Management.</td><td class="exp">A certificate named for the portal web service. That is the sign-on; there is no password.</td><td class="why">Sign-on is certificate based. No stored password anywhere.</td><td>Salesforce Setup</td></tr>
       <tr><td class="n">1.5</td><td>Setup, Object Manager, Account: filter fields by Portal or Partner.</td><td class="exp">Our fields carry help text. Factory's own fields unchanged.</td><td class="why">Our schema is additive and documented. Theirs untouched.</td><td>Salesforce Setup</td></tr>
@@ -133,10 +134,10 @@ pnpm -r test
       <tr><td class="n">3.2</td><td>Sign in with the address of a Denied or Applied (not yet approved) account.</td><td class="exp">The same sentence. No link.</td><td class="why">Only approved partners can get a link.</td><td>Browser, Audit Log shows sign_in_request Denied</td></tr>
       <tr><td class="n">3.3</td><td>Sign in with your approved address.</td><td class="exp">The same sentence. Path A: the link arrives. Path B: the link is in the hosted service log.</td><td class="why">Approved partners receive a working link.</td><td>Inbox or log</td></tr>
       <tr><td class="n">3.4</td><td>Open the link.</td><td class="exp">Dashboard: your company name top right, Dashboard and Sign out in the nav, "No deal registrations yet."</td><td class="why">The link signs in the right company.</td><td>Browser</td></tr>
-      <tr><td class="n">3.5</td><td>Open the same link again in a new private window.</td><td class="exp">Refused: the link has been used or expired.</td><td class="why">A link works exactly once.</td><td>Browser</td></tr>
+      <tr><td class="n">3.5</td><td>Open the same link again in a new tab.</td><td class="exp">Refused: the link has been used or expired.</td><td class="why">A link works exactly once.</td><td>Browser</td></tr>
       <tr><td class="n">3.6</td><td>Request a link, wait 16 minutes, open it.</td><td class="exp">Refused as expired.</td><td class="why">A link dies after fifteen minutes.</td><td>Browser</td></tr>
       <tr><td class="n">3.7</td><td>Browser dev tools, Application, Cookies.</td><td class="exp">One cookie, fp_session, HttpOnly and Secure. Nothing in local storage.</td><td class="why">Session is a secure cookie. Nothing stored client side.</td><td>Browser</td></tr>
-      <tr><td class="n">3.8</td><td>Type the dashboard address <a href="https://factory-partner-portal.pages.dev/dashboard">https://factory-partner-portal.pages.dev/dashboard</a> in a fresh private window with no cookie.</td><td class="exp">Sent to Sign in.</td><td class="why">Dashboard is unreachable without a session.</td><td>Browser</td></tr>
+      <tr><td class="n">3.8</td><td>Type the dashboard address <a href="https://factory-partner-portal.pages.dev/dashboard">https://factory-partner-portal.pages.dev/dashboard</a> in a fresh browser that has never visited the site (or after clearing the site's cookies).</td><td class="exp">Sent to Sign in.</td><td class="why">Dashboard is unreachable without a session.</td><td>Browser</td></tr>
       <tr><td class="n">3.9</td><td>In Salesforce set your Account's application status to Inactive, then reload the dashboard.</td><td class="exp">Signed out on the next call. Set it back to Approved after.</td><td class="why">Deactivating a partner ends their access immediately.</td><td>Browser, Salesforce</td></tr>
       <tr><td class="n">3.10</td><td>Sign out. Use the back button.</td><td class="exp">Sign in page, not the dashboard.</td><td class="why">Sign out truly ends the session.</td><td>Browser</td></tr>
       <tr><td class="n">3.11</td><td>Portal Audit Log, newest rows.</td><td class="exp">sign_in_request rows for each request; sign_in Success with your Contact as actor; the refused reuse as a Denied row.</td><td class="why">Every sign-in attempt, good or refused, is audited.</td><td>Salesforce</td></tr>
