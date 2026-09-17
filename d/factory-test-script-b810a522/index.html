@@ -36,40 +36,21 @@
 <header class="mast"><div class="wrap mast-inner">
   <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Manual test script</p>
   <h1 class="title">Weeks 1 to 5, <span>by hand</span></h1>
-  <p class="lede">Walk this top to bottom on the hosted stack. Each row is one check with what to do, what should happen, and where to confirm it. Anything off: reply with the step number and what you saw. Ordered the way the Tuesday walk-through runs.</p>
+  <p class="lede">Run top to bottom on the hosted stack. Each row: what to do, what should happen, what it proves, where to confirm. Anything off: reply with the step number and what you saw.</p>
 </div></header>
 <main class="wrap">
 
 <section class="stream" id="setup">
-  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Before you start</h2></div>
+  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Setup</h2></div>
   <ul>
-    <li>Portal for Weeks 1 and 2: <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a> (Week 2 build). Portal for Weeks 3 to 5: <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a> (all weeks; same sign-in, same data). Salesforce: the partial sandbox, Factory Sales app, Partner Applications tab from the App Launcher.</li>
-    <li>Use a fictional company and a test address you own. Nothing here emails anyone else.</li>
-    <li>Two paths for the two emails (invite and sign-in link). <strong>Path A, real inbox:</strong> deliverability set to All email in the sandbox and the hosted mail transport switched to Salesforce for the hour; both revert after. <strong>Path B, no email:</strong> the link is read from the hosted service log instead. Say which path before you start; the rows below say where each applies.</li>
-    <li>Weeks 1 and 2 take about 45 minutes. Weeks 3 to 5 add about 40 minutes and need the same approved partner from Week 2. Two full passes on different days is a solid review.</li>
+    <li>Portal, Weeks 1 and 2: <a href="https://factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev</a>. Portal, Weeks 3 to 5: <a href="https://latest.factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://latest.factory-partner-portal.pages.dev</a>.</li>
+    <li>Salesforce sandbox: <a href="https://factoryai--partial.sandbox.my.salesforce.com" target="_blank" rel="noopener">https://factoryai--partial.sandbox.my.salesforce.com</a>, app Factory Sales, tab Partner Applications. Admin login from the handoff.</li>
+    <li>Test users, already in the sandbox, reached by Setup, Users, Login As: <code>[TEST] Operator</code> (Portal Admin Fields permission set) and <code>[TEST] No Review</code> (no portal permissions).</li>
+    <li>Partner side: a fictional company and an email address you own.</li>
+    <li>Emails, pick one path before starting. <strong>Path A, real inbox:</strong> sandbox Setup, Email, Deliverability, Access level All email for the session, back to System email only after; the hosted mail transport is set to Salesforce for the session in the handoff. <strong>Path B, no email:</strong> read each link from the hosted service log (Render, service <code>factory-partner-portal-tool-layer</code>, Logs, search the address).</li>
   </ul>
-  <div class="callout"><strong>Rate limits.</strong> Five sign-in requests per address and twenty per network address per hour. If you hit them, the reply looks the same, and the next hour clears it.</div>
-</section>
-
-<section class="stream" id="machine">
-  <div class="sec-head"><span class="sec-num">00b</span><h2 class="sec-title">What a tester needs</h2></div>
-  <p class="sec-sub">Two kinds of testing, two short lists. Nothing here sets up a development environment; that lives in the repo's runbook and is not needed to test.</p>
-  <h3>Manual pass (this script)</h3>
-  <ul>
-    <li>Nothing to install. A browser.</li>
-    <li>Portal, Week 2 build: <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a>. Portal, all weeks: <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a>.</li>
-    <li>Web service health: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</a>.</li>
-    <li>Salesforce partial sandbox: <a href="https://factoryai--partial.sandbox.my.salesforce.com">https://factoryai--partial.sandbox.my.salesforce.com</a> (log in through <a href="https://test.salesforce.com">https://test.salesforce.com</a>), app Factory Sales, tab Partner Applications.</li>
-    <li>Two test users already exist in the sandbox: <code>[TEST] Operator</code> (holds the Portal Admin Fields permission set) and <code>[TEST] No Review</code> (no portal permissions). Reach either through Setup, Users, Login As from the admin login in the handoff. No passwords change hands.</li>
-    <li>An email address you own, for the partner side. Nothing here emails anyone else.</li>
-    <li>Path B sign-in links are in the hosted service log: Render, service <code>factory-partner-portal-tool-layer</code>, Logs, search for the address; the line carries <code>"event":"sign_in_email"</code> and the link. Render access is in the handoff. Otherwise use Path A.</li>
-    <li>Reference pages: <a href="https://br5692.github.io/docs/d/factory-progress-20626663/">progress by week with clips</a>, <a href="https://br5692.github.io/docs/d/factory-decisions-log-abe5c745/">decisions log</a>, <a href="https://br5692.github.io/docs/d/factory-week2-how-it-fits-85fe7bc3/">how Week 2 fits together</a>.</li>
-  </ul>
-  <h3>Automated suites on another machine (portability check)</h3>
-  <ul>
-    <li>Read access to <a href="https://github.com/br5692/factory-partner-portal">https://github.com/br5692/factory-partner-portal</a> (private; granted in the handoff).</li>
-    <li>git, Node 22 or newer, pnpm 10.12.4 (<code>corepack enable &amp;&amp; corepack prepare pnpm@10.12.4 --activate</code>). No secrets, no Salesforce tooling: the sandbox suites skip themselves when the Salesforce variables are absent.</li>
-  </ul>
+  <h3>Automated suites on another machine</h3>
+  <p>Read access to <a href="https://github.com/br5692/factory-partner-portal" target="_blank" rel="noopener">https://github.com/br5692/factory-partner-portal</a> from the handoff, git, Node 22 or newer, pnpm 10.12.4. No secrets.</p>
   <div class="tbl-scroll"><pre><code>git clone https://github.com/br5692/factory-partner-portal.git
 cd factory-partner-portal
 pnpm install
@@ -77,14 +58,7 @@ pnpm -r typecheck
 pnpm -r build
 pnpm -r test
 </code></pre></div>
-  <p>Expected on a clean machine: typecheck and build clean; portal 48 tests passed; tool-layer unit tests passed with the contract suites reported as skipped. Send the counts back with the machine and OS.</p>
-  <h3>Things that trip people up</h3>
-  <ul>
-    <li>Rate limits: five sign-in requests per address and twenty per network address per hour. The reply looks the same; the next hour clears it.</li>
-    <li>Path A: before the session, in the sandbox, Setup, Email, Deliverability, set Access level to All email; set it back to System email only afterwards. The hosted service's mail transport (Render environment, <code>MAIL_TRANSPORT</code>) is switched to <code>salesforce</code> for the session and back to <code>log</code> after, as part of the handoff. Only send to addresses you own.</li>
-    <li>The main portal address stays at Week 2 on purpose. Weeks 3 to 5 run on the preview address.</li>
-    <li>Start every test record's name with <code>[TEST]</code> so it is easy to find. Leave them; nothing needs deleting.</li>
-  </ul>
+  <p>Expected: typecheck and build clean, portal 48 passed, service 139 passed with 23 skipped. Send the counts back with the machine and OS.</p>
 </section>
 
 <section class="stream" id="w1">
@@ -93,8 +67,8 @@ pnpm -r test
   <div class="tbl-scroll"><table>
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
-      <tr><td class="n">1.1</td><td>Open the portal address <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a>.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td class="why">Public surface is only what Week 1 promised.</td><td>Browser</td></tr>
-      <tr><td class="n">1.2</td><td>Open <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</a>.</td><td class="exp">ok true, a version, and sf ok.</td><td class="why">Hosted service is up and talks to Salesforce.</td><td>Browser</td></tr>
+      <tr><td class="n">1.1</td><td>Open the portal address <a href="https://factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev</a>.</td><td class="exp">Landing page with Sign in and Apply. No other navigation.</td><td class="why">Public surface is only what Week 1 promised.</td><td>Browser</td></tr>
+      <tr><td class="n">1.2</td><td>Open <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1" target="_blank" rel="noopener">https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</a>.</td><td class="exp">ok true, a version, and sf ok.</td><td class="why">Hosted service is up and talks to Salesforce.</td><td>Browser</td></tr>
       <tr><td class="n">1.3</td><td>Setup, Users: find the integration user.</td><td class="exp">API-only profile; one permission set, Integration Access - Partner Portal; no other sets.</td><td class="why">Integration user has least privilege, nothing extra.</td><td>Salesforce Setup</td></tr>
       <tr><td class="n">1.4</td><td>Setup, Certificate and Key Management.</td><td class="exp">A certificate named for the portal web service. That is the sign-on; there is no password.</td><td class="why">Sign-on is certificate based. No stored password anywhere.</td><td>Salesforce Setup</td></tr>
       <tr><td class="n">1.5</td><td>Setup, Object Manager, Account: filter fields by Portal or Partner.</td><td class="exp">Our fields carry help text. Factory's own fields unchanged.</td><td class="why">Our schema is additive and documented. Theirs untouched.</td><td>Salesforce Setup</td></tr>
@@ -138,7 +112,7 @@ pnpm -r test
       <tr><td class="n">3.5</td><td>Open the same link again in a new tab.</td><td class="exp">Refused: the link has been used or expired.</td><td class="why">A link works exactly once.</td><td>Browser</td></tr>
       <tr><td class="n">3.6</td><td>Request a link, wait 16 minutes, open it.</td><td class="exp">Refused as expired.</td><td class="why">A link dies after fifteen minutes.</td><td>Browser</td></tr>
       <tr><td class="n">3.7</td><td>Browser dev tools, Application, Cookies.</td><td class="exp">One cookie, fp_session, HttpOnly and Secure. Nothing in local storage.</td><td class="why">Session is a secure cookie. Nothing stored client side.</td><td>Browser</td></tr>
-      <tr><td class="n">3.8</td><td>Type the dashboard address <a href="https://factory-partner-portal.pages.dev/dashboard">https://factory-partner-portal.pages.dev/dashboard</a> in a fresh browser that has never visited the site (or after clearing the site's cookies).</td><td class="exp">Sent to Sign in.</td><td class="why">Dashboard is unreachable without a session.</td><td>Browser</td></tr>
+      <tr><td class="n">3.8</td><td>Type the dashboard address <a href="https://factory-partner-portal.pages.dev/dashboard" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/dashboard</a> in a fresh browser that has never visited the site (or after clearing the site's cookies).</td><td class="exp">Sent to Sign in.</td><td class="why">Dashboard is unreachable without a session.</td><td>Browser</td></tr>
       <tr><td class="n">3.9</td><td>In Salesforce set your Account's application status to Inactive, then reload the dashboard.</td><td class="exp">Signed out on the next call. Set it back to Approved after.</td><td class="why">Deactivating a partner ends their access immediately.</td><td>Browser, Salesforce</td></tr>
       <tr><td class="n">3.10</td><td>Sign out. Use the back button.</td><td class="exp">Sign in page, not the dashboard.</td><td class="why">Sign out truly ends the session.</td><td>Browser</td></tr>
       <tr><td class="n">3.11</td><td>Portal Audit Log, newest rows.</td><td class="exp">sign_in_request rows for each request; sign_in Success with your Contact as actor; the refused reuse as a Denied row.</td><td class="why">Every sign-in attempt, good or refused, is audited.</td><td>Salesforce</td></tr>
@@ -148,11 +122,11 @@ pnpm -r test
 
 <section class="stream" id="w3">
   <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 3: Contract signature</h2></div>
-  <p class="sec-sub">You are the approved partner from Week 2, then the operator. Use the preview address <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a>. Ten minutes.</p>
+  <p class="sec-sub">You are the approved partner from Week 2, then the operator. Use the preview address <a href="https://latest.factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://latest.factory-partner-portal.pages.dev</a>. Ten minutes.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
-      <tr><td class="n">4.1</td><td>Sign in on the preview address <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a> with your approved partner. Open the dashboard.</td><td class="exp">A Contract card reads Not sent.</td><td class="why">Partner sees the contract state on the dashboard.</td><td>Browser</td></tr>
+      <tr><td class="n">4.1</td><td>Sign in on the preview address <a href="https://latest.factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://latest.factory-partner-portal.pages.dev</a> with your approved partner. Open the dashboard.</td><td class="exp">A Contract card reads Not sent.</td><td class="why">Partner sees the contract state on the dashboard.</td><td>Browser</td></tr>
       <tr><td class="n">4.2</td><td>Open the Account in Salesforce. Use the Send Partner Contract action without a signing link.</td><td class="exp">Refused: the signing link is required.</td><td class="why">Nothing is sent without a link to sign.</td><td>Salesforce</td></tr>
       <tr><td class="n">4.3</td><td>Send Partner Contract again with any https link.</td><td class="exp">Contract Status Sent, Contract Sent At stamped. Partner Lifecycle Status unchanged.</td><td class="why">Send stamps ours and leaves Factory's field alone.</td><td>Salesforce, Account</td></tr>
       <tr><td class="n">4.4</td><td>Reload the partner dashboard.</td><td class="exp">Contract card reads Sent with a View your contract link to the address you entered.</td><td class="why">Partner sees the link the operator entered.</td><td>Browser</td></tr>
@@ -166,7 +140,7 @@ pnpm -r test
 
 <section class="stream" id="w4">
   <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Week 4: Deal registration</h2></div>
-  <p class="sec-sub">You are the signed partner, then the operator. Preview address <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a>. Fifteen minutes.</p>
+  <p class="sec-sub">You are the signed partner, then the operator. Preview address <a href="https://latest.factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://latest.factory-partner-portal.pages.dev</a>. Fifteen minutes.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
@@ -186,7 +160,7 @@ pnpm -r test
 
 <section class="stream" id="w5">
   <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Week 5: Deal decisions</h2></div>
-  <p class="sec-sub">You are the operator with the decision permission, then the partner. Preview address <a href="https://latest.factory-partner-portal.pages.dev">https://latest.factory-partner-portal.pages.dev</a>. Fifteen minutes.</p>
+  <p class="sec-sub">You are the operator with the decision permission, then the partner. Preview address <a href="https://latest.factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://latest.factory-partner-portal.pages.dev</a>. Fifteen minutes.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
@@ -203,7 +177,7 @@ pnpm -r test
       <tr><td class="n">6.11</td><td>Open the Needs Information registration. Type a reply and Send.</td><td class="exp">The reply appears under the decision with its time. Status stays Needs Information.</td><td class="why">Partner can answer the question in place.</td><td>Browser</td></tr>
       <tr><td class="n">6.12</td><td>Open that Partner Influence record in Salesforce.</td><td class="exp">The reply is on the record with its time; a registration_reply audit row exists.</td><td class="why">The operator sees the partner's answer.</td><td>Salesforce</td></tr>
       <tr><td class="n">6.13</td><td>Setup, Custom Settings, Portal Settings.</td><td class="exp">Decision Manager Copy unchecked, no rows.</td><td class="why">Manager copies are off until Factory turns them on.</td><td>Salesforce Setup</td></tr>
-      <tr><td class="n">6.14</td><td>Open the main address <a href="https://factory-partner-portal.pages.dev">https://factory-partner-portal.pages.dev</a>, not the preview, signed in as the partner.</td><td class="exp">No tiles, no decision block, no reply box. Dashboard as in Week 2.</td><td class="why">Week 5 stays hidden on the public address.</td><td>Browser</td></tr>
+      <tr><td class="n">6.14</td><td>Open the main address <a href="https://factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev</a>, not the preview, signed in as the partner.</td><td class="exp">No tiles, no decision block, no reply box. Dashboard as in Week 2.</td><td class="why">Week 5 stays hidden on the public address.</td><td>Browser</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -215,7 +189,13 @@ pnpm -r test
     <li>Leave the fictional Accounts in the sandbox; they are harmless.</li>
     <li>Send findings back as step number plus what you saw. Each becomes a fix with a test before Tuesday.</li>
   </ul>
-  <footer><p class="fmono">Written 2026-09-17 · 61 checks · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+    <h3>Notes</h3>
+  <ul>
+    <li>Rate limits: five sign-in requests per address and twenty per network address per hour. The reply looks the same; the next hour clears it.</li>
+    <li>The main address stays at Week 2 on purpose; Weeks 3 to 5 run on the preview address.</li>
+    <li>Start every test record's name with <code>[TEST]</code>. Leave them; nothing needs deleting.</li>
+  </ul>
+<footer><p class="fmono">Written 2026-09-17 · 61 checks · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
 </section>
 </main>
 </body>
