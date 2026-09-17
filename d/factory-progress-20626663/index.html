@@ -28,7 +28,7 @@
   h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,3.6vw,2rem);letter-spacing:-.01em;margin:0;line-height:1.1;text-wrap:balance}
   .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 18px;max-width:70ch}
   .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid transparent;white-space:nowrap}.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
-  .pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}.pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}.pill.pending{color:var(--rose);background:var(--rose-wash);border-color:color-mix(in srgb,var(--rose) 30%,transparent)}.pill.later{color:var(--ink-faint);background:var(--surface-2);border-color:var(--line)}
+  .pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}.pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}.pill.pending{color:var(--rose);background:var(--rose-wash);border-color:color-mix(in srgb,var(--rose) 30%,transparent)}.pill.ready{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}.wk .pill{white-space:normal;text-align:left;line-height:1.25;max-width:100%;font-size:10px;letter-spacing:.03em;padding:3px 8px;gap:5px}.pill.later{color:var(--ink-faint);background:var(--surface-2);border-color:var(--line)}
   h3{font-weight:700;font-size:1.02rem;margin:26px 0 8px}
   p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
   .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
@@ -50,7 +50,7 @@
   <div class="meta-grid">
     <div class="meta-cell"><div class="k">Plan</div><div class="v">Workstreams 1 to 3, seven weeks</div></div>
     <div class="meta-cell"><div class="k">Calendar</div><div class="v">Week 1 of 7</div></div>
-    <div class="meta-cell"><div class="k">Built and verified</div><div class="v">Weeks 1 to 4</div></div>
+    <div class="meta-cell"><div class="k">Built, ready to test</div><div class="v">Weeks 1 to 4</div></div>
     <div class="meta-cell"><div class="k">Next</div><div class="v">Week 5, spec locked</div></div>
     <div class="meta-cell"><div class="k">Updated</div><div class="v">2026-09-17</div></div>
   </div>
@@ -63,22 +63,22 @@
 
 <section class="stream" id="glance">
   <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">At a glance</h2></div>
-  <p class="sec-sub">The build runs ahead of the plan calendar. Four weeks of scope are built and verified in the sandbox and on the hosted stack. Week 5 starts after a short list of review fixes.</p>
+  <p class="sec-sub">The build runs ahead of the plan calendar. Four weeks of scope are built and ready for the human test pass. Nothing is reported as verified until that pass is run end to end. Week 5 starts after a short list of review fixes.</p>
   <div class="weeks">
-    <div class="wk"><div class="n">Week 1</div><div class="t">Foundation</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 2</div><div class="t">Registration and sign-in</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 3</div><div class="t">Contract signature</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill sandbox">spec locked, in build</span></div>
+    <div class="wk"><div class="n">Week 1</div><div class="t">Foundation</div><span class="pill ready">ready to test</span></div>
+    <div class="wk"><div class="n">Week 2</div><div class="t">Registration and sign-in</div><span class="pill ready">ready to test</span></div>
+    <div class="wk"><div class="n">Week 3</div><div class="t">Contract signature</div><span class="pill ready">ready to test</span></div>
+    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill ready">ready to test</span></div>
+    <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill sandbox">spec locked</span></div>
     <div class="wk"><div class="n">Week 6</div><div class="t">Dashboard tiles, UAT starts</div><span class="pill later">later</span></div>
     <div class="wk"><div class="n">Week 7</div><div class="t">Launch</div><span class="pill later">later</span></div>
   </div>
   <div class="callout"><strong>Related pages.</strong> <a href="https://br5692.github.io/docs/d/factory-test-script-b810a522/">Manual test script, Weeks 1 and 2</a> (the end-to-end pass to run before any status is reported) · <a href="https://br5692.github.io/docs/d/factory-week2-how-it-fits-85fe7bc3/">How Week 2 fits together</a> · <a href="https://br5692.github.io/docs/d/factory-decisions-log-abe5c745/">Decisions log</a> · <a href="https://br5692.github.io/docs/d/factory-demos-5bbaa687/">Week 2 demo</a></div>
-  <div class="callout"><strong>How to read "verified".</strong> Each week closes only when every requirement is proven three ways: automated tests against the sandbox, a walk-through of the real path on the hosted stack, and a review of a clean copy of the code. A row marked verified has all three.</div>
+  <div class="callout"><strong>How to read the badges.</strong> <span class="pill ready">ready to test</span> means the week is built, its automated tests pass against the sandbox, the real path was walked on the hosted stack, and a clean copy of the code was reviewed. <span class="pill live">verified</span> means a person has also run the <a href="https://br5692.github.io/docs/d/factory-test-script-b810a522/">manual test script</a> end to end on the hosted stack and every step passed. No week carries verified until that pass is done. <span class="pill sandbox">spec locked</span> means the plan for the week is agreed and the build has not started.</div>
 </section>
 
 <section class="stream" id="w1">
-  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Week 1: Foundation</h2><span class="pill live">verified 2026-09-15</span></div>
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Week 1: Foundation</h2><span class="pill ready">built 2026-09-15, ready to test</span></div>
   <p class="sec-sub">Workstream 1, Portal Infrastructure. The parts every later week stands on: hosting, the Salesforce data model, one integration user with certificate sign-on, and the web service that every call goes through.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
@@ -99,7 +99,7 @@
 </section>
 
 <section class="stream" id="w2">
-  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Week 2: Registration and sign-in</h2><span class="pill live">verified 2026-09-16</span></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Week 2: Registration and sign-in</h2><span class="pill ready">built 2026-09-16, ready to test</span></div>
   <p class="sec-sub">Workstream 2, Partner Registration, and the sign-in and dashboard lines of Workstream 1. A partner applies, Factory reviews and approves inside Salesforce, the invite goes out, the partner signs in with a link.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
@@ -125,7 +125,7 @@
 </section>
 
 <section class="stream" id="w3">
-  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Week 3: Contract signature</h2><span class="pill live">verified 2026-09-16</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Week 3: Contract signature</h2><span class="pill ready">built 2026-09-16, ready to test</span></div>
   <p class="sec-sub">Workstream 2, the partner contract line. Built so the e-sign tool can be plugged in later without touching anything else.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
@@ -143,7 +143,7 @@
 </section>
 
 <section class="stream" id="w4">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill live">verified 2026-09-17</span></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill ready">built 2026-09-17, ready to test</span></div>
   <p class="sec-sub">Workstream 3, the registration half. A partner registers a deal, the customer is matched or created, and the registration waits as Pending for the decision work in Week 5.</p>
   <div class="tbl-scroll"><table>
     <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>State</th></tr></thead>
@@ -188,7 +188,7 @@
     <li><strong>Week 5, deal decisions.</strong> Approve, deny and needs-information inside Salesforce, decision emails, dashboard tiles, and the multi-partner rules enforced at decision time. Spec ready.</li>
     <li><strong>Walk-through.</strong> Weeks 1 and 2 live, with Week 3 and 4 shown as built if wanted.</li>
   </ul>
-  <footer><p class="fmono">Updated 2026-09-17 · Weeks 1 to 4 verified, Week 5 locked</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+  <footer><p class="fmono">Updated 2026-09-17 · Weeks 1 to 4 built and ready to test, Week 5 spec locked</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
 </section>
 </main>
 <script>
