@@ -54,7 +54,7 @@
   <p class="sec-sub">Two kinds of testing, two short lists. Nothing here sets up a development environment; that lives in the repo's runbook and is not needed to test.</p>
   <h3>Manual pass (this script)</h3>
   <ul>
-    <li>Nothing to install. A browser and a phone.</li>
+    <li>Nothing to install. A browser.</li>
     <li>Portal, Week 2 build: <code>https://factory-partner-portal.pages.dev</code>. Portal, all weeks: <code>https://latest.factory-partner-portal.pages.dev</code>.</li>
     <li>Web service health: <code>https://factory-partner-portal-tool-layer.onrender.com/health?deep=1</code>.</li>
     <li>Salesforce partial sandbox: <code>https://factoryai--partial.sandbox.my.salesforce.com</code> (log in through <code>https://test.salesforce.com</code>), app Factory Sales, tab Partner Applications.</li>
@@ -140,7 +140,6 @@ pnpm -r test
       <tr><td class="n">3.9</td><td>In Salesforce set your Account's application status to Inactive, then reload the dashboard.</td><td class="exp">Signed out on the next call. Set it back to Approved after.</td><td class="why">Deactivating a partner ends their access immediately.</td><td>Browser, Salesforce</td></tr>
       <tr><td class="n">3.10</td><td>Sign out. Use the back button.</td><td class="exp">Sign in page, not the dashboard.</td><td class="why">Sign out truly ends the session.</td><td>Browser</td></tr>
       <tr><td class="n">3.11</td><td>Portal Audit Log, newest rows.</td><td class="exp">sign_in_request rows for each request; sign_in Success with your Contact as actor; the refused reuse as a Denied row.</td><td class="why">Every sign-in attempt, good or refused, is audited.</td><td>Salesforce</td></tr>
-      <tr><td class="n">3.12</td><td>On a phone, open the landing page, apply page and sign-in page.</td><td class="exp">Readable at phone width, nothing cut off.</td><td class="why">Partners can apply and sign in from a phone.</td><td>Phone</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -214,7 +213,7 @@ pnpm -r test
     <li>Leave the fictional Accounts in the sandbox; they are harmless.</li>
     <li>Send findings back as step number plus what you saw. Each becomes a fix with a test before Tuesday.</li>
   </ul>
-  <footer><p class="fmono">Written 2026-09-17 · 62 checks · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+  <footer><p class="fmono">Written 2026-09-17 · 61 checks · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
 </section>
 </main>
 </body>
