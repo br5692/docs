@@ -1,0 +1,197 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Partner Portal, Week 6 spec</title><style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:40px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;display:flex;align-items:center;gap:10px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,3rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}h1.title span{color:var(--accent-2)}
+  .lede{font-size:1.02rem;color:var(--ink-soft);max-width:64ch;margin:0}
+  section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);letter-spacing:-.01em;margin:0;line-height:1.1}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 14px;max-width:70ch}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul,ol{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:9px 11px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);white-space:nowrap}td.exp{color:var(--ink)}td.chk{min-width:120px;border-left:1px dashed var(--line)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
+  footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
+</style>
+<style>.spec h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);margin:40px 0 10px}.spec h3{margin:26px 0 8px}.spec table{width:100%;border-collapse:collapse;font-size:.9rem;margin:10px 0 18px}.spec th,.spec td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left}.spec th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}.spec code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);padding:1px 5px;border-radius:4px}.spec ol,.spec ul{padding-left:22px}.spec li{margin:6px 0}.spec p{max-width:72ch}.spec .tbl-scroll{overflow-x:auto}</style></head><body>
+<header class="mast"><div class="wrap mast-inner"><p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Week 6 build spec</p><h1 class="title">Week 6, <span>for review</span></h1><p class="lede">Rev 2, drafted by the planner and reviewed once by the builder. Not locked: nothing in it is built until you say so. Read the context, the swap points and section 10, then say lock or change.</p></div></header>
+<main class="wrap"><section class="stream spec" style="border-bottom:none"><h1 id="partner-portal-mvp-week-6-build-spec-dashboard-tiles-operator-set-end-to-end-tests-uat-start">Partner Portal MVP. Week 6 build spec: Dashboard tiles, operator set, end-to-end tests, UAT start</h1>
+<p>Rev 2, 2026-09-17 (rev 1 reviewed by Droid; W6-R1 to W6-R7 answered as W6-1 to W6-7). NOT LOCKED: awaiting Blair's review. No build until locked. Planner: Claude (this machine). Builder: Droid. Same protocol as Weeks 2 to 5.</p>
+<h2 id="1-context">1. Context</h2>
+<p>Plan lines covered (Section 4, WS1 Partner Dashboard and WS5 QA, UAT, Deploy; calendar Week 6, Oct 19 to 23):</p>
+<div class="tbl-scroll"><table>
+<thead>
+<tr>
+<th>Plan line</th>
+<th>Hours</th>
+<th>Board line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Partner Dashboard: total commission made</td>
+<td>2</td>
+<td>Partner Dashboard (7): Total commission made 2</td>
+</tr>
+<tr>
+<td>Partner Dashboard: close rate</td>
+<td>2</td>
+<td>Partner Dashboard (7): Close rate 2</td>
+</tr>
+<tr>
+<td>Factory operator permission set and list views</td>
+<td>3 to 4</td>
+<td>Factory operator permission set + list views (4), the deal half</td>
+</tr>
+<tr>
+<td>End-to-end tests</td>
+<td>4</td>
+<td>QA, UAT, Deployment (18): End-to-end tests 4</td>
+</tr>
+<tr>
+<td>UAT support (starts)</td>
+<td>15</td>
+<td>QA, UAT, Deployment (18): UAT support two rounds 10</td>
+</tr>
+</tbody>
+</table></div>
+<p>The plan's Week 6 row also names Droid pre-screening and scoring. That is Workstream 4, not approved (OQ-7 covers WS5 the same way); it stays out (section 2). Week 5 already delivered four tiles (approved count, approved value, awaiting decision, approval rate); this week adds the two the plan names and a dedicated operator permission set.</p>
+<p>Plan Section 5 assumptions that shape this spec: "commission" is defined by Factory before the tiles are built; until then the tiles show attributed revenue (Opportunity amount on approved, closed-won registrations, times the allocation split), and a commission rate on the partner Account converts that to commission when Factory sets it. Both fields already exist from Week 4 (<code>Commission_Rate__c</code> on Account, <code>Allocation_Split__c</code> on the junction).</p>
+<h2 id="2-out-of-scope-this-week">2. Out of scope this week</h2>
+<ul>
+<li>Droid pre-screening and scoring (WS4, not approved). <code>attach_agent_review</code> stays a reserved name.</li>
+<li>Rolling commission report, split override, resources area, org profile (add-ons).</li>
+<li>Security review, production deploy, hypercare (Week 7, WS5 ruling pending, OQ-7).</li>
+<li>Any change to Factory metadata beyond W4-12 (add, never remove or change).</li>
+<li>Copy (placeholders, <code>COPY_TODO.md</code>).</li>
+</ul>
+<h2 id="3-guardrails">3. Guardrails</h2>
+<p>Rules 1 to 13 from <code>SPEC_WEEK2.md</code> section 3, the code-comment rule from <code>SPEC_WEEK3.md</code> section 10, W2-23, W2-24 (archives never deleted), W3-5, W3-7, W4-1, W4-2, W4-12, W4-13 (test teardown of your own <code>[TEST]</code> rows only; never remove anything else). UAT records are real people's test data: never delete a UAT participant's records; mark them <code>[UAT]</code> and leave them.</p>
+<h2 id="4-swap-points">4. Swap points</h2>
+<div class="tbl-scroll"><table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Unknown</th>
+<th>What ships now</th>
+<th>What swaps later</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SWAP-15</td>
+<td>Commission definition (<code>dec-commission-definition</code>)</td>
+<td>Tile "Attributed revenue": sum of <code>Influenced_Opportunity__r.Amount</code> × <code>Allocation_Split__c</code> over the caller's Approved registrations whose Opportunity is Closed Won. Label swaps to "Commission earned" and the value is multiplied by <code>Commission_Rate__c</code> when the partner Account carries a rate; null rate shows attributed revenue with the placeholder label.</td>
+<td>Factory's own formula, one function</td>
+<td><code>tool-layer/src/rules/commission.ts</code></td>
+</tr>
+<tr>
+<td>SWAP-16</td>
+<td>Close rate definition</td>
+<td>Closed Won approved registrations ÷ approved registrations whose Opportunity is closed (won or lost), trailing 365 days by close date; null when the denominator is zero</td>
+<td>Factory's window and denominator</td>
+<td>same file</td>
+</tr>
+<tr>
+<td>SWAP-17</td>
+<td>UAT participants (OQ-5)</td>
+<td><code>docs/UAT_PLAN.md</code> carries roles (two partner operators, one AE, one admin) with names blank; the <code>[UAT]</code> partner Accounts are created by the operator through the pre-approved path</td>
+<td>Factory's names by 10/10</td>
+<td><code>docs/UAT_PLAN.md</code></td>
+</tr>
+<tr>
+<td>SWAP-18</td>
+<td>Acceptance criteria (OQ-5)</td>
+<td>Every row of the hosted manual test script passes on two consecutive days with no P1 finding open; P2 findings listed with owners</td>
+<td>Factory's criteria</td>
+<td>same file</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="5-deliverables">5. Deliverables</h2>
+<h3 id="d1-salesforce-plan-operator-permission-set-and-list-views-4">D1. Salesforce (plan: operator permission set and list views 4)</h3>
+<ol type="1">
+<li>Permission set <code>Portal_Operator</code> (ours, new): read on our Account, Contact and junction fields; edit on the decision fields; the custom permissions <code>Portal_Review_List</code> and <code>Portal_Deal_Decision</code>; the <code>Partner_Applications</code> tab and app page; Run Flows for the two screen flows and the <code>Apply_Registration_Decision</code> subflow. List views carry no permission-set artifact; they stay visible to all internal users as today (W6-6). <code>Portal_Admin_Fields</code> keeps what it has (W5 ruling: it granted the AE permission for the demo) but no new grant lands there. Profiles untouched.</li>
+<li>List views (ours) on <code>Partner_Influence__c</code>: <code>Portal_Registrations_Approved_Open</code> (Approved, Opportunity not closed; columns Deal Name, Partner Account, Customer Account, Opportunity Stage, Estimated Value, Expected Close), <code>Portal_Registrations_Won</code> (Approved, Closed Won; columns add Amount and Allocation Split). Both as list cards on the app page under <code>Portal_Review_List</code>, after the decided card.</li>
+<li>FLS: integration set gets read on <code>Opportunity.IsClosed</code>, <code>Opportunity.IsWon</code>, <code>Opportunity.CloseDate</code> (Amount and <code>Account.Commission_Rate__c</code> are already granted; describe-proven). The Decided_* fields stay read-only for the integration user (W6-1).</li>
+<li>Autolaunched subflow <code>Apply_Registration_Decision</code> (ours): input registration id, decision, note; runs the conflict check, writes <code>Registration_Status__c</code>, <code>Decided_By__c</code> (running user), <code>Decided_At__c</code>, <code>Decision_Note__c</code>, one <code>registration_decision</code> audit row. <code>Partner_Registration_Decision</code> (Week 5 screen flow) calls it for the write and keeps its screens; the end-to-end suite calls it through the Flow REST API as the integration user (W6-1, option c). If the junction list-view filter on Opportunity closed state does not deploy, add an additive formula checkbox <code>Opportunity_Closed__c</code> on the junction (W4-12) and filter on it.</li>
+</ol>
+<h3 id="d2-web-service-plan-tiles-4-end-to-end-tests-4">D2. Web service (plan: tiles 4; end-to-end tests 4)</h3>
+<ol type="1">
+<li><code>get_dashboard_kpis</code> adds <code>attributedRevenue</code>, <code>commission</code> (null until the rate is set), <code>commissionRate</code> (null or the rate) and <code>closeRate365</code> (null when undefined), computed by <code>tool-layer/src/rules/commission.ts</code> from one query over the caller's Approved junctions with their Opportunity fields. <code>Allocation_Split__c</code> and <code>Commission_Rate__c</code> are percent units, divide by 100. Existing four values unchanged. <code>get_registration</code> gains <code>opportunity: {stage, isClosed, isWon, closeDate}</code> (W6-2).</li>
+<li><code>create_deal_registration</code> stamps <code>Partner_Tier__c</code> from the partner Account's <code>Account_Tier__c</code> when it is Tier 1, 2 or 3; blank otherwise (W6-7, OQ-3). Integration set gets read on <code>Account.Account_Tier__c</code> (D1.3).</li>
+<li>End-to-end contract test <code>tool-layer/src/e2e/partner-journey.test.ts</code>: one <code>[TEST]</code> partner walks apply → operator approve (quick action) → sign-in link from the log transport → contract sent and signed (quick actions) → register a deal → operator decision through the <code>Apply_Registration_Decision</code> subflow via the Flow REST API as the integration user (W6-1) → dashboard tiles → information reply. Every audit row asserted by action and outcome. Teardown leaves zero <code>[TEST]</code> rows across Account, Contact, Opportunity, Partner_Influence__c, Portal_Audit_Log__c (W4-13). Runs in the contract suite only when <code>SF_*</code> env is present.</li>
+<li>Health pinger for UAT: a Cloudflare Worker with a five-minute Cron Trigger (<code>pinger/</code> directory, <code>wrangler.toml</code>, one fetch of <code>GET /health</code>) on the same Cloudflare account as the portal. Committed but not deployed; the planner runs the deploy before UAT and removes the trigger after (W6-4). No secret needed.</li>
+<li>Permission table unchanged. <code>get_dashboard_kpis</code> stays partner-only.</li>
+</ol>
+<h3 id="d3-portal-plan-two-tiles-4">D3. Portal (plan: two tiles 4)</h3>
+<ol type="1">
+<li>Two tiles added to the KPI section: attributed revenue or commission (label follows <code>commissionRate</code>), close rate. Empty states: "No closed deals yet." for both.</li>
+<li>Registration detail shows Opportunity stage and, when closed, won or lost with the close date (read-only, from the same query).</li>
+<li>Tests: tile rendering with and without a rate, close rate null state, stage line.</li>
+</ol>
+<h3 id="d4-uat-plan">D4. UAT plan</h3>
+<p><code>docs/UAT_PLAN.md</code> (ours): purpose, participants by role (names blank, SWAP-17), environment (preview address at all weeks; the main address stays at Week 2 until Factory's go), the schedule (two rounds, one week apart), the script (the planner's hosted manual test script, 62 checks, Weeks 1 to 5: <code>https://br5692.github.io/docs/d/factory-test-script-b810a522/</code>, linked, not copied; W6-5), how findings are recorded (the Notes column, copied into <code>REVIEW_LOG.md</code> as UAT-1, UAT-2 with owner and severity), acceptance criteria (SWAP-18), and what happens after (Week 7 fixes list). No participant's records are removed.</p>
+<h3 id="d5-evidence">D5. Evidence</h3>
+<p>Unit tests for the two rules with fixture arithmetic; D2.2 end-to-end suite green on the sandbox; portal tests of D3.3; a checkpoint on the hosted stack (section 7 step 6).</p>
+<h3 id="d6-week-toggle">D6. Week toggle</h3>
+<p>Portal surface <code>kpis_extended</code> = Week 6 (the two tiles and the stage line). Service: the four new KPI fields and the <code>opportunity</code> block on <code>get_registration</code> are returned only when the caller's week is 6 or later (the actions themselves stay Week 5) (W6-3). The list views and permission set are not gated.</p>
+<h2 id="6-environment-variables">6. Environment variables</h2>
+<div class="tbl-scroll"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Where</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none new</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The pinger workflow carries the hosted health address in plain text; it is public already.</p>
+<h2 id="7-order-of-work">7. Order of work</h2>
+<ol type="1">
+<li>Review pass on this spec; questions to the heartbeat; planner answers; rev locked.</li>
+<li>D1.1 permission set, D1.3 FLS, D1.4 subflow and the screen flow calling it; deploy; describe-proven with a <code>[TEST]</code> operator holding only <code>Portal_Operator</code>; the three outcomes re-proven through the screen flow.</li>
+<li>D1.2 list views and app page cards; deploy; proven with <code>[TEST]</code> junctions in each state.</li>
+<li>D2.1 rules and KPI fields; unit tests; contract tests with three <code>[TEST]</code> junctions (one won, one lost, one open) and a rate set then cleared.</li>
+<li>D3 tiles and stage line; tests; week map.</li>
+<li>D2.2 end-to-end suite; <strong>checkpoint on the hosted stack: the suite runs against the hosted service once by the planner; the <code>[TEST]</code> partner's dashboard on the preview address shows six tiles with the fixture arithmetic; zero <code>[TEST]</code> rows after teardown.</strong></li>
+<li>D2.3 pinger worker committed, not deployed (planner deploys), D4 UAT plan written.</li>
+<li>Review loop until two clean passes; <code>REVIEW_LOG.md</code> close-out; <code>SYSTEM_OVERVIEW.md</code> updated.</li>
+</ol>
+<h2 id="8-definition-of-done-every-line-is-a-command-with-an-expected-result">8. Definition of done. Every line is a command with an expected result.</h2>
+<ol type="1">
+<li>Clean clone: install, build, test green; contract tests against the sandbox leave zero <code>[TEST]</code> rows.</li>
+<li><code>[TEST]</code> operator with only <code>Portal_Operator</code>: sees the tab, both screen flows, all list cards; a <code>[TEST]</code> user without it sees none of them.</li>
+<li>Three <code>[TEST]</code> junctions (won $100,000 split 100%, lost, open) with no rate → <code>attributedRevenue</code> 100000, <code>commission</code> null, <code>closeRate365</code> 0.5; with <code>Commission_Rate__c</code> 10% → <code>commission</code> 10000; audit row per call.</li>
+<li>The two list views return the won and the open rows respectively, columns as stated.</li>
+<li>End-to-end suite green; every audit action in the journey asserted once.</li>
+<li>Six tiles render; screenshots in the heartbeat; main address still shows Week 2.</li>
+<li><code>docs/UAT_PLAN.md</code> present with every section of D4; participant names blank.</li>
+<li>Every new file carries the header comment; <code>SYSTEM_OVERVIEW.md</code> updated for Week 6.</li>
+</ol>
+<h2 id="9-copy-rules">9. Copy rules</h2>
+<p>As <code>SPEC_WEEK2.md</code> section 9. Tile labels are placeholders until Factory names the commission definition; the empty state is one sentence.</p>
+<h2 id="10-open-rulings-for-blair-and-questions-for-factory">10. Open rulings for Blair and questions for Factory</h2>
+<ul>
+<li>Factory: commission definition and rate source (SWAP-15, <code>dec-commission-definition</code>); close-rate window (SWAP-16); UAT participants and acceptance criteria (OQ-5, SWAP-17, SWAP-18); whether WS4 scoring and WS5 are approved (OQ-7).</li>
+<li>Blair: deploy the pinger before UAT (planner action); whether UAT runs on the preview address at all weeks or the main address is moved to Week 5 for UAT; who from Domestique sits in the UAT sessions.</li>
+</ul>
+<h2 id="11-report-format">11. Report format</h2>
+<p>As <code>SPEC_WEEK2.md</code> section 10. Read <code>docs/DECISIONS.md</code> first; W2-15, W2-23, W2-24, W3-5, W3-7, W4-1, W4-2, W4-12, W4-13, W5-1 to W5-8 apply.</p>
+<footer><p class="fmono">Rev 2 · 2026-09-17 · awaiting Blair's review</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer></section></main></body></html>
