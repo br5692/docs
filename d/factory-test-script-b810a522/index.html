@@ -62,7 +62,8 @@
   </ul>
   <h3>Prerequisites</h3>
   <ul>
-    <li>git, Node 22 or newer, pnpm 10.12.4 (<code>corepack enable &amp;&amp; corepack prepare pnpm@10.12.4 --activate</code>), Salesforce CLI (<code>npm i -g @salesforce/cli</code>).</li>
+    <li>To run the unit suites, typecheck and build: git, Node 22 or newer, pnpm 10.12.4 (<code>corepack enable &amp;&amp; corepack prepare pnpm@10.12.4 --activate</code>). Nothing else, and no secrets: without the Salesforce variables the contract suites skip themselves.</li>
+    <li>Only for the sandbox contract suites and deploys: the Salesforce CLI (<code>npm i -g @salesforce/cli</code>) and the <code>.env</code> below.</li>
     <li>A Salesforce sandbox user with the Portal Admin Fields permission set for operator steps, and a second user without it for the permission checks. Ask for both.</li>
     <li>The <code>.env</code> file. It holds the sandbox connection (<code>SF_LOGIN_URL</code>, <code>SF_INSTANCE_URL</code>, <code>SF_CLIENT_ID</code>, <code>SF_USERNAME</code>, <code>SF_JWT_PRIVATE_KEY</code>, <code>SF_API_VERSION</code>), the bearer keys (<code>TOOL_LAYER_API_KEYS</code>), <code>SESSION_SECRET</code>, <code>PORTAL_URL</code> and the mail and rate-limit settings. It is never in the repo or in this page; ask for it and keep it out of git. <code>.env.example</code> in the repo lists every name with a comment.</li>
   </ul>
@@ -70,9 +71,10 @@
   <div class="tbl-scroll"><pre><code>git clone https://github.com/br5692/factory-partner-portal.git
 cd factory-partner-portal
 pnpm install
-cp /path/to/.env .env            # the file you were given, never commit it
-set -a; . ./.env; set +a
+cp /path/to/.env .env            # only if you were given one; unit tests need none. Never commit it
+set -a; . ./.env; set +a         # skip when there is no .env
 
+# Only if you have the .env and want the sandbox suites. Skip for unit tests.
 # Salesforce CLI login to the sandbox (opens a browser; pick the alias below)
 sf org login web -a factory-partial -r https://test.salesforce.com
 # The sf CLI breaks when SF_API_VERSION is exported; run it with the variable unset:
