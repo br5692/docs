@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Partner Portal, how it fits together</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--rose:#a3323f;--rose-wash:#f3e0e1;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}
+  .mast-inner{padding:44px 0 32px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 14px;text-wrap:balance}h1.title span{color:var(--accent-2)}
+  .lede{font-size:1.06rem;color:var(--ink-soft);max-width:62ch;margin:0 0 26px}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .meta-cell{background:var(--surface);padding:14px 16px}.meta-cell .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}.meta-cell .v{font-size:.92rem;font-weight:600}.meta-cell .v.mono{font-family:var(--mono);font-weight:500;font-size:.82rem}
+  nav.toc{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .toc-inner{display:flex;gap:4px;flex-wrap:wrap;padding:10px 0;align-items:center}
+  .toc a{font-size:.82rem;color:var(--ink-soft);text-decoration:none;padding:6px 12px;border-radius:999px;font-weight:500;white-space:nowrap}.toc a:hover{background:var(--surface-2);color:var(--ink)}.toc a .num{font-family:var(--mono);font-size:.72rem;color:var(--accent-2);margin-right:6px}
+  .toc .spacer{flex:1}#themeToggle{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+  section.stream{padding:48px 0 12px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,3.6vw,2rem);letter-spacing:-.01em;margin:0;line-height:1.1;text-wrap:balance}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 20px;max-width:66ch}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid transparent;white-space:nowrap}.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}.pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+  h3{font-weight:700;font-size:1.06rem;margin:30px 0 10px;display:flex;align-items:center;gap:9px}h3 .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-weight:500}
+  p{margin:0 0 14px}p,li{color:var(--ink-soft)}ul{padding-left:20px}li{margin-bottom:6px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:16px 0 8px;padding:12px;overflow-x:auto}
+  .fig svg{display:block;width:100%;height:auto;max-width:100%}
+  .cap{color:var(--ink-faint);font-size:.86rem;margin:0 0 18px;padding:0 4px}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:10px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:10px 12px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}td.m{font-family:var(--mono);font-size:.82rem;white-space:nowrap}
+  .y{color:var(--accent-2);font-weight:700}.n{color:var(--ink-faint)}
+  .src{display:block;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--ink);margin:6px 0}.src .gid{font-family:var(--mono);font-size:11px;color:var(--accent-2);margin-right:8px}.src:hover{border-color:var(--accent)}
+  footer{padding:36px 0 56px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  /* svg tokens */
+  svg text{font-family:var(--sans);font-size:13px;fill:var(--ink)}svg .mono{font-family:var(--mono);font-size:11.5px;fill:var(--ink-soft)}svg .t{font-weight:700;font-size:14px}svg .s{fill:var(--ink-faint);font-size:11.5px}
+  svg .box{fill:var(--surface-2);stroke:var(--line);stroke-width:1.2}svg .box.acc{fill:var(--accent-wash);stroke:var(--accent)}svg .box.amb{fill:var(--amber-wash);stroke:var(--amber)}svg .box.paper{fill:var(--surface);stroke:var(--line)}
+  svg .ln{stroke:var(--ink-soft);stroke-width:1.4;fill:none}svg .ln.acc{stroke:var(--accent)}svg .ln.dash{stroke-dasharray:5 4}svg .lane{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Weeks 1 and 2</p>
+  <h1 class="title">How the pieces <span>fit together</span></h1>
+  <p class="lede">The foundation and the registration loop as built: three parts, one pipeline for every call, and the two stories a partner and a Factory operator live through. Weeks 3 and 4 are named where a boundary is visible and otherwise left out.</p>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="k">Code</div><div class="v mono">br5692/factory-partner-portal</div></div>
+    <div class="meta-cell"><div class="k">Portal</div><div class="v mono">factory-partner-portal.pages.dev</div></div>
+    <div class="meta-cell"><div class="k">Web service</div><div class="v mono">…tool-layer.onrender.com</div></div>
+    <div class="meta-cell"><div class="k">Salesforce</div><div class="v">partial sandbox</div></div>
+    <div class="meta-cell"><div class="k">Compiled</div><div class="v">2026-09-16</div></div>
+  </div>
+</div></header>
+<nav class="toc"><div class="wrap toc-inner">
+  <a href="#s1"><span class="num">01</span>Three parts</a><a href="#s2"><span class="num">02</span>Every call</a><a href="#s3"><span class="num">03</span>Apply to approved</a><a href="#s4"><span class="num">04</span>Sign in</a><a href="#s5"><span class="num">05</span>Who may call what</a><a href="#s6"><span class="num">06</span>In Salesforce</a><a href="#s7"><span class="num">07</span>Hosting</a><a href="#s8"><span class="num">08</span>Sources</a>
+  <span class="spacer"></span><button id="themeToggle" type="button">theme</button>
+</div></nav>
+<main class="wrap">
+
+<section class="stream" id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Three parts, one direction</h2><span class="pill live">built · verified 2026-09-16</span></div>
+  <p class="sec-sub">The browser talks only to the portal and the web service. Only the web service talks to Salesforce, always as one integration user. Nothing in the portal or the browser holds business data.</p>
+  <div class="fig"><svg viewBox="0 0 1000 400" role="img" aria-label="System map">
+    <!-- lanes -->
+    <rect class="box paper" x="20" y="60" width="200" height="300" rx="12"/><text class="t" x="120" y="88" text-anchor="middle">People and agents</text>
+    <rect class="box" x="40" y="110" width="160" height="52" rx="8"/><text x="120" y="132" text-anchor="middle">Partner</text><text class="s" x="120" y="149" text-anchor="middle">browser, any device</text>
+    <rect class="box" x="40" y="180" width="160" height="52" rx="8"/><text x="120" y="202" text-anchor="middle">Factory operator</text><text class="s" x="120" y="219" text-anchor="middle">Salesforce user</text>
+    <rect class="box" x="40" y="250" width="160" height="52" rx="8"/><text x="120" y="272" text-anchor="middle">Agent (Droid)</text><text class="s" x="120" y="289" text-anchor="middle">MCP client, bearer key</text>
+    <!-- portal -->
+    <rect class="box acc" x="270" y="100" width="190" height="72" rx="10"/><text class="t" x="365" y="128" text-anchor="middle">Portal</text><text class="s" x="365" y="146" text-anchor="middle">React, static files</text><text class="s" x="365" y="161" text-anchor="middle">Cloudflare Pages</text>
+    <!-- web service -->
+    <rect class="box acc" x="520" y="90" width="220" height="220" rx="10"/><text class="t" x="630" y="118" text-anchor="middle">Web service</text><text class="s" x="630" y="136" text-anchor="middle">Node, Hono · Render</text>
+    <rect class="box paper" x="540" y="152" width="180" height="30" rx="6"/><text class="mono" x="630" y="172" text-anchor="middle">identity + permissions</text>
+    <rect class="box paper" x="540" y="190" width="180" height="30" rx="6"/><text class="mono" x="630" y="210" text-anchor="middle">actions (HTTP + MCP)</text>
+    <rect class="box paper" x="540" y="228" width="180" height="30" rx="6"/><text class="mono" x="630" y="248" text-anchor="middle">Salesforce client, JWT</text>
+    <rect class="box paper" x="540" y="266" width="180" height="30" rx="6"/><text class="mono" x="630" y="286" text-anchor="middle">audit writer</text>
+    <!-- salesforce -->
+    <rect class="box amb" x="800" y="60" width="180" height="300" rx="12"/><text class="t" x="890" y="88" text-anchor="middle">Salesforce</text><text class="s" x="890" y="105" text-anchor="middle">partial sandbox</text>
+    <rect class="box paper" x="815" y="120" width="150" height="40" rx="6"/><text x="890" y="137" text-anchor="middle">Account, Contact</text><text class="s" x="890" y="152" text-anchor="middle">partner records</text>
+    <rect class="box paper" x="815" y="170" width="150" height="40" rx="6"/><text x="890" y="187" text-anchor="middle">Portal Audit Log</text><text class="s" x="890" y="202" text-anchor="middle">one row per call</text>
+    <rect class="box paper" x="815" y="220" width="150" height="40" rx="6"/><text x="890" y="237" text-anchor="middle">Flows + templates</text><text class="s" x="890" y="252" text-anchor="middle">invite, sign-in emails</text>
+    <rect class="box paper" x="815" y="270" width="150" height="40" rx="6"/><text x="890" y="287" text-anchor="middle">Partner Applications</text><text class="s" x="890" y="302" text-anchor="middle">operator tab, ours</text>
+    <!-- arrows -->
+    <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor" style="fill:var(--ink-soft)"/></marker></defs>
+    <path class="ln" d="M200 136 H270" marker-end="url(#a)"/>
+    <path class="ln acc" d="M460 136 H520" marker-end="url(#a)"/><text class="s" x="490" y="128" text-anchor="middle">cookie</text>
+    <path class="ln" d="M200 276 C 380 276, 380 205, 520 205" marker-end="url(#a)"/><text class="s" x="300" y="296" text-anchor="middle">MCP, bearer key</text>
+    <path class="ln acc" d="M740 200 H800" marker-end="url(#a)"/><text class="s" x="770" y="192" text-anchor="middle">API</text>
+    <path class="ln dash" d="M200 206 H 245 V 372 H 800" marker-end="url(#a)"/><text class="s" x="460" y="386" text-anchor="middle">operators work inside Salesforce (their own login), never through the portal</text>
+    <text class="s" x="890" y="335" text-anchor="middle">integration user only</text>
+  </svg></div>
+  <p class="cap">Three parts. The portal is static and stateless. The web service is the only thing holding a Salesforce credential. Operators never touch the portal; their work is a tab and a flow inside Salesforce.</p>
+</section>
+
+<section class="stream" id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Every call runs the same pipeline</h2><span class="pill live">built</span></div>
+  <p class="sec-sub">There is no special path. Anonymous requests, partner requests, staff requests and agent requests all go through the same six steps, and every one of them ends in an audit row, including refusals.</p>
+  <div class="fig"><svg viewBox="0 0 1000 250" role="img" aria-label="Call pipeline">
+    <defs><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--ink-soft)"/></marker></defs>
+    <g>
+      <rect class="box" x="20" y="60" width="140" height="70" rx="8"/><text class="t" x="90" y="88" text-anchor="middle">1 · Request id</text><text class="s" x="90" y="106" text-anchor="middle">stamped on arrival</text>
+      <rect class="box" x="185" y="60" width="140" height="70" rx="8"/><text class="t" x="255" y="88" text-anchor="middle">2 · Identity</text><text class="s" x="255" y="106" text-anchor="middle">anonymous · partner</text><text class="s" x="255" y="120" text-anchor="middle">staff · staff-ae · agent</text>
+      <rect class="box" x="350" y="60" width="140" height="70" rx="8"/><text class="t" x="420" y="88" text-anchor="middle">3 · Permission</text><text class="s" x="420" y="106" text-anchor="middle">table lookup,</text><text class="s" x="420" y="120" text-anchor="middle">checked again at call time</text>
+      <rect class="box" x="515" y="60" width="140" height="70" rx="8"/><text class="t" x="585" y="88" text-anchor="middle">4 · Validate, scope</text><text class="s" x="585" y="106" text-anchor="middle">partner reads and writes</text><text class="s" x="585" y="120" text-anchor="middle">limited to own Account</text>
+      <rect class="box acc" x="680" y="60" width="140" height="70" rx="8"/><text class="t" x="750" y="88" text-anchor="middle">5 · Salesforce</text><text class="s" x="750" y="106" text-anchor="middle">as the integration user,</text><text class="s" x="750" y="120" text-anchor="middle">JWT bearer, certificate</text>
+      <rect class="box amb" x="845" y="60" width="140" height="70" rx="8"/><text class="t" x="915" y="88" text-anchor="middle">6 · Audit row</text><text class="s" x="915" y="106" text-anchor="middle">action, actor, outcome,</text><text class="s" x="915" y="120" text-anchor="middle">request id, target, detail</text>
+      <path class="ln" d="M160 95 H185" marker-end="url(#b)"/><path class="ln" d="M325 95 H350" marker-end="url(#b)"/><path class="ln" d="M490 95 H515" marker-end="url(#b)"/><path class="ln" d="M655 95 H680" marker-end="url(#b)"/><path class="ln" d="M820 95 H845" marker-end="url(#b)"/>
+      <path class="ln dash" d="M420 130 V 190 H 915 V 130" marker-end="url(#b)"/><text class="s" x="667" y="205" text-anchor="middle">a refusal at step 3 or 4 skips Salesforce and still writes its audit row (Denied)</text>
+    </g>
+  </svg></div>
+  <p class="cap">Two identities carry a credential the browser never sees: staff and agent bearer keys. The partner identity is a signed cookie. A bearer key wins over a cookie, and a bad credential never falls back to another identity.</p>
+</section>
+
+<section class="stream" id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">A partner applies, Factory approves</h2><span class="pill live">built · in the demo</span></div>
+  <p class="sec-sub">Week 2's first story. The portal creates the records; the operator decides inside Salesforce; a flow sends the invite and writes the audit row.</p>
+  <div class="fig"><svg viewBox="0 0 1000 470" role="img" aria-label="Application to approval sequence">
+    <defs><marker id="c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--ink-soft)"/></marker></defs>
+    <!-- lanes -->
+    <g class="t"><text x="100" y="30" text-anchor="middle">Partner</text><text x="340" y="30" text-anchor="middle">Portal</text><text x="580" y="30" text-anchor="middle">Web service</text><text x="820" y="30" text-anchor="middle">Salesforce</text></g>
+    <path class="lane" d="M100 40 V450"/><path class="lane" d="M340 40 V450"/><path class="lane" d="M580 40 V450"/><path class="lane" d="M820 40 V450"/>
+    <!-- 1 -->
+    <path class="ln" d="M100 70 H340" marker-end="url(#c)"/><text class="s" x="220" y="62" text-anchor="middle">fills the public form</text>
+    <path class="ln" d="M340 100 H580" marker-end="url(#c)"/><text class="mono" x="460" y="92" text-anchor="middle">submit_partner_application</text>
+    <path class="ln acc" d="M580 130 H820" marker-end="url(#c)"/><text class="s" x="700" y="122" text-anchor="middle">Account (Applied, applied-at) + Contact</text>
+    <path class="ln dash" d="M820 160 H580" marker-end="url(#c)"/><text class="s" x="700" y="152" text-anchor="middle">audit row · submit_partner_application</text>
+    <path class="ln dash" d="M580 185 H340" marker-end="url(#c)"/><path class="ln dash" d="M340 185 H100" marker-end="url(#c)"/><text class="s" x="340" y="200" text-anchor="middle">"Thanks. Factory will review your application and email you."</text>
+    <!-- 2 operator -->
+    <rect class="box" x="700" y="205" width="240" height="98" rx="8"/><text class="t" x="820" y="226" text-anchor="middle">Operator, inside Salesforce</text><text class="s" x="820" y="244" text-anchor="middle">Partner Applications tab (needs the</text><text class="s" x="820" y="258" text-anchor="middle">custom permission Portal_Review_List)</text><text class="s" x="820" y="276" text-anchor="middle">decision flow: pick, Approve, note, Next</text><text class="s" x="820" y="292" text-anchor="middle">→ status Approved, accepted-at stamped</text>
+    <!-- 3 flow -->
+    <rect class="box amb" x="680" y="318" width="290" height="64" rx="8"/><text class="t" x="825" y="340" text-anchor="middle" style="font-size:13px">Flow: Account_AS_Partner_Approved</text><text class="s" x="825" y="357" text-anchor="middle">emails Partner_Portal_Invite to the primary contact</text><text class="s" x="825" y="372" text-anchor="middle">writes audit row · partner_invite</text>
+    <path class="ln acc" d="M680 402 H 100" marker-end="url(#c)"/><text class="s" x="400" y="394" text-anchor="middle">invite email: "Your Factory partner application is approved. Sign in at the portal with this address."</text>
+    <text class="s" x="500" y="440" text-anchor="middle">Guard: Approve is refused until a primary contact is set. No recipient, no approval.</text>
+  </svg></div>
+  <p class="cap">Approving is a Salesforce action, never a portal one. The decision flow and both quick actions require a primary contact before Approve, so an approval can never go out without someone to invite.</p>
+</section>
+
+<section class="stream" id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Signing in without a password</h2><span class="pill live">built · in the demo</span></div>
+  <p class="sec-sub">Week 2's second story. An email address, one link, one use, fifteen minutes. The reply is the same for every address, so the form reveals nothing about who is a partner.</p>
+  <div class="fig"><svg viewBox="0 0 1000 520" role="img" aria-label="Sign-in sequence">
+    <defs><marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--ink-soft)"/></marker></defs>
+    <g class="t"><text x="100" y="30" text-anchor="middle">Partner</text><text x="340" y="30" text-anchor="middle">Portal</text><text x="580" y="30" text-anchor="middle">Web service</text><text x="820" y="30" text-anchor="middle">Salesforce</text></g>
+    <path class="lane" d="M100 40 V500"/><path class="lane" d="M340 40 V500"/><path class="lane" d="M580 40 V500"/><path class="lane" d="M820 40 V500"/>
+    <path class="ln" d="M100 70 H340" marker-end="url(#d)"/><text class="s" x="220" y="62" text-anchor="middle">enters an email address</text>
+    <path class="ln" d="M340 100 H580" marker-end="url(#d)"/><text class="mono" x="460" y="92" text-anchor="middle">sign-in request</text>
+    <rect class="box" x="470" y="112" width="220" height="44" rx="6"/><text class="s" x="580" y="130" text-anchor="middle">rate limit: 5 per address, 20 per IP, per hour</text><text class="s" x="580" y="146" text-anchor="middle">over the limit → 429, same neutral body</text>
+    <path class="ln acc" d="M580 180 H820" marker-end="url(#d)"/><text class="s" x="700" y="172" text-anchor="middle">Contact by email, Account must be Approved</text>
+    <path class="ln acc" d="M580 210 H820" marker-end="url(#d)"/><text class="s" x="700" y="202" text-anchor="middle">store token hash + expiry (15 min) on the Contact</text>
+    <path class="ln acc" d="M580 240 H820" marker-end="url(#d)"/><text class="s" x="700" y="232" text-anchor="middle">send Partner_Portal_Sign_In with the link · audit sign_in_request</text>
+    <path class="ln dash" d="M580 270 H340" marker-end="url(#d)"/><path class="ln dash" d="M340 270 H100" marker-end="url(#d)"/><text class="s" x="340" y="262" text-anchor="middle">"If that address belongs to an approved partner, a sign-in link is on its way." (always)</text>
+    <path class="ln acc" d="M820 300 C 600 300, 300 300, 100 300" marker-end="url(#d)"/><text class="s" x="460" y="292" text-anchor="middle">email with the link</text>
+    <path class="ln" d="M100 330 H340" marker-end="url(#d)"/><text class="s" x="220" y="322" text-anchor="middle">clicks the link</text>
+    <path class="ln" d="M340 360 H580" marker-end="url(#d)"/><text class="mono" x="460" y="352" text-anchor="middle">sign-in verify</text>
+    <path class="ln acc" d="M580 390 H820" marker-end="url(#d)"/><text class="s" x="700" y="382" text-anchor="middle">hash matches, not expired → clear the token, stamp last sign-in</text>
+    <path class="ln dash" d="M580 420 H340" marker-end="url(#d)"/><text class="s" x="460" y="412" text-anchor="middle">cookie fp_session: signed, HttpOnly, Secure · audit sign_in</text>
+    <path class="ln" d="M340 450 H580" marker-end="url(#d)"/><text class="mono" x="460" y="442" text-anchor="middle">whoami · list_registrations</text>
+    <path class="ln dash" d="M580 480 H340" marker-end="url(#d)"/><path class="ln dash" d="M340 480 H100" marker-end="url(#d)"/><text class="s" x="340" y="472" text-anchor="middle">dashboard: company, contract card, registrations (empty until Week 4)</text>
+  </svg></div>
+  <p class="cap">The same link a second time is refused: the hash is cleared on first use. The cookie carries the Contact and Account ids, and the web service re-reads both records before serving any session, so a partner set to Inactive in Salesforce loses access on the next call.</p>
+</section>
+
+<section class="stream" id="s5">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Who may call what</h2><span class="pill live">proven live or by contract test</span></div>
+  <p class="sec-sub">The permission table for the actions that exist after Week 2. The same table serves HTTP and MCP; an identity's MCP tool list is filtered by it, and the check runs again on every call.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Action</th><th>What it does</th><th>anonymous</th><th>partner</th><th>staff</th><th>staff-ae</th><th>agent</th><th>Proof</th></tr></thead>
+    <tbody>
+      <tr><td class="m">sign-in request</td><td>Sends a sign-in link to an address</td><td class="y">yes</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td>hosted checkpoint</td></tr>
+      <tr><td class="m">sign-in verify</td><td>Turns a link into a session cookie</td><td class="y">yes</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td>hosted: 200, then 401 on reuse</td></tr>
+      <tr><td class="m">submit_partner_application</td><td>Public application form</td><td class="y">yes</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td class="n">·</td><td>hosted: Account Applied, audit row</td></tr>
+      <tr><td class="m">whoami</td><td>Who am I, which account, what role</td><td class="n">·</td><td class="y">yes</td><td class="y">yes</td><td class="y">yes</td><td class="y">yes</td><td>Week 1 demo, audit row</td></tr>
+      <tr><td class="m">list_registrations</td><td>A partner's own deal registrations</td><td class="n">·</td><td class="y">own</td><td class="y">yes</td><td class="y">yes</td><td class="y">yes</td><td>hosted (empty); scoping by contract test</td></tr>
+      <tr><td class="m">get_registration</td><td>One registration's detail</td><td class="n">·</td><td class="y">own</td><td class="y">yes</td><td class="y">yes</td><td class="y">yes</td><td>404 on another partner's id</td></tr>
+      <tr><td class="m">list_applications</td><td>Pending applications for review</td><td class="n">·</td><td class="n">·</td><td class="y">yes</td><td class="y">yes</td><td class="n">·</td><td>contract test</td></tr>
+      <tr><td class="m">get_application</td><td>One application's detail</td><td class="n">·</td><td class="n">·</td><td class="y">yes</td><td class="y">yes</td><td class="n">·</td><td>contract test</td></tr>
+      <tr><td class="m">check_partner_conflicts</td><td>Is this partner already known, by email or domain</td><td class="n">·</td><td class="n">·</td><td class="y">yes</td><td class="y">yes</td><td class="y">yes</td><td>contract test</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">Names reserved for later weeks (deal registration, contract status, agent review) are known to the table and refused with an audit row, never a 404, so a call to a future action is visible in the log today.</p>
+</section>
+
+<section class="stream" id="s6">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">What lives in Salesforce</h2><span class="pill sandbox">sandbox only</span></div>
+  <p class="sec-sub">Everything the portal owns is ours and named with a Portal or Partner prefix. Factory's own objects, fields, layouts and flows are read where needed and never changed.</p>
+  <div class="fig"><svg viewBox="0 0 1000 350" role="img" aria-label="Salesforce data model" style="font-size:12px">
+    <rect class="box paper" x="20" y="20" width="310" height="310" rx="10"/><text class="t" x="175" y="46" text-anchor="middle">Account (Factory's object)</text>
+    <text class="mono" x="36" y="72">Portal_Application_Status__c</text><text class="s" x="36" y="87">Applied · In Review · Approved · Denied · Inactive</text>
+    <text class="mono" x="36" y="110">Partner_Applied_At__c</text><text class="mono" x="36" y="128">Partner_Accepted_At__c</text>
+    <text class="mono" x="36" y="151">Partner_Type__c</text><text class="mono" x="36" y="169">Portal_Primary_Contact__c</text><text class="mono" x="36" y="187">Portal_Application_Note__c</text>
+    <text class="mono" x="36" y="210">Contract_Status__c</text><text class="s" x="36" y="225">Not Sent · Sent · Signed (Week 3 uses it)</text>
+    <text class="mono" x="36" y="248">Website · Partner_Lifecycle_Status__c</text><text class="s" x="36" y="263">Factory's, read only</text>
+    <text class="s" x="36" y="290">Quick actions Approve / Deny (ours, metadata only)</text><text class="s" x="36" y="306">Flow Account_AS_Partner_Approved (ours)</text><text class="s" x="36" y="322">both stamp accepted-at and the note</text>
+    <rect class="box paper" x="350" y="20" width="300" height="130" rx="10"/><text class="t" x="500" y="46" text-anchor="middle">Contact (Factory's object)</text>
+    <text class="mono" x="366" y="72">Portal_Login_Token_Hash__c</text><text class="mono" x="366" y="95">Portal_Login_Token_Expires__c</text><text class="mono" x="366" y="118">Portal_Last_Sign_In__c</text><text class="s" x="366" y="138">only a hash is stored, never the link</text>
+    <rect class="box amb" x="350" y="170" width="300" height="160" rx="10"/><text class="t" x="500" y="196" text-anchor="middle">Portal_Audit_Log__c (ours)</text>
+    <text class="mono" x="366" y="220">Action__c · Outcome__c · Occurred_At__c</text><text class="mono" x="366" y="243">Actor__c · Actor_Contact__c</text><text class="mono" x="366" y="266">Actor_User__c · Request_Id__c</text><text class="mono" x="366" y="289">Target_Record__c · Detail__c</text><text class="s" x="366" y="312">one row per call, including Denied and Error</text>
+    <rect class="box paper" x="670" y="20" width="310" height="310" rx="10"/><text class="t" x="825" y="46" text-anchor="middle">Access and surfaces</text>
+    <text x="686" y="74">Integration user</text><text class="s" x="686" y="90">API-only profile, permission set</text><text class="mono" x="686" y="105">Integration_Access_Partner_Portal</text>
+    <text x="686" y="132">External Client App + certificate</text><text class="mono" x="686" y="148">Partner_Portal_Tool_Layer_JWT</text><text class="s" x="686" y="163">JWT bearer flow, no password, no session</text>
+    <text x="686" y="190">Operators</text><text class="mono" x="686" y="206">Portal_Admin_Fields</text><text class="mono" x="686" y="222">Portal_Review_List (custom permission)</text>
+    <text x="686" y="249">Partner Applications</text><text class="s" x="686" y="265">app page + tab (ours): list cards, decision flow</text>
+    <text x="686" y="292">Email templates, folder Partner_Portal</text><text class="mono" x="686" y="308">Partner_Portal_Sign_In</text><text class="mono" x="686" y="324">Partner_Portal_Invite</text>
+  </svg></div>
+  <p class="cap">Partner_Influence__c, Factory's junction for deal registrations, carries our registration fields from Week 1 and comes into play in Week 4. It is left out here on purpose.</p>
+</section>
+
+<section class="stream" id="s7">
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">Hosting and keys</h2><span class="pill live">live</span></div>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Part</th><th>Where</th><th>Deploys how</th><th>Holds</th></tr></thead>
+    <tbody>
+      <tr><td>Portal</td><td>Cloudflare Pages, project factory-partner-portal</td><td>built with Vite, uploaded; main is the production alias, a preview branch carries the guided demo</td><td>nothing: no keys, no data, no storage</td></tr>
+      <tr><td>Web service</td><td>Render, one Node container, free plan</td><td>auto-deploys from main; /health reports the commit</td><td>the Salesforce certificate key, the cookie signing secret, the staff and agent bearer keys, the mail transport switch, the rate limits</td></tr>
+      <tr><td>Salesforce</td><td>Factory's partial sandbox</td><td>named manifests through a deploy wrapper that archives what it touches and blocks unreviewed removals</td><td>every record; email deliverability is Factory's setting (system-only unless flipped for a test window)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">Local runs use the same code against the same sandbox with the mail transport set to log, which is how the demo shows the emails without sending any.</p>
+</section>
+
+<section class="stream" id="s8" style="border-bottom:none">
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">Sources</h2></div>
+  <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/SYSTEM_OVERVIEW.md"><span class="gid">md</span>System overview (code repo)</a>
+  <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/SPEC_WEEK1.md"><span class="gid">md</span>Week 1 spec: foundation, data model, integration user, web service</a>
+  <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/SPEC_WEEK2.md"><span class="gid">md</span>Week 2 spec: sign-in, application, review page, invite</a>
+  <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/DECISIONS.md"><span class="gid">md</span>Decisions log</a>
+  <a class="src" href="https://br5692.github.io/docs/d/factory-demos-5bbaa687/"><span class="gid">video</span>The demo cut: application to sign-in</a>
+  <a class="src" href="https://br5692.github.io/docs/d/factory-screens-week2-1b33b197/"><span class="gid">png</span>Week 2 screens, desktop and phone</a>
+  <footer><p class="fmono">Compiled 2026-09-16 · six sources · Weeks 1 and 2 as built</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+</section>
+</main>
+<script>
+(function(){var b=document.getElementById('themeToggle'),r=document.documentElement;function cur(){return r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}b.addEventListener('click',function(){r.setAttribute('data-theme',cur()==='dark'?'light':'dark')});})();
+</script>
+</body>
+</html>
