@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Factory Partner Portal — Decisions Log</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+<style>
+  :root {
+    --paper:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec;
+    --ink:#16201d; --ink-soft:#3c4a45; --ink-faint:#6d7b75;
+    --line:#d7ddd4; --line-soft:#e5e9e1;
+    --accent:#0d7a6e; --accent-2:#0a5f56; --accent-wash:#e2efeb;
+    --amber:#a35a12; --amber-wash:#f4e9d9; --rose:#a3323f; --rose-wash:#f3e0e1;
+    --code-bg:#f0f3ee;
+    --shadow:0 1px 2px rgba(22,32,29,.05), 0 8px 28px -18px rgba(22,32,29,.35);
+    --serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root{
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723;
+    --ink:#e7ede9; --ink-soft:#b3c0ba; --ink-faint:#7f8f88;
+    --line:#2a3631; --line-soft:#222d29;
+    --accent:#4fd0be; --accent-2:#6fdccb; --accent-wash:#16302b;
+    --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }}
+  :root[data-theme="light"]{
+    --paper:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec; --ink:#16201d; --ink-soft:#3c4a45;
+    --ink-faint:#6d7b75; --line:#d7ddd4; --line-soft:#e5e9e1; --accent:#0d7a6e; --accent-2:#0a5f56;
+    --accent-wash:#e2efeb; --amber:#a35a12; --amber-wash:#f4e9d9; --rose:#a3323f; --rose-wash:#f3e0e1;
+    --code-bg:#f0f3ee; --shadow:0 1px 2px rgba(22,32,29,.05), 0 8px 28px -18px rgba(22,32,29,.35);
+  }
+  :root[data-theme="dark"]{
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723; --ink:#e7ede9; --ink-soft:#b3c0ba;
+    --ink-faint:#7f8f88; --line:#2a3631; --line-soft:#222d29; --accent:#4fd0be; --accent-2:#6fdccb;
+    --accent-wash:#16302b; --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18; --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none !important;} }
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  .wrap{max-width:1060px; margin:0 auto; padding:0 28px;}
+  @media (max-width:640px){ .wrap{padding:0 16px;} }
+  header.mast{border-bottom:1px solid var(--line);
+    background:radial-gradient(120% 140% at 88% -20%, var(--accent-wash) 0%, transparent 55%), var(--surface);}
+  .mast-inner{padding:52px 0 40px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent-2); margin:0 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--accent);}
+  h1.title{font-family:var(--serif); font-weight:600; font-size:clamp(2.3rem,5.4vw,3.5rem);
+    line-height:1.04; letter-spacing:-.015em; margin:0 0 18px; text-wrap:balance;}
+  h1.title span{color:var(--accent-2);}
+  .lede{font-size:1.12rem; color:var(--ink-soft); max-width:62ch; margin:0 0 30px; line-height:1.6;}
+  .meta-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .meta-cell{background:var(--surface); padding:14px 16px;}
+  .meta-cell .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:5px;}
+  .meta-cell .v{font-size:.92rem; font-weight:600; color:var(--ink);}
+  .meta-cell .v.mono{font-family:var(--mono); font-weight:500; font-size:.82rem;}
+  nav.toc{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .toc-inner{display:flex; gap:4px; flex-wrap:wrap; padding:10px 0; align-items:center;}
+  .toc a{font-size:.82rem; color:var(--ink-soft); text-decoration:none; padding:6px 12px;
+    border-radius:999px; font-weight:500; transition:background .15s,color .15s; white-space:nowrap;}
+  .toc a:hover{background:var(--surface-2); color:var(--ink);}
+  .toc a .num{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); margin-right:6px;}
+  .toc .spacer{flex:1;}
+  #themeToggle{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer;}
+  #themeToggle:hover{color:var(--ink); border-color:var(--accent);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;}
+  section.stream{padding:56px 0 12px; border-bottom:1px solid var(--line-soft);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px; flex-wrap:wrap;}
+  .sec-num{font-family:var(--mono); font-size:.9rem; color:var(--accent-2); font-weight:600;}
+  h2.sec-title{font-family:var(--serif); font-weight:600; font-size:clamp(1.7rem,3.6vw,2.25rem);
+    letter-spacing:-.01em; margin:0; line-height:1.1; text-wrap:balance;}
+  .sec-sub{color:var(--ink-faint); font-size:.95rem; margin:6px 0 24px; max-width:66ch;}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+    letter-spacing:.05em; text-transform:uppercase; font-weight:600; padding:4px 10px; border-radius:999px;
+    border:1px solid transparent; white-space:nowrap;}
+  .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .pill.live{color:var(--accent-2); background:var(--accent-wash); border-color:color-mix(in srgb, var(--accent) 30%, transparent);}
+  .pill.sandbox{color:var(--amber); background:var(--amber-wash); border-color:color-mix(in srgb, var(--amber) 30%, transparent);}
+  .pill.pending{color:var(--rose); background:var(--rose-wash); border-color:color-mix(in srgb, var(--rose) 30%, transparent);}
+  h3{font-family:var(--sans); font-weight:700; font-size:1.06rem; letter-spacing:-.005em;
+    margin:34px 0 12px; color:var(--ink); display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+  h3 .tag{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-faint); border:1px solid var(--line); border-radius:5px; padding:2px 7px; font-weight:500;}
+  h3 .id{font-family:var(--mono); font-size:.8rem; color:var(--accent-2);}
+  p{margin:0 0 14px;} p,li{color:var(--ink-soft);}
+  strong{color:var(--ink); font-weight:650;}
+  a.inl{color:var(--accent-2); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--accent) 40%, transparent);}
+  ul.tight{margin:0 0 16px; padding-left:20px;} ul.tight li{margin-bottom:7px;}
+  code{font-family:var(--mono); font-size:.84em; background:var(--code-bg); padding:1.5px 6px; border-radius:5px; color:var(--ink); border:1px solid var(--line-soft);}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:22px 24px; box-shadow:var(--shadow); margin:18px 0;}
+  .card .row{display:grid; grid-template-columns:110px 1fr; gap:12px; padding:8px 0; border-bottom:1px solid var(--line-soft); font-size:.92rem;}
+  .card .row:last-child{border-bottom:none;}
+  .card .row .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); padding-top:3px;}
+  .card .row .d{color:var(--ink-soft);}
+  @media (max-width:640px){ .card{padding:16px;} .card .row{grid-template-columns:1fr; gap:2px;} }
+  .callout{border-left:3px solid var(--accent); background:var(--accent-wash); padding:14px 18px; border-radius:0 10px 10px 0; margin:18px 0;}
+  .callout.warn{border-left-color:var(--amber); background:var(--amber-wash);}
+  .callout .lbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  .callout p{margin:0; font-size:.92rem; color:var(--ink-soft);}
+  blockquote{margin:14px 0; padding:14px 18px; border-left:3px solid var(--line); background:var(--surface); border-radius:0 10px 10px 0; color:var(--ink-soft); font-size:.95rem;}
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--surface); box-shadow:var(--shadow);}
+  table{width:100%; border-collapse:collapse; font-size:.88rem; min-width:460px;}
+  thead th{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-faint);
+    text-align:left; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface-2); font-weight:600;}
+  tbody td{padding:11px 16px; border-bottom:1px solid var(--line-soft); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.mono{font-family:var(--mono); font-size:.8rem; color:var(--accent-2); white-space:nowrap;}
+  td.name{color:var(--ink); font-weight:600;}
+  tbody tr:hover td{background:color-mix(in srgb, var(--accent-wash) 40%, transparent);}
+  .metrics{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:18px 0;}
+  .metric{background:var(--surface); padding:18px 16px;}
+  .metric .val{font-family:var(--serif); font-size:1.9rem; font-weight:600; color:var(--ink); line-height:1; letter-spacing:-.02em;}
+  .metric .cap{font-size:.78rem; color:var(--ink-faint); margin-top:7px; line-height:1.35;}
+  .kicker{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-2); font-weight:600; margin:40px 0 2px;}
+  .src-list{display:grid; gap:10px;}
+  .src{display:flex; align-items:flex-start; gap:14px; padding:13px 16px; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; text-decoration:none; transition:border-color .15s, transform .12s;}
+  .src:hover{border-color:var(--accent); transform:translateX(2px);}
+  .src .gid{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); background:var(--accent-wash); padding:3px 8px; border-radius:6px; white-space:nowrap; margin-top:1px;}
+  .src .st{flex:1;} .src .st .nm{color:var(--ink); font-weight:600; font-size:.92rem;}
+  .src .st .dt{color:var(--ink-faint); font-size:.78rem; font-family:var(--mono); margin-top:2px;}
+  .src .arr{color:var(--ink-faint); font-size:1.1rem;}
+  footer{padding:44px 0 60px; color:var(--ink-faint); font-size:.84rem;}
+  footer .fmono{font-family:var(--mono); font-size:.78rem;}
+</style>
+</head>
+<body>
+
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Decisions Log</p>
+  <h1 class="title">Every ruling so far, and the <span>ten that need a signature</span></h1>
+  <p class="lede">A plain-words record of each decision made for the builder during Weeks 1 and 2, the reasoning behind it, and whether it can be undone. Section 01 is the short list to review and sign off. The rest is reference.</p>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="k">Sandbox</div><div class="v mono">factory-partial</div></div>
+    <div class="meta-cell"><div class="k">Code repo</div><div class="v mono">br5692/factory-partner-portal</div></div>
+    <div class="meta-cell"><div class="k">HEAD</div><div class="v mono">ec19ca1</div></div>
+    <div class="meta-cell"><div class="k">Rulings</div><div class="v">35 (5 Week 1, 30 Week 2)</div></div>
+    <div class="meta-cell"><div class="k">Compiled</div><div class="v">2026-09-16</div></div>
+  </div>
+</div></header>
+
+<nav class="toc"><div class="wrap toc-inner">
+  <a href="#s1"><span class="num">01</span>Sign-off</a>
+  <a href="#s2"><span class="num">02</span>Tools</a>
+  <a href="#s3"><span class="num">03</span>All rulings</a>
+  <a href="#s4"><span class="num">04</span>Open with Factory</a>
+  <a href="#sources"><span class="num">05</span>Sources</a>
+  <span class="spacer"></span>
+  <button id="themeToggle" aria-label="Toggle colour theme">Theme</button>
+</div></nav>
+
+<main class="wrap">
+
+<section class="stream" id="s1">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Decisions needing sign-off</h2><span class="pill pending">10 pending review</span></div>
+  <p class="sec-sub">Each shapes the product or is hard to reverse. Each card carries the ruling, the reasoning, and the discussion from 2026-09-16. Mark each one approved, changed, or questioned.</p>
+
+  <h3><span class="id">W1-1</span> The integration user <span class="tag">identity</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">The portal talks to Salesforce as one integration user on the "Minimum Access - Salesforce - With API Permission" profile, not on the Salesforce Integration license.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">The Integration license cannot hold rights on Opportunity and other Sales Cloud objects the portal needs from Week 4.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes, a profile swap.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Two permission sets carry everything else: the integration set (objects and fields the portal reads and writes, Send Email, Edit Tasks as a platform dependency) and the operator set for Factory staff. View Roles was added to both because Factory's own account-transfer trigger reads the user's role on every Account update.</div></div>
+  </div>
+
+  <h3><span class="id">W1-4</span> Certificate-based authentication <span class="tag">security</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">The tool layer signs a short-lived token with its private key for each Salesforce session. Salesforce checks it against the certificate on the External Client App. No password exists anywhere.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">This is the Salesforce-recommended pattern for server-to-server integrations (the JWT bearer flow). Rotation is a new key pair, a new certificate upload, and a key swap on Render.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Question raised: is this best practice? Yes. It is the standard choice for a headless server, and it avoids storing a user password or a refresh token.</div></div>
+  </div>
+
+  <h3><span class="id">W2-2</span> Who may sign in <span class="tag">access</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">Any partner whose Account status is Approved can sign in. A signed contract is not required until Week 3, behind a switch that is off by default.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">Contract signature is a Week 3 deliverable and the demo needs sign-in first.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes, one environment variable.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">How approval happens: one field on the Account is set to Approved by the Approve button, by the decision screen on the review page, or by an admin editing the field. The flip stamps the accepted-at time and sends the invite email to the primary contact. Sign-in checks that one field and nothing else this week.</div></div>
+  </div>
+
+  <h3><span class="id">W2-5</span> Rate limits on sign-in requests <span class="tag">abuse control</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">Two separate hourly counters. Per email address: the sixth request for the same address within an hour is refused. Per network address: the twenty-first request from the same IP within an hour is refused, whatever the emails. A refusal is a 429 with a retry-after time and an audit row.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">The email limit stops one partner being flooded with links. The IP limit stops one machine probing many addresses to learn who is a partner.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes, two environment variables.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Counters live in the tool layer's memory. They reset an hour after the first request, or whenever Render restarts the service. Render's forwarded address is trusted as the client address.</div></div>
+  </div>
+
+  <h3><span class="id">W2-6</span> Email transport on the hosted stack <span class="tag">stopgap</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">The hosted tool layer writes each email to its log instead of sending, until sandbox deliverability is opened.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">The sandbox setting "System email only" blocks every email that code or a flow sends. The log gives the real subject, body, and a working link for testing.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes, one environment variable.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Blair's ruling on 2026-09-16: not staying here. Deliverability is flipped to "All email" for the real-path test and for the demo. The automation audit (section 04) found no Apex or workflow senders and no active flow that emails on Account or Contact, so the flip is safe when tests write only test records and send to owned addresses.</div></div>
+  </div>
+
+  <h3><span class="id">W2-7</span> The identity model <span class="tag">data</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">One Contact per email, one Account per session. If two contacts share an email under approved partners, the one that signed in most recently wins, then the oldest record.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">Keeps the MVP simple. A contact at two partners is a business question for Factory (OQ-10, drafted in section 04).</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">"One contact per email" is not a database rule. At sign-in the tool layer looks up Contacts by email under Approved accounts, applies the tie-break, and writes the candidate count to the audit row. Duplicates are tolerated, not prevented. "One account per session" is enforced by the session cookie itself, which carries exactly one contact id and one account id, signed by the server. Every later request reads the account from the cookie.</div></div>
+  </div>
+
+  <h3><span class="id">W2-11</span> Email templates belong to Factory <span class="tag">ownership</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">The sign-in and invite emails are Salesforce email templates. The tool layer only fills in the first name and the link and sends through the org-wide sender address.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">Factory controls the words without a code change.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">The template must keep its two placeholders. The tool layer refuses to start if the sign-in template has lost the link placeholder, so a bad edit is caught at boot, not at send.</div></div>
+  </div>
+
+  <h3><span class="id">W2-12</span> Approve requires a primary contact <span class="tag">rule</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">The Approve button refuses if the Account has no primary contact.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">Approval sends the invite email, and the invite needs a person. Without a contact there is nobody to email and nobody who could ever sign in, so the approval would create a partner nobody can use.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Applications from the public form always set the primary contact, so staff only meet this rule on accounts created by hand.</div></div>
+  </div>
+
+  <h3><span class="id">W2-15</span> Tool names <span class="tag">naming</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">Tool names are fixed. The Week 2 names replaced the Week 1 table, <code>check_conflicts</code> is reserved for deal conflicts in Week 4, and no aliases exist.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">One name per action, so every caller and every audit row means the same thing.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Cheap today, costly later.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Renaming costs nothing while no outside caller uses the names. It becomes expensive the day Factory's Droid prompts or agent configs reference a name, because those cannot be updated from here. Blair asked for a design that keeps renames cheap. Answer: an alias map in the tool layer, so an old name keeps working, is marked deprecated in the tool list, and is audited under the new name. Assigned to the builder 2026-09-16. With it in place, the ruling becomes "stable by default", not "fixed for good".</div></div>
+  </div>
+
+  <h3><span class="id">W2-17 + W2-26</span> The operator permission set <span class="tag">permissions</span></h3>
+  <div class="card">
+    <div class="row"><div class="k">Decided</div><div class="d">Factory staff who review applications get: read and edit on Account and Contact (no create, no delete), read on Partner Influence, the review page and its tab, the decision flow, Lightning access, read on the Account website field, Run Flows, and View Roles.</div></div>
+    <div class="row"><div class="k">Why</div><div class="d">Staff review and approve. They do not create or delete records from the portal side. The last four grants were forced by the sandbox profile, the org's flow restriction, and Factory's account-transfer trigger, each recorded in the runbook with its deploy id.</div></div>
+    <div class="row"><div class="k">Reversible</div><div class="d">Yes, each grant is one line in the permission set.</div></div>
+    <div class="row"><div class="k">Discussion</div><div class="d">Blair agreed with the model and asked whether Factory should sign it off. Yes. It is the one decision that says what Factory's own staff can do, and it belongs in the note to Roman as "please confirm", half a page: this set, and the integration user's set.</div></div>
+  </div>
+</section>
+
+<section class="stream" id="s2">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Tools, named and proven</h2><span class="pill live">9 proven</span><span class="pill pending">7 defined only</span></div>
+  <p class="sec-sub">Every tool in the permission table, what it does, who may call it, and how far it has been proven. Identities: partner (signed-in partner), staff (Factory operator), AE (account executive), agent (Droid), anonymous.</p>
+  <div class="metrics">
+    <div class="metric"><div class="val">6</div><div class="cap">proven live on the hosted stack, 2026-09-16 checkpoint</div></div>
+    <div class="metric"><div class="val">3</div><div class="cap">proven by contract tests against the sandbox</div></div>
+    <div class="metric"><div class="val">7</div><div class="cap">named for Weeks 4 and 5, refused today (tested)</div></div>
+  </div>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Tool</th><th>What it does</th><th>Who</th><th>Status</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">request_sign_in</td><td>Sends a sign-in link to an email address</td><td>anonymous</td><td><span class="pill live">proven live</span></td><td>Hosted checkpoint 2026-09-16, link read from the Render log</td></tr>
+      <tr><td class="mono">verify_sign_in</td><td>Turns a link into a session cookie</td><td>anonymous</td><td><span class="pill live">proven live</span></td><td>Hosted checkpoint: 200, then 401 on second use</td></tr>
+      <tr><td class="mono">submit_partner_application</td><td>Public application form</td><td>anonymous</td><td><span class="pill live">proven live</span></td><td>Hosted checkpoint: Account created as Applied, audit row; honeypot and duplicate paths by contract test</td></tr>
+      <tr><td class="mono">whoami</td><td>Who am I, which account, what role</td><td>partner, staff, AE, agent</td><td><span class="pill live">proven live</span></td><td>Week 1 demo; audit row in Salesforce</td></tr>
+      <tr><td class="mono">list_registrations</td><td>A partner's own deal registrations</td><td>partner, staff, AE, agent</td><td><span class="pill live">proven live</span></td><td>Hosted checkpoint (empty list); contract test proves scoping to own account</td></tr>
+      <tr><td class="mono">get_registration</td><td>One registration's detail</td><td>partner, staff, AE, agent</td><td><span class="pill live">proven live</span></td><td>Builder's browser proof: detail renders, 404 on another partner's id</td></tr>
+      <tr><td class="mono">list_applications</td><td>Pending partner applications for review</td><td>staff, AE</td><td><span class="pill sandbox">proven by test</span></td><td>Contract test sees the Applied test account with its primary contact</td></tr>
+      <tr><td class="mono">get_application</td><td>One application's detail</td><td>staff, AE</td><td><span class="pill sandbox">proven by test</span></td><td>Contract test</td></tr>
+      <tr><td class="mono">check_partner_conflicts</td><td>Is this partner already known, by email or domain</td><td>staff, AE, agent</td><td><span class="pill sandbox">proven by test</span></td><td>Contract test finds the test account by email and domain</td></tr>
+      <tr><td class="mono">create_deal_registration</td><td>Partner registers a deal</td><td>partner</td><td><span class="pill pending">Week 4</span></td><td>Named only; refused today</td></tr>
+      <tr><td class="mono">check_deal_conflicts</td><td>Is this customer already registered</td><td>staff, AE, agent</td><td><span class="pill pending">Week 4</span></td><td>Named only; refused today</td></tr>
+      <tr><td class="mono">attach_agent_review</td><td>Droid writes its pre-screen onto a registration</td><td>agent</td><td><span class="pill pending">Week 4</span></td><td>Named only; pre-screening scope not approved</td></tr>
+      <tr><td class="mono">route_registration</td><td>Send a registration to the right queue</td><td>agent, staff, AE</td><td><span class="pill pending">Week 4</span></td><td>Named only</td></tr>
+      <tr><td class="mono">accept_registration</td><td>Approve a registration</td><td>staff, AE</td><td><span class="pill pending">Week 5</span></td><td>Named only</td></tr>
+      <tr><td class="mono">reject_registration</td><td>Deny a registration</td><td>staff, AE</td><td><span class="pill pending">Week 5</span></td><td>Named only</td></tr>
+      <tr><td class="mono">confirm_partner_attach</td><td>AE confirms the partner on the deal</td><td>AE</td><td><span class="pill pending">Week 5</span></td><td>Named only</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><div class="lbl">Call-time enforcement</div><p>The tool list shown to each identity is filtered, and every call is checked again when it arrives. Proven 2026-09-16: as the agent, the hosted list is exactly whoami, list_registrations, get_registration, check_partner_conflicts, and a call to submit_partner_application is refused with an audited denial.</p></div>
+</section>
+
+<section class="stream" id="s3">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">All rulings</h2><span class="pill live">35 recorded</span></div>
+  <p class="sec-sub">The complete log, newest last. The ten above are repeated here in short form so the numbering is continuous.</p>
+
+  <h3>Week 1 <span class="tag">Sept 14 to 15</span></h3>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Decided</th><th>Why</th><th>Reversible</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">W1-1</td><td>Integration user on the Minimum Access profile with API permission, not the Integration license.</td><td>The license cannot hold rights on Sales Cloud objects the portal needs.</td><td>Yes</td></tr>
+      <tr><td class="mono">W1-2</td><td>Deploy preflight gets absence probes for External Client App and Certificate metadata, additive only.</td><td>Those types are invisible to the normal listing, so a removal looked like a first deploy.</td><td>Yes</td></tr>
+      <tr><td class="mono">W1-3</td><td>The six External Client App components created minutes earlier may be replaced with explicit removal acknowledgement.</td><td>They were ours. Factory metadata is never touched (rule 8).</td><td>Yes</td></tr>
+      <tr><td class="mono">W1-4</td><td>A new certificate carries the tool layer's own key. The Salesforce-generated one stays, noted for cleanup.</td><td>A CA-signed certificate cannot be edited in place.</td><td>Yes</td></tr>
+      <tr><td class="mono">W1-5</td><td>Rule 9: the builder never runs an irreversible local operation and commits the last green state before each step.</td><td>A builder mistake must never cost work.</td><td>n/a</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Week 2 <span class="tag">Sept 15 to 16</span></h3>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Decided</th><th>Why</th><th>Reversible</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">W2-1</td><td>Field security for the three sign-in token fields on Contact, plus Send Email, on the integration set now. Account fields join when their steps run.</td><td>Grant per step, not ahead of it.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-2</td><td>Any Approved partner can sign in. A signed contract waits for Week 3 behind a switch, off by default.</td><td>Contract is a Week 3 deliverable.</td><td>Yes, env var</td></tr>
+      <tr><td class="mono">W2-3</td><td>Hidden honeypot field on the sign-in request. Filled honeypot: same neutral reply, nothing written, nothing sent, denial audited.</td><td>Bots learn nothing and create nothing.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-4</td><td>A new identity "anonymous" is the actor on audit rows for unauthenticated calls.</td><td>Every request is audited, including from nobody.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-5</td><td>Rate limits 5 per email and 20 per address per hour. 429 with retry-after and an audit denial. Render's forwarded address trusted.</td><td>Stops link flooding without revealing who is a partner.</td><td>Yes, env vars</td></tr>
+      <tr><td class="mono">W2-6</td><td>Hosted tool layer logs emails instead of sending until deliverability is opened.</td><td>Sandbox blocks code-sent mail. The log carries real content and a working link.</td><td>Yes, env var</td></tr>
+      <tr><td class="mono">W2-7</td><td>One Contact per email, one Account per session. Tie-break: most recent sign-in, then oldest. Dual relationship open with Factory.</td><td>Keeps the MVP simple.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-8</td><td>Sign-in shipped with landing, sign-in, verify, sign-out and an empty dashboard. Form and registration pages later.</td><td>Sign-in first, so the checkpoint could be proven early.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-9</td><td>The integration user gets Edit Tasks.</td><td>Salesforce requires it as a dependency of Send Email.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-10</td><td>Token field security also on the operator set. Profiles are never edited.</td><td>Admins need the fields. Profiles are Factory's.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-11</td><td>Sign-in and invite emails are Salesforce templates. The tool layer fills them and sends via the org-wide sender.</td><td>Factory owns the words.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-12</td><td>Approve requires a primary contact on the Account.</td><td>The invite needs a person.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-13</td><td>A repeat application from the same email gets the same neutral confirmation, creates nothing, logs a denial. No cooldown.</td><td>Keep it simple. Cooldown is an add-on.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-14</td><td>Partner types come from a read-only, cached, anonymous endpoint fed by the picklist.</td><td>The form shows Factory's own list without a login.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-15</td><td>Tool names fixed. Week 2 names win. check_conflicts reserved for Week 4. No aliases (an alias map is now being added, see 01).</td><td>One name per action.</td><td>Cheap now, costly later</td></tr>
+      <tr><td class="mono">W2-16</td><td>The tool list is filtered by identity and every call is checked again at call time.</td><td>Hiding a tool is not security. The second check is.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-17</td><td>Operator set: read and edit on Account and Contact, no create or delete, read on Partner Influence.</td><td>Staff review and approve, nothing more.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-18</td><td>Two test users, an operator and a no-permission user, both [TEST]-prefixed, kept for the demo.</td><td>Proves both sides of the gate.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-19</td><td>Guided demo mode behind a build flag. Production builds carry none of it.</td><td>Demo helpers never ship to partners.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-20</td><td>The real-email test uses an owned domestique address on a [TEST] contact, removed after.</td><td>Never email a real partner from the sandbox.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-21</td><td>Build order deviation: the primary-contact field before the invite flow.</td><td>The flow references the field.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-22</td><td>Contract tests create Accounts as Applied, not Approved, except the one test that asserts the invite and cleans its own row.</td><td>The invite flow was firing on every test run.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-23</td><td>The builder never deletes a sandbox record it did not create. It flags the id and waits.</td><td>It deleted a demo fixture as "stray".</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-24</td><td>Deploy preflight archives are never deleted. Every one is committed with its deploy.</td><td>They are the pre-deploy snapshot that lets removals be blocked.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-25</td><td>To prove the review page hides without the permission, the planner's own assignment was removed and restored with query proof.</td><td>The no-permission test user cannot open Lightning at all.</td><td>Done</td></tr>
+      <tr><td class="mono">W2-26</td><td>Operator set also carries Lightning access, Account website read, the decision flow, Run Flows, View Roles.</td><td>Forced by the sandbox profile, the org's flow restriction, and Factory's trigger.</td><td>Yes</td></tr>
+      <tr><td class="mono">W2-27</td><td>Screen proofs for test users run through admin Login As. No org setting changed.</td><td>Fresh logins hit identity verification with undeliverable emails.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-28</td><td>The demo preview origin is a permanent entry in the tool layer's CORS allowlist, with preflight proof.</td><td>Own Pages project. A temporary change would be forgotten.</td><td>Yes, env var</td></tr>
+      <tr><td class="mono">W2-29</td><td>Two mockup components (step strip, action log) wait for Week 4. The portal never gets the mockup's in-browser call log.</td><td>Their only consumers are deal-registration pages.</td><td>n/a</td></tr>
+      <tr><td class="mono">W2-30</td><td>The auto-assigned ZoomInfo permission set stays on the test operator. Removed only from the no-permission user.</td><td>Factory's org default for every new user.</td><td>Yes</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="s4">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Open with Factory</h2><span class="pill pending">3 questions</span></div>
+  <p class="sec-sub">Items that need a word from Factory, with the recommended default in each case so nothing blocks the build.</p>
+
+  <h3>Email deliverability in the sandbox <span class="tag">OQ-8</span></h3>
+  <p>Setting: "System email only", which blocks the sign-in link and the invite email. Blair's ruling: flip to "All email" for the real-path test and the Tuesday demo, and mention it to Factory on the day.</p>
+  <div class="callout"><div class="lbl">Automation audit, 2026-09-16</div><p>0 of 340 Apex classes send mail (managed-package bodies not inspectable). 0 workflow email alerts. 3 active flows with an email step: Lead routing (fires on Lead create, emails the internal owner), a campaign alert (fires on one campaign's members), and the portal's own invite flow. Nothing fires on Account or Contact, the only Factory objects the tests write. 134 of 147 active users carry the sandbox ".invalid" suffix; the 13 real addresses are admins and system users. Roman last logged in 2026-09-10. Verdict: safe to flip while tests write only [TEST] records and send to owned addresses.</p></div>
+
+  <h3>Approve and Deny on Factory's Account page <span class="tag">OQ-9</span></h3>
+  <p>The two quick actions exist as metadata. Placing them on Factory's Account page layout needs Factory's yes. Default: do not ask until Factory has seen the review page, where both actions already work. Also for the note: Factory's account-transfer trigger reads the user's role on every Account update, so the integration user and the operator set carry View Roles.</p>
+
+  <h3>One person at two partners <span class="tag">OQ-10</span></h3>
+  <p>Draft question, ready to send:</p>
+  <blockquote>Can one person be the contact for more than one partner company? For example, a consultant who works with two partners. Today, if the same email address exists under two approved partners, the portal signs them in to the one they used most recently. If this can happen, tell us how you would like it handled: always ask which company, or one company per email address.</blockquote>
+
+  <h3>Contract e-signature <span class="tag">Week 3</span></h3>
+  <p>No e-signature package is installed in the sandbox (installed: ZoomInfo, Gong, Granola, Sales Insights, Linear, a rollup tool). Whatever Factory signs with lives outside Salesforce. Default for Week 3: the plan's fallback, a signed-PDF reference on the Account with a status field, which works with any tool named later. Ask on demo day what they sign with.</p>
+
+  <h3>Also agreed 2026-09-16</h3>
+  <ul class="tight">
+    <li>Demo with placeholder copy. Factory's words can replace it after they see it.</li>
+    <li>No access offered to Factory yet. Demo only. Access on request.</li>
+    <li>Help text on Factory's six fields (OQ-6): proceed in the sandbox, production waits on Factory.</li>
+    <li>Commission definition and UAT ownership: later communications, not needed before the demo.</li>
+  </ul>
+</section>
+
+<section class="stream" id="sources" style="border-bottom:none">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Source index</h2></div>
+  <p class="kicker">Code repo (Droid reads these)</p>
+  <div class="src-list">
+    <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/DECISIONS.md"><span class="gid">md</span><span class="st"><div class="nm">docs/DECISIONS.md</div><div class="dt">the same log, one row per ruling · updated with every heartbeat ruling</div></span><span class="arr">→</span></a>
+    <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/HEARTBEAT.md"><span class="gid">md</span><span class="st"><div class="nm">docs/HEARTBEAT.md</div><div class="dt">planner and builder exchange, timestamps and proofs</div></span><span class="arr">→</span></a>
+    <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/SPEC_WEEK2.md"><span class="gid">md</span><span class="st"><div class="nm">docs/SPEC_WEEK2.md</div><div class="dt">Week 2 spec rev 3 · section 11 carries rulings R1 to R16 in exact wording</div></span><span class="arr">→</span></a>
+    <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/REVIEW_LOG.md"><span class="gid">md</span><span class="st"><div class="nm">docs/REVIEW_LOG.md</div><div class="dt">builder's review-loop close-outs with re-runnable evidence</div></span><span class="arr">→</span></a>
+    <a class="src" href="https://github.com/br5692/factory-partner-portal/blob/main/docs/RUNBOOK.md"><span class="gid">md</span><span class="st"><div class="nm">docs/RUNBOOK.md</div><div class="dt">deploy log, sandbox-refresh steps, production checklist</div></span><span class="arr">→</span></a>
+  </div>
+  <p class="kicker">Planning repo</p>
+  <div class="src-list">
+    <a class="src" href="https://github.com/br5692/factory-ai/blob/main/docs/2026-09-09_project-plan-v2-build.md"><span class="gid">md</span><span class="st"><div class="nm">2026-09-09_project-plan-v2-build.md</div><div class="dt">running build record, checkpoint verifications, investigations</div></span><span class="arr">→</span></a>
+    <a class="src" href="https://github.com/br5692/factory-ai/blob/main/docs/strategy/factory_graph.yaml"><span class="gid">yaml</span><span class="st"><div class="nm">factory_graph.yaml</div><div class="dt">work graph, 92 nodes, proven by evidence checks</div></span><span class="arr">→</span></a>
+  </div>
+  <footer>
+    <p class="fmono">Compiled 2026-09-16 · 7 sources · code repo ec19ca1</p>
+    <p>Weeks 1 and 2 are built, verified on the hosted stack, and closed clean. Ten rulings await Blair's sign-off, three questions await Factory, and none of them blocks the build.</p>
+  </footer>
+</section>
+
+</main>
+
+<script>
+  (function(){
+    var btn=document.getElementById('themeToggle'), root=document.documentElement;
+    btn.addEventListener('click', function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur) cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      var next=cur==='dark'?'light':'dark';
+      root.setAttribute('data-theme', next);
+      btn.textContent=next==='dark'?'Light':'Dark';
+    });
+  })();
+</script>
+</body>
+</html>
