@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Partner Portal, manual test script</title>
+<title>Partner Portal, manual test script, Weeks 1 to 5</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
 <style>
   :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
@@ -33,7 +33,7 @@
 <body>
 <header class="mast"><div class="wrap mast-inner">
   <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Manual test script</p>
-  <h1 class="title">Weeks 1 and 2, <span>by hand</span></h1>
+  <h1 class="title">Weeks 1 to 5, <span>by hand</span></h1>
   <p class="lede">Walk this top to bottom on the hosted stack. Each row is one check with what to do, what should happen, and where to confirm it. Note anything off in the right-hand column. Ordered the way the Tuesday walk-through runs.</p>
 </div></header>
 <main class="wrap">
@@ -41,10 +41,10 @@
 <section class="stream" id="setup">
   <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Before you start</h2></div>
   <ul>
-    <li>Portal: <code>https://factory-partner-portal.pages.dev</code> (Week 2 build). Salesforce: the partial sandbox, Factory Sales app, Partner Applications tab from the App Launcher.</li>
+    <li>Portal for Weeks 1 and 2: <code>https://factory-partner-portal.pages.dev</code> (Week 2 build). Portal for Weeks 3 to 5: <code>https://latest.factory-partner-portal.pages.dev</code> (all weeks; same sign-in, same data). Salesforce: the partial sandbox, Factory Sales app, Partner Applications tab from the App Launcher.</li>
     <li>Use a fictional company and a test address you own. Nothing here emails anyone else.</li>
     <li>Two paths for the two emails (invite and sign-in link). <strong>Path A, real inbox:</strong> deliverability set to All email in the sandbox and the hosted mail transport switched to Salesforce for the hour; both revert after. <strong>Path B, no email:</strong> the link is read from the hosted service log instead. Say which path before you start; the rows below say where each applies.</li>
-    <li>One pass takes about 45 minutes. Two full passes on different days is a solid review.</li>
+    <li>Weeks 1 and 2 take about 45 minutes. Weeks 3 to 5 add about 40 minutes and need the same approved partner from Week 2. Two full passes on different days is a solid review.</li>
   </ul>
   <div class="callout"><strong>Rate limits.</strong> Five sign-in requests per address and twenty per network address per hour. If you hit them, the reply looks the same, and the next hour clears it.</div>
 </section>
@@ -109,14 +109,76 @@
   </table></div>
 </section>
 
+<section class="stream" id="w3">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 3: Contract signature</h2></div>
+  <p class="sec-sub">You are the approved partner from Week 2, then the operator. Use the preview address. Ten minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="n">4.1</td><td>Sign in on the preview address with your approved partner. Open the dashboard.</td><td class="exp">A Contract card reads Not sent.</td><td class="why">Partner sees the contract state on the dashboard.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">4.2</td><td>Open the Account in Salesforce. Use the Send Partner Contract action without a signing link.</td><td class="exp">Refused: the signing link is required.</td><td class="why">Nothing is sent without a link to sign.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">4.3</td><td>Send Partner Contract again with any https link.</td><td class="exp">Contract Status Sent, Contract Sent At stamped. Partner Lifecycle Status unchanged.</td><td class="why">Send stamps ours and leaves Factory's field alone.</td><td>Salesforce, Account</td><td class="chk"></td></tr>
+      <tr><td class="n">4.4</td><td>Reload the partner dashboard.</td><td class="exp">Contract card reads Sent with a View your contract link to the address you entered.</td><td class="why">Partner sees the link the operator entered.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">4.5</td><td>Open Register a deal while the contract is unsigned.</td><td class="exp">Still available. The contract gate is a hosted setting that stays off until Factory asks for it.</td><td class="why">Gate exists and is off by design today.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">4.6</td><td>Mark Contract Signed on the Account.</td><td class="exp">Contract Status Signed, Contract Signed At stamped. Note the signed file slot on the Account.</td><td class="why">Signing is one action and one timestamp.</td><td>Salesforce, Account</td><td class="chk"></td></tr>
+      <tr><td class="n">4.7</td><td>Reload the partner dashboard.</td><td class="exp">Contract card reads Signed with the file slot state.</td><td class="why">Partner sees the signed state without a reload delay.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">4.8</td><td>Portal Audit Log, newest rows.</td><td class="exp">contract_sent and contract_signed rows with the Account as target; get_contract_status rows from your reloads.</td><td class="why">Every contract step is audited.</td><td>Salesforce</td><td class="chk"></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w4">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Week 4: Deal registration</h2></div>
+  <p class="sec-sub">You are the signed partner, then the operator. Preview address. Fifteen minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="n">5.1</td><td>Register a deal. Leave the customer name empty and press Next.</td><td class="exp">The form refuses with a plain message.</td><td class="why">Validation stops bad input before anything is written.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">5.2</td><td>Fill step 1 with a fictional customer and domain, step 2 with a deal name, value and close date, step 3 with a role and Sourced. Submit.</td><td class="exp">The registration detail opens: Pending, with everything you entered.</td><td class="why">A registration is created and shown back correctly.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">5.3</td><td>Submit the same customer and deal again.</td><td class="exp">Refused with one sentence. No second registration.</td><td class="why">Duplicate registrations are refused, nothing written.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">5.4</td><td>Open the customer Account in Salesforce.</td><td class="exp">Portal Created checked, owned by the integration user, one Contact with the address you entered.</td><td class="why">New customers are created and marked as portal-created.</td><td>Salesforce, Account</td><td class="chk"></td></tr>
+      <tr><td class="n">5.5</td><td>Partner Applications tab, Unassigned Customers card.</td><td class="exp">Your fictional customer is listed for reassignment.</td><td class="why">Leadership can find net-new customers to assign.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">5.6</td><td>Open the Opportunity from the customer Account.</td><td class="exp">Named for the deal, first open stage, your value and close date. Partner Influence related list shows the registration.</td><td class="why">The deal exists in Factory's pipeline, linked to you.</td><td>Salesforce, Opportunity</td><td class="chk"></td></tr>
+      <tr><td class="n">5.7</td><td>Open the Partner Influence record.</td><td class="exp">Partner Portal section: deal name, customer, status Pending, role, attribution, submitted by and when.</td><td class="why">Registration details are on the junction record.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">5.8</td><td>Partner Applications tab, Registrations Pending card.</td><td class="exp">Your registration is listed.</td><td class="why">Operators see a queue of pending registrations.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">5.9</td><td>Portal Audit Log, newest rows.</td><td class="exp">create_deal_registration Success; the duplicate as Denied; a registration_received row (Error email_send_failed unless deliverability is on).</td><td class="why">Registration and its email attempt are audited.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">5.10</td><td>Sign in as a second fictional partner (apply, approve, sign as in Weeks 2 and 3). Open the dashboard.</td><td class="exp">Only that partner's registrations. None of the first partner's.</td><td class="why">Partners never see each other's deals.</td><td>Browser</td><td class="chk"></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w5">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Week 5: Deal decisions</h2></div>
+  <p class="sec-sub">You are the operator with the decision permission, then the partner. Preview address. Fifteen minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="n">6.1</td><td>As an operator without Portal Deal Decision, open Partner Applications.</td><td class="exp">No Partner Registration Decision box and no Decided card.</td><td class="why">Decisions are hidden without the permission.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.2</td><td>As an operator with the permission, open Partner Applications.</td><td class="exp">Registration Decision box with a Registration dropdown of pending deals; a Registrations Decided card.</td><td class="why">The permission reveals the decision tools.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.3</td><td>Pick your registration, choose Deny, leave the note empty, Next.</td><td class="exp">Note Required screen. Nothing changes on the registration.</td><td class="why">Deny and Needs Information require a reason.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.4</td><td>Pick it again, choose Approve, add a note, Next.</td><td class="exp">Registration Status Approved, Decided By and Decided At stamped, note saved. It moves from Pending to Decided.</td><td class="why">Approval stamps who, when and why.</td><td>Salesforce, Partner Influence</td><td class="chk"></td></tr>
+      <tr><td class="n">6.5</td><td>Register a second deal for the same customer as a second partner of the same type, then try to Approve it.</td><td class="exp">Approval Blocked screen with one sentence. Nothing written.</td><td class="why">One primary partner per deal, enforced at approval.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.6</td><td>Register another deal as the first partner. Pick it, choose Needs Information, add a question, Next.</td><td class="exp">Status Needs Information, note saved. It stays in the pending list.</td><td class="why">Needs Information sends it back without deciding.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.7</td><td>Portal Audit Log, newest rows.</td><td class="exp">registration_decision rows for each outcome with the deciding user as actor; a decision email row per decision (Error email_send_failed unless deliverability is on).</td><td class="why">Every decision and email attempt is audited.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.8</td><td>Path A only: check the partner inbox.</td><td class="exp">Approved and Needs Information emails from the portal sender address, each with the note.</td><td class="why">Partners are told the decision and why.</td><td>Inbox</td><td class="chk"></td></tr>
+      <tr><td class="n">6.9</td><td>Sign in as the first partner. Open the dashboard.</td><td class="exp">Four tiles above the list: approved registrations, approved value, awaiting decision, approval rate. Numbers match your deals.</td><td class="why">Partners see their own numbers, nobody else's.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">6.10</td><td>Open the approved registration.</td><td class="exp">Decision block: Approved, the note, the decided date. No name of who decided.</td><td class="why">Partner sees the decision, never the decider.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">6.11</td><td>Open the Needs Information registration. Type a reply and Send.</td><td class="exp">The reply appears under the decision with its time. Status stays Needs Information.</td><td class="why">Partner can answer the question in place.</td><td>Browser</td><td class="chk"></td></tr>
+      <tr><td class="n">6.12</td><td>Open that Partner Influence record in Salesforce.</td><td class="exp">The reply is on the record with its time; a registration_reply audit row exists.</td><td class="why">The operator sees the partner's answer.</td><td>Salesforce</td><td class="chk"></td></tr>
+      <tr><td class="n">6.13</td><td>Setup, Custom Settings, Portal Settings.</td><td class="exp">Decision Manager Copy unchecked, no rows.</td><td class="why">Manager copies are off until Factory turns them on.</td><td>Salesforce Setup</td><td class="chk"></td></tr>
+      <tr><td class="n">6.14</td><td>Open the main address, not the preview, signed in as the partner.</td><td class="exp">No tiles, no decision block, no reply box. Dashboard as in Week 2.</td><td class="why">Week 5 stays hidden on the public address.</td><td>Browser</td><td class="chk"></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
 <section class="stream" id="after" style="border-bottom:none">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">After the pass</h2></div>
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">After the pass</h2></div>
   <ul>
     <li>Path A: revert deliverability to system-only and the hosted mail transport to log.</li>
     <li>Leave the fictional Accounts in the sandbox; they are harmless.</li>
     <li>Send the notes column back. Each finding becomes a fix with a test before Tuesday.</li>
   </ul>
-  <footer><p class="fmono">Written 2026-09-17 · 30 checks · Weeks 1 and 2 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+  <footer><p class="fmono">Written 2026-09-17 · 62 checks · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
 </section>
 </main>
 </body>
