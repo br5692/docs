@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Partner Portal, progress by week</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+<style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--rose:#a3323f;--rose-wash:#f3e0e1;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}
+  .mast-inner{padding:44px 0 30px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 14px;text-wrap:balance}h1.title span{color:var(--accent-2)}
+  .lede{font-size:1.06rem;color:var(--ink-soft);max-width:62ch;margin:0 0 24px}
+  .meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .meta-cell{background:var(--surface);padding:14px 16px}.meta-cell .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}.meta-cell .v{font-size:.92rem;font-weight:600}
+  nav.toc{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .toc-inner{display:flex;gap:4px;flex-wrap:wrap;padding:10px 0;align-items:center}.toc a{font-size:.82rem;color:var(--ink-soft);text-decoration:none;padding:6px 12px;border-radius:999px;font-weight:500;white-space:nowrap}.toc a:hover{background:var(--surface-2);color:var(--ink)}.toc a .num{font-family:var(--mono);font-size:.72rem;color:var(--accent-2);margin-right:6px}
+  .toc .spacer{flex:1}#themeToggle{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+  section.stream{padding:44px 0 10px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,3.6vw,2rem);letter-spacing:-.01em;margin:0;line-height:1.1;text-wrap:balance}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 18px;max-width:70ch}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid transparent;white-space:nowrap}.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}.pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}.pill.pending{color:var(--rose);background:var(--rose-wash);border-color:color-mix(in srgb,var(--rose) 30%,transparent)}.pill.later{color:var(--ink-faint);background:var(--surface-2);border-color:var(--line)}
+  h3{font-weight:700;font-size:1.02rem;margin:26px 0 8px}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:10px 12px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}td.req{font-weight:600;color:var(--ink);min-width:170px}td.how{color:var(--ink-soft)}
+  .weeks{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:10px 0 6px}
+  .wk{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}.wk .n{font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}.wk .t{font-weight:600;font-size:.9rem;margin:2px 0 6px;line-height:1.3}
+  .clips{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:8px 0 16px}
+  .clip{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}.clip video{display:block;width:100%;height:auto;background:#000}.clip .cap{padding:10px 12px;font-size:.86rem;color:var(--ink-soft)}.clip .cap .m{font-family:var(--mono);font-size:.74rem;color:var(--ink-faint);margin-top:3px}
+  .clip.soon{border-style:dashed}.clip.soon .ph{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:var(--surface-2);color:var(--ink-faint);font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:12px 16px;margin:12px 0}.callout.amber{border-left-color:var(--amber)}
+  footer{padding:36px 0 56px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Progress</p>
+  <h1 class="title">Progress <span>by week</span></h1>
+  <p class="lede">What was built each week, how it works, and how it was proven. One table per week, one row per requirement from the approved plan. Short clips show the key pieces in motion.</p>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="k">Plan</div><div class="v">Workstreams 1 to 3, seven weeks</div></div>
+    <div class="meta-cell"><div class="k">Calendar</div><div class="v">Week 1 of 7</div></div>
+    <div class="meta-cell"><div class="k">Built and verified</div><div class="v">Weeks 1, 2, 3</div></div>
+    <div class="meta-cell"><div class="k">In build</div><div class="v">Week 4</div></div>
+    <div class="meta-cell"><div class="k">Updated</div><div class="v">2026-09-16</div></div>
+  </div>
+</div></header>
+<nav class="toc"><div class="wrap toc-inner">
+  <a href="#glance"><span class="num">00</span>At a glance</a><a href="#w1"><span class="num">01</span>Week 1</a><a href="#w2"><span class="num">02</span>Week 2</a><a href="#w3"><span class="num">03</span>Week 3</a><a href="#w4"><span class="num">04</span>Week 4</a><a href="#open"><span class="num">05</span>Open questions</a><a href="#next"><span class="num">06</span>Next</a>
+  <span class="spacer"></span><button id="themeToggle" type="button">theme</button>
+</div></nav>
+<main class="wrap">
+
+<section class="stream" id="glance">
+  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">At a glance</h2></div>
+  <p class="sec-sub">The build runs ahead of the plan calendar. Three weeks of scope are built and verified in the sandbox and on the hosted stack. Week 4 is in build.</p>
+  <div class="weeks">
+    <div class="wk"><div class="n">Week 1</div><div class="t">Foundation</div><span class="pill live">verified</span></div>
+    <div class="wk"><div class="n">Week 2</div><div class="t">Registration and sign-in</div><span class="pill live">verified</span></div>
+    <div class="wk"><div class="n">Week 3</div><div class="t">Contract signature</div><span class="pill live">verified</span></div>
+    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill sandbox">in build</span></div>
+    <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill later">spec ready</span></div>
+    <div class="wk"><div class="n">Week 6</div><div class="t">Dashboard tiles, UAT starts</div><span class="pill later">later</span></div>
+    <div class="wk"><div class="n">Week 7</div><div class="t">Launch</div><span class="pill later">later</span></div>
+  </div>
+  <div class="callout"><strong>How to read "verified".</strong> Each week closes only when every requirement is proven three ways: automated tests against the sandbox, a walk-through of the real path on the hosted stack, and a review of a clean copy of the code. A row marked verified has all three.</div>
+</section>
+
+<section class="stream" id="w1">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Week 1: Foundation</h2><span class="pill live">verified 2026-09-15</span></div>
+  <p class="sec-sub">Workstream 1, Portal Infrastructure. The parts every later week stands on: hosting, the Salesforce data model, one integration user with certificate sign-on, and the web service that every call goes through.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
+    <tbody>
+      <tr><td class="req">Hosting</td><td>The portal on Cloudflare Pages. The web service on Render. Both deploy from the code repository on every push.</td><td class="how">The portal is static files with no secrets. The web service is one container with a health check that reports the running commit. Secrets live only in the Render environment.</td><td>Both hosts confirmed through their own APIs. Health check green.</td></tr>
+      <tr><td class="req">Data model</td><td>Factory's exported objects deployed unchanged. Portal fields added on Account, Contact and the Partner Influence junction. A new audit object.</td><td class="how">Every portal field carries a Portal or Partner prefix and help text. Factory's own fields, layouts and flows are never changed. The audit object holds one row per call.</td><td>Field count matched by describe. Deploy records in the sandbox setup audit trail.</td></tr>
+      <tr><td class="req">Integration user</td><td>One API-only user with a permission set that grants exactly the fields the portal uses.</td><td class="how">Least privilege: no profile changes, no admin rights. Every read or write the portal makes runs as this user, so every change in Salesforce traces to it.</td><td>Permission set contents reviewed line by line. The user cannot log in through the browser.</td></tr>
+      <tr><td class="req">Certificate sign-on</td><td>An External Client App with a certificate. The web service signs a short-lived token with the private key and exchanges it for a session.</td><td class="how">No password exists anywhere. The private key lives only in the Render environment. Salesforce trusts the certificate, not a secret string.</td><td>Token exchange proven live. Certificate page in the sandbox.</td></tr>
+      <tr><td class="req">Web service with audit log</td><td>A Node service that exposes the same actions two ways: plain HTTP for the portal, and MCP for agents.</td><td class="how">Every call resolves who is calling, checks a permission table, validates the input, calls Salesforce as the integration user, and writes one audit row with the actor, outcome and request id. Refusals are audited too.</td><td>Contract tests run against the sandbox and clean up after themselves. A live call shows its audit row within seconds.</td></tr>
+      <tr><td class="req">Runs anywhere</td><td>The same container runs on a laptop against the same sandbox.</td><td class="how">One environment file selects the sandbox, the certificate and the mail transport. Nothing else changes between a laptop and Render.</td><td>Container started locally, health check green, one audited call.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Clips</h3>
+  <div class="clips">
+    <div class="clip soon" data-clip="w1-certificate-auth"><div class="ph">clip coming · certificate sign-on</div><div class="cap">Certificate sign-on in Salesforce: the integration user, its permission set, the External Client App and the certificate.<div class="m">about 30 s</div></div></div>
+    <div class="clip soon" data-clip="w1-audited-call"><div class="ph">clip coming · an audited call</div><div class="cap">A live call to the web service and the audit row it leaves in Salesforce.<div class="m">about 30 s</div></div></div>
+  </div>
+</section>
+
+<section class="stream" id="w2">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Week 2: Registration and sign-in</h2><span class="pill live">verified 2026-09-16</span></div>
+  <p class="sec-sub">Workstream 2, Partner Registration, and the sign-in and dashboard lines of Workstream 1. A partner applies, Factory reviews and approves inside Salesforce, the invite goes out, the partner signs in with a link.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
+    <tbody>
+      <tr><td class="req">Initial request of partner status</td><td>A public application form on the portal.</td><td class="how">Six fields and an optional note. Submitting creates the Account as Applied and the Contact, and stamps the applied-at time. A hidden trap field and a duplicate check keep out bots and repeats.</td><td>Live on the hosted portal. Account and audit row created.</td></tr>
+      <tr><td class="req">Account and Contact creation</td><td>Done by the web service on submit.</td><td class="how">Standard objects. The Account carries the application status, partner type and note. The Contact becomes the primary contact.</td><td>Contract tests. Records visible in the sandbox.</td></tr>
+      <tr><td class="req">Partner validation by Factory</td><td>A Partner Applications tab in the Factory Sales app with a decision flow.</td><td class="how">Operators see pending applications in a list and approve or deny with a note. Approve stamps the accepted-at time and moves the Account to Approved. Approve is refused until a primary contact exists.</td><td>Walked through as a test operator. Audit row per decision.</td></tr>
+      <tr><td class="req">Review list gated by permission</td><td>A custom permission that controls who sees the tab.</td><td class="how">Operators hold a permission set with the custom permission. A user without it does not see the tab.</td><td>Proven with a second test user who has no access.</td></tr>
+      <tr><td class="req">Pre-approved partner invite</td><td>Approval sends the invite automatically.</td><td class="how">A flow fires when the status turns Approved, sends the invite email from a Salesforce template, and writes an audit row. A pre-approved partner is simply created as Approved by the operator.</td><td>Email rendered from the real template. Audit row partner_invite.</td></tr>
+      <tr><td class="req">Log in</td><td>Email link sign-in, no password.</td><td class="how">The partner enters an email address. The reply is the same for every address. If the address belongs to an approved partner, a one-time link arrives, valid for fifteen minutes. Clicking it sets a secure cookie. Five requests per address and twenty per network address per hour.</td><td>Live on the hosted portal. Second use of a link refused.</td></tr>
+      <tr><td class="req">Partner dashboard shell</td><td>The signed-in home page with navigation.</td><td class="how">Shows the partner's company, a contract card and the registrations list. The list is empty until Week 4 fills it.</td><td>Live on the hosted portal.</td></tr>
+      <tr><td class="req">Application and acceptance timestamps</td><td>Two date-time fields on the Account.</td><td class="how">Applied-at set on submit. Accepted-at set on approve.</td><td>Visible on the review page.</td></tr>
+      <tr><td class="req">Operator permission set</td><td>One permission set for Factory operators.</td><td class="how">Read and edit on the portal fields, the custom permission, the tab and the flow. No profile changes.</td><td>Assigned to the test operator; verified through the tab.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Clips</h3>
+  <div class="clips">
+    <div class="clip soon" data-clip="w2-apply-review"><div class="ph">clip coming · apply and review</div><div class="cap">A partner applies. The application appears on the Partner Applications tab.<div class="m">about 30 s</div></div></div>
+    <div class="clip soon" data-clip="w2-approve-invite"><div class="ph">clip coming · approve and invite</div><div class="cap">The operator approves. The invite email goes out from the Salesforce template.<div class="m">about 30 s</div></div></div>
+    <div class="clip soon" data-clip="w2-sign-in"><div class="ph">clip coming · sign in</div><div class="cap">The partner requests a link, signs in, lands on the dashboard. The audit row in Salesforce.<div class="m">about 30 s</div></div></div>
+  </div>
+  <p>The full Week 2 story in one cut: <a href="https://br5692.github.io/docs/d/factory-demos-5bbaa687/">application to sign-in</a>.</p>
+</section>
+
+<section class="stream" id="w3">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Week 3: Contract signature</h2><span class="pill live">verified 2026-09-16</span></div>
+  <p class="sec-sub">Workstream 2, the partner contract line. Built so the e-sign tool can be plugged in later without touching anything else.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>Proof</th></tr></thead>
+    <tbody>
+      <tr><td class="req">E-sign link</td><td>A Send Partner Contract action in Salesforce and a contract page in the portal.</td><td class="how">The operator pastes the signing link from the e-sign tool and clicks Send. The Account moves to Sent, an email tells the partner, and the portal's contract page shows a button that opens the link.</td><td>Walked through on the hosted stack. Email rendered from the template.</td></tr>
+      <tr><td class="req">Status sync</td><td>Contract status on the Account: Not Sent, Sent, Signed. Sent-at and signed-at times.</td><td class="how">A Mark Contract Signed action sets Signed. Flows on each change send the matching email and write an audit row. A webhook route is ready for the e-sign tool to report Sent and Signed on its own once the tool is named.</td><td>Audit rows contract_sent and contract_signed. Webhook refuses unknown providers and bad signatures.</td></tr>
+      <tr><td class="req">Status tracking</td><td>The portal reads the contract status through the web service.</td><td class="how">The contract card on the dashboard and the contract page show the current state. An optional gate confines a signed-in partner to the contract page until Signed. Off by default.</td><td>Gate tested both ways.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout amber"><strong>Waiting on Factory.</strong> Which e-sign tool Factory uses. Until then the operator pastes the link by hand and marks Signed by hand. Plugging in the tool is one contained change with its own test.</div>
+  <h3>Clips</h3>
+  <div class="clips">
+    <div class="clip soon" data-clip="w3-contract"><div class="ph">clip coming · contract</div><div class="cap">Send the contract from Salesforce, the partner's contract page, mark it signed, the dashboard updates.<div class="m">about 30 s</div></div></div>
+  </div>
+</section>
+
+<section class="stream" id="w4">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill sandbox">in build</span></div>
+  <p class="sec-sub">Workstream 3, the registration half. A partner registers a deal, the customer is matched or created, and the registration waits as Pending for the decision work in Week 5.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>Requirement</th><th>What is being built</th><th>How it works</th><th>State</th></tr></thead>
+    <tbody>
+      <tr><td class="req">Create Account and Contact if not in CRM</td><td>A customer match step and a create step in the web service.</td><td class="how">Match by website domain, then by name, then the contact by email. Create only when nothing matches. New customer Accounts are marked as portal-created.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Net-new routed for assignment</td><td>An Unassigned Customers list on the operator tab.</td><td class="how">Accounts cannot be owned by a queue on the platform, so new customers are owned by the integration user and listed for leadership to reassign.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Partner Influence record created Pending</td><td>The registration row on Factory's junction object.</td><td class="how">Deal name, value, close date, partner role, attribution (Sourced or Influenced), submitted by and when. The Opportunity is matched or created in the first open stage.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Surface the junction on the Opportunity</td><td>The link from the registration to the Opportunity.</td><td class="how">Queryable now. A related list on Factory's Opportunity page needs Factory's yes.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Pending registrations on the dashboard</td><td>A Register a deal form and the registrations list and detail.</td><td class="how">Three steps: customer, deal, attribution. A duplicate registration for the same contact is refused with a plain sentence.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Received email</td><td>A confirmation email when a registration is created.</td><td class="how">A flow on the junction sends it from a template and writes an audit row.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Week toggle</td><td>The portal shows only the weeks Factory is meant to see.</td><td class="how">One setting per side hides later weeks' pages and refuses their actions. A test link can show Week 2 alone.</td><td>In build</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Clips</h3>
+  <div class="clips">
+    <div class="clip soon" data-clip="w4-register"><div class="ph">clip coming · register a deal</div><div class="cap">A partner registers a deal. The customer, Opportunity and pending registration appear in Salesforce.<div class="m">about 30 s · after verification</div></div></div>
+  </div>
+</section>
+
+<section class="stream" id="open">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Open questions for Factory</h2></div>
+  <p class="sec-sub">None of these blocks the build. Each has a working assumption and a single place to change when answered.</p>
+  <ul>
+    <li><strong>E-sign tool.</strong> Which tool Factory uses. Assumed: manual link until named.</li>
+    <li><strong>One person, two partners.</strong> Can one contact act for more than one partner company. Assumed: one contact per email, one company per session.</li>
+    <li><strong>Lifecycle stage on signature.</strong> Whether a signed contract moves the Account's lifecycle stage, and to which. Assumed: no change.</li>
+    <li><strong>Opportunity page.</strong> Whether a Partner Influence related list may be added to Factory's Opportunity layout. Assumed: not yet.</li>
+    <li><strong>New customers.</strong> Whether leadership wants a queue or an alert instead of the unassigned list. Assumed: the list.</li>
+    <li><strong>Commission and partner tier.</strong> The commission definition and where partner tier lives. Needed for Week 6 tiles, not before.</li>
+  </ul>
+</section>
+
+<section class="stream" id="next" style="border-bottom:none">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Next</h2></div>
+  <ul>
+    <li><strong>Week 4 close.</strong> Verify the registration path end to end on the hosted stack and review a clean copy of the code.</li>
+    <li><strong>Week 5, deal decisions.</strong> Approve, deny and needs-information inside Salesforce, decision emails, dashboard tiles, and the multi-partner rules enforced at decision time. Spec ready.</li>
+    <li><strong>Walk-through.</strong> Weeks 1 and 2 live, with Week 3 and 4 shown as built if wanted.</li>
+  </ul>
+  <footer><p class="fmono">Updated 2026-09-16 · Weeks 1 to 3 verified, Week 4 in build</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+</section>
+</main>
+<script>
+(function(){var b=document.getElementById('themeToggle'),r=document.documentElement;function cur(){return r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}b.addEventListener('click',function(){r.setAttribute('data-theme',cur()==='dark'?'light':'dark')});})();
+</script>
+</body>
+</html>
