@@ -1,0 +1,413 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Partner Portal, machine test pass</title><style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:40px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;display:flex;align-items:center;gap:10px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,3rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}h1.title span{color:inherit}
+  .lede{font-size:1.02rem;color:var(--ink-soft);max-width:64ch;margin:0}
+  section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);letter-spacing:-.01em;margin:0;line-height:1.1}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 14px;max-width:70ch}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul,ol{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:9px 11px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);white-space:nowrap}td.exp{color:var(--ink)}td.chk{min-width:120px;border-left:1px dashed var(--line)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
+  footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
+  a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
+</style>
+<style>.res h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);margin:40px 0 10px}.res h3{margin:26px 0 8px}.res table{width:100%;border-collapse:collapse;font-size:.88rem;margin:10px 0 18px}.res th,.res td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left}.res th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}.res code{font-family:var(--mono);font-size:.85em;background:var(--code-bg);padding:1px 5px;border-radius:4px}.res p{max-width:72ch}.res ul{padding-left:22px}</style></head><body>
+<header class="mast"><div class="wrap mast-inner"><p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Test results</p><h1 class="title">Machine pass, <span>Weeks 1 to 5</span></h1><p class="lede">The 61-check manual script run end to end on the hosted stack by the build agent, one row per step with the evidence behind it. 59 of 59 applicable checks pass; two are real-inbox steps not run on this path. Six gaps were found and fixed during the run. The human pass is still the one that counts.</p></div></header>
+<main class="wrap"><section class="stream res" style="border-bottom:none"><div class="tbl-scroll"><h1 id="manual-test-pass-2026-09-17">Manual test pass, 2026-09-17</h1>
+<p>The manual script (<code>https://br5692.github.io/docs/d/factory-test-script-b810a522/</code>) run end to end on the hosted stack, as a tester, before Blair's own pass. (61 checks; step 3.12 was withdrawn by the planner at 17:59Z after it had already been run — its row is dropped from this table per the instruction, evidence files remain under <code>evidence/manual-pass-2026-09-17/</code>.)</p>
+<ul>
+<li>Path: <strong>B</strong> (no email; sign-in links read from the hosted Render service log, service <code>srv-dakmntgae00c73bvks6g</code>).</li>
+<li>Weeks 1–2 on <code>https://factory-partner-portal.pages.dev</code> (Week 2 build); Weeks 3–5 on <code>https://latest.factory-partner-portal.pages.dev</code>.</li>
+<li>Salesforce: partial sandbox, Factory Sales app (<code>factoryai--partial.sandbox</code>), browser-driven as admin with Login As for the [TEST] operator and [TEST] plain user.</li>
+<li>One fresh [TEST] partner for the whole pass (created at step 2.2).</li>
+<li>Evidence: one screenshot per step under <code>evidence/manual-pass-2026-09-17/</code>, plus record ids and audit row ids a reader can re-check with <code>sf data query -o factory-partial</code>.</li>
+<li>Path A steps (2.11, 6.8) are N/A by design under Path B.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+<th>Evidence</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>pass</td>
+<td>1.1-landing.png</td>
+<td>Landing shows only "Sign in" and "Apply to become a partner"; no other navigation.</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>pass</td>
+<td>1.2-health.png; body <code>{"ok":true,"version":"ca29b23…","sf":"ok"}</code></td>
+<td>Hosted service up, talks to Salesforce, serving origin tip.</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>pass</td>
+<td>1.3-user-detail.png, 1.3-permsets.png; user <code>005W400000SO6QnIAL</code></td>
+<td>Profile "Minimum Access - Salesforce - With API Permission" (API-only); exactly one permission set, "Integration Access - Partner Portal"; all other assignment lists [0].</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>pass</td>
+<td>1.4-certificates.png</td>
+<td>Three portal certs incl. <code>Partner_Portal_Tool_Layer_JWT</code>, <code>PartnerPortal_JWT_20260915</code>, <code>PartnerPortal_JWT_CA_20260915</code>; sign-on is certificate-based, no password.</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>pass</td>
+<td>1.5-account-fields-filtered.png, 1.5-field-help-text.png; describe check</td>
+<td>All 20 junction + 9 audit + portal/contract/token fields on Account and Contact carry help text (describe-verified); Factory's own fields untouched (the no-help-text fields on Account/Contact are all Factory's, incl. pre-existing <code>Account_Tier__c</code> per OQ-3). Object Manager Quick Find did not filter as typed in this sandbox — Salesforce UI quirk, not portal scope; field detail reached via its id URL instead.</td>
+</tr>
+<tr>
+<td>1.6</td>
+<td>pass (after fix)</td>
+<td>1.6-audit-log.png (All view, 50+ items, Error/Success/Denied side by side); pre-fix evidence 1.6-no-all-view.png; REST listviews → <code>00BW4000006txVVMAY Portal_Audit_Log_All</code></td>
+<td><strong>Was finding W15-T1</strong> (audit object had zero list views). Planner ruling W15-1 (17:25Z): add it. <code>Portal_Audit_Log_All</code> (label "All", no filter, columns Name/Action/Actor/Outcome/Request Id/Occurred At, all internal users) deployed via the sanctioned preflight+deploy path (deploy <code>0AfW400000ERBs9KAH</code>, 1/1, verified in org). Note: ListView metadata cannot persist a default sort, so "sorted Occurred At descending" is a one-click UI sort, done when the view is used for later steps.</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>pass</td>
+<td>2.1-required.png</td>
+<td>Empty Apply submit → per-field "Required" messages, nothing created (no new Account).</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>pass</td>
+<td>2.2-thank-you.png; Account <code>001W4000013BxsAIAS</code>, Contact <code>003W4000016G5cUIAS</code></td>
+<td>Submitted [TEST] Manual Pass Partner (<code>blair.purdy+manual-0917@domestique.info</code>) → exact thank-you wording; Account + primary Contact created.</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>pass</td>
+<td>2.3-duplicate.png; audit <code>AL-002170</code> Denied <code>existing_application</code></td>
+<td>Re-submitted same details → same thank-you (no leak); still exactly 1 Account.</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>pass</td>
+<td>2.4-stamps.png</td>
+<td>Application fields stamped correctly (Applied status, applied-at, primary contact; the note carries the W4-8 domain-mismatch line).</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>pass</td>
+<td>audit <code>AL-002169</code></td>
+<td><code>application</code> Success row for the submit, request id matches.</td>
+</tr>
+<tr>
+<td>2.6</td>
+<td>pass (after fix)</td>
+<td>2.6-no-partner-tab.png, 2.6-direct-url.png</td>
+<td><strong>Was finding W15-T2</strong> ([TEST] users on "Minimum Access - Salesforce" had <code>PermissionsLightningExperienceUser=false</code>, Login As landed on classic then userAccessDenied). Planner ruling W15-2 (17:36Z): profile → Standard User for both [TEST] users. Re-run: [TEST] No Review sees Factory Sales nav WITHOUT Partner Applications; direct <code>/lightning/n/Partner_Applications</code> → "doesn't exist".</td>
+</tr>
+<tr>
+<td>2.7</td>
+<td>pass</td>
+<td>2.7-operator-tab.png</td>
+<td>Login As [TEST] Operator → Partner Applications tab; pending list shows [DEMO] Stage Partner + [TEST] Manual Pass Partner; "Partner Application Decision" box beside it.</td>
+</tr>
+<tr>
+<td>2.8</td>
+<td>pass</td>
+<td>2.8-no-contact-refused.png; Account <code>001W4000013C3tCIAS</code> still Applied</td>
+<td>Approve attempt on a bare account (no primary contact) → one-sentence refusal "Approval needs a primary contact so the invite has a recipient…"; nothing written.</td>
+</tr>
+<tr>
+<td>2.9</td>
+<td>pass</td>
+<td>2.9-approved.png</td>
+<td>Approved [TEST] Manual Pass Partner with note; <code>Partner_Accepted_At</code> stamped; account left the pending list.</td>
+</tr>
+<tr>
+<td>2.10</td>
+<td>pass</td>
+<td>audit <code>AL-002171</code></td>
+<td><code>partner_invite</code> Error <code>email_send_failed</code>, actor <code>staff:005W400000SQxN8</code> — expected under Path B (no deliverability).</td>
+</tr>
+<tr>
+<td>2.11</td>
+<td>n/a</td>
+<td>—</td>
+<td>Path A only.</td>
+</tr>
+<tr>
+<td>2.12</td>
+<td>pass with note</td>
+<td>2.12-applied.png, 2.12-denied.png; Account <code>001W4000013CY71IAG</code>, audit <code>AL-002173</code></td>
+<td>Denied [TEST] Denied Partner Co with note; status Denied, note saved, left pending list. Note: script says "no email today"; decision W4-9 built the rejection email, so a <code>partner_denied</code> Error <code>email_send_failed</code> row IS expected under Path B — script line is stale, not a defect.</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>pass</td>
+<td>3.1-unknown.png; audit <code>AL-002174</code> Denied <code>no_approved_contact</code></td>
+<td>Unknown address → neutral sentence "If that address belongs to an approved partner, a sign-in link is on its way. It works for 15 minutes."; single request fired.</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>pass</td>
+<td>3.2-denied-address.png; audit <code>AL-002175</code> Denied</td>
+<td>Denied partner's address → identical neutral sentence.</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>pass</td>
+<td>3.3-link-sent.png</td>
+<td>Approved address → same neutral sentence; link captured from Render log <code>sign_in_email</code> event (Path B).</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>pass</td>
+<td>3.4-dashboard.png</td>
+<td>Link → <code>/dashboard</code> as Pat / [TEST] Manual Pass Partner; nav = Dashboard + Sign out; "No deal registrations yet".</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>pass</td>
+<td>3.5-link-reused.png; audit <code>AL-002178</code> Denied <code>invalid_token</code></td>
+<td>Same link a second time in a fresh session → "That link has expired or was already used."</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>pass</td>
+<td>3.6-link-expired.png; audit <code>AL-002186</code> Denied <code>invalid_token</code></td>
+<td>Link requested 17:58:14Z opened 18:2xZ (&gt;15 min) in a fresh session → same refusal wording.</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td>pass</td>
+<td>3.7-cookie-check.png; source <code>tool-layer/src/auth/session.ts:53</code></td>
+<td>JS sees zero cookies/localStorage/sessionStorage; <code>fp_session</code> is <code>HttpOnly; Secure; SameSite=None; Path=/</code> on the tool-layer origin (source), functional cross-origin session proves it is set; headless browser's 3P-cookie introspection lists it empty (tooling quirk, noted).</td>
+</tr>
+<tr>
+<td>3.8</td>
+<td>pass</td>
+<td>3.8-fresh-redirect.png</td>
+<td>Fresh session → <code>/dashboard</code> redirects to <code>/sign-in</code>.</td>
+</tr>
+<tr>
+<td>3.9</td>
+<td>pass</td>
+<td>3.9-inactive.png</td>
+<td>CLI-set Contact Inactive → dashboard reload lands on sign-in; restored Approved → access back without a new link.</td>
+</tr>
+<tr>
+<td>3.10</td>
+<td>pass</td>
+<td>3.10-sign-out.png</td>
+<td>Sign out → <code>/sign-in</code>; Back stays on sign-in.</td>
+</tr>
+<tr>
+<td>3.11</td>
+<td>pass</td>
+<td>audit <code>AL-002174</code>–<code>AL-002179</code>, <code>AL-002186</code></td>
+<td>Requests Denied/Success, <code>sign_in</code> Success actor <code>partner:003W4000016G5cUIAS</code>, reuse/expiry Denied — every step auditable.</td>
+</tr>
+<tr>
+<td>4.1</td>
+<td>pass</td>
+<td>4.1-contract-not-sent.png</td>
+<td>Preview (<code>latest.</code>) dashboard for the signed-in partner: Contract card reads "NOT SENT". Link host-rewritten to the preview origin (Path B).</td>
+</tr>
+<tr>
+<td>4.2</td>
+<td>pass (substitution)</td>
+<td>REST refusal <code>REQUIRED_FIELD_MISSING [Contract_Signing_Link__c]</code>; status still Not Sent, sent-at null after</td>
+<td><strong>Substitution pending ruling W15-T3</strong>: the action is invisible in the UI (Factory's <code>Account_Record_Page</code> highlights panel lists 7 explicit actions and suppresses the layout's action list — even for admin; W15-3 put the contract actions on the layout but the panel still wins). Invoked via <code>sf api request rest</code> (the exact server path the UI calls, proven by the W3 contract suite). Without a link → refused, nothing written.</td>
+</tr>
+<tr>
+<td>4.3</td>
+<td>pass (substitution)</td>
+<td>REST success <code>Account edited.</code>; Account fields: Sent, <code>2026-09-17T18:32:40Z</code>, link stored</td>
+<td>Same substitution. Contract Status Sent, Contract Sent At stamped, <code>Partner_Lifecycle_Status__c</code> untouched (Factory's field left alone).</td>
+</tr>
+<tr>
+<td>4.4</td>
+<td>pass</td>
+<td>4.4-contract-sent.png, 4.4-contract-page.png</td>
+<td>Dashboard Contract card "SENT" with "View your contract"; the contract page reads "ready to sign" with OPEN THE AGREEMENT TO SIGN → the exact link entered.</td>
+</tr>
+<tr>
+<td>4.5</td>
+<td>pass</td>
+<td>4.5-register-gate-off.png</td>
+<td>Register a deal opens and is usable while the contract is Sent-but-unsigned; the gate (<code>SIGN_IN_REQUIRES_CONTRACT</code>) stays off by design (SWAP-3).</td>
+</tr>
+<tr>
+<td>4.6</td>
+<td>pass (substitution)</td>
+<td>REST success; Contract Status Signed, <code>Contract_Signed_At__c</code> <code>2026-09-17T18:35:39Z</code></td>
+<td>Same substitution for Mark Contract Signed. Signed file slot: none attached (upload surface is the operator-side Files related list; noted on the Account).</td>
+</tr>
+<tr>
+<td>4.7</td>
+<td>pass</td>
+<td>4.7-contract-signed.png, 4.7-contract-page-signed.png</td>
+<td>Dashboard card reads "SIGNED"; contract page "Your partner agreement is signed. SIGNED Sep 17, 2026." No delay.</td>
+</tr>
+<tr>
+<td>4.8</td>
+<td>pass</td>
+<td>audit <code>AL-002187</code> contract_sent, <code>AL-002192</code> contract_signed (both Error <code>email_send_failed</code> — Path B expected), <code>AL-002188/91/93/96</code> get_contract_status Success (actor partner contact)</td>
+<td>Every contract step audited with the Account as target.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="w15-5-re-runs-record-page-actions">W15-5 re-runs (record-page actions)</h2>
+<p>Planner ruling W15-5 (18:28Z): append the four portal quick actions to the highlights panel <code>actionNames</code> on Factory's <code>Account_Record_Page</code> after their seven. Done: deploy <code>0AfW400000ER5wQKAT</code> (1/1, preflight CLEAN, addition-only, archive <code>20260917T184034Z</code>), revert note in RUNBOOK. Then the record-path re-runs:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+<th>Evidence</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W15-5 surface</td>
+<td>pass</td>
+<td>w15-5-actions-visible.png</td>
+<td>As [TEST] Operator the record overflow menu now lists Approve Partner Application, Deny Partner Application, Send Partner Contract, Mark Contract Signed.</td>
+</tr>
+<tr>
+<td>4.2 re-run (UI)</td>
+<td>pass</td>
+<td>4.2-send-no-link-refused-v2.png</td>
+<td>Send with a genuinely empty link → "These required fields must be completed: Contract Signing Link"; <code>Contract_Sent_At__c</code> unchanged. First UI attempt (4.2-send-no-link-refused.png) did NOT clear the pre-filled link (fill command no-op on the Lightning input) and submitted a re-send — re-stamped Sent 18:42:32Z per the documented re-send semantics; corrected by the 4.6 re-run below.</td>
+</tr>
+<tr>
+<td>4.6 re-run (UI)</td>
+<td>pass</td>
+<td>4.6-mark-signed-ui.png</td>
+<td>Mark Contract Signed from the overflow menu → Signed, <code>Contract_Signed_At__c</code> re-stamped 18:45:28Z.</td>
+</tr>
+<tr>
+<td>2.8 re-check (record)</td>
+<td>pass</td>
+<td>2.8-record-refusal.png</td>
+<td>Approve on the bare [TEST] No Contact App → "These required fields must be completed: Portal Primary Contact"; status still Applied.</td>
+</tr>
+<tr>
+<td>2.9 re-check (record)</td>
+<td>pass</td>
+<td>2.9-record-path-applied.png, 2.9-record-approved.png; Account <code>001W4000013CbPnIAK</code>; audit <code>AL-002201</code> partner_invite Error <code>email_send_failed</code> actor <code>staff:005W400000SQxN8</code></td>
+<td>Fresh [TEST] Record Path Co application approved from the record: Approved, accepted-at stamped 18:52:07Z, note saved (domain-mismatch line preserved), invite row audited. Note: the first portal submit of this application 403'd <code>not_permitted</code> (AL-002199) because the shared non-partitioned <code>fp_session</code> cookie made it a partner call — signed-in partners may not apply, by design; re-submitted in a clean session.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="week-5-deal-decisions-preview-host-test-operator--test-reviewer--both-partners">Week 5: deal decisions (preview host, [TEST] Operator / [TEST] Reviewer / both partners)</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Result</th>
+<th>Evidence</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6.1</td>
+<td>pass (notes)</td>
+<td>6.1-reviewer-no-decision-box.png, 6.1-reviewer-full-page.png; user <code>005W400000SVD0tIAH</code></td>
+<td>As [TEST] Reviewer (Portal_Reviewer set, W15-7): no Partner Registration Decision box ✓. Two notes: (a) the Registrations Decided card IS visible — spec W5 line 54 puts both cards under Portal_Review_List, so the build matches the spec and the script's "no Decided card" reads stale; (b) the application decision box is also hidden for the reviewer because Portal_Reviewer carries no flow access (Portal_Admin_Fields/Portal_Operator grant <code>Partner_Application_Decision</code>) — a review-only user cannot decide applications either, role-appropriate.</td>
+</tr>
+<tr>
+<td>6.2</td>
+<td>pass</td>
+<td>6.2-operator-decision-box.png</td>
+<td>As [TEST] Operator: Registration Decision box with a Registration dropdown of pending deals ([TEST] Manual Pass Deal listed beside Factory's three) and the Registrations Decided card (1 item).</td>
+</tr>
+<tr>
+<td>6.3</td>
+<td>pass</td>
+<td>6.3-note-required.png</td>
+<td>Deny with an empty note → "Deny and Needs Information need a note so the partner knows why.", Previous only; PI-000356 still Pending, no stamps after.</td>
+</tr>
+<tr>
+<td>6.4</td>
+<td>pass</td>
+<td>6.4-decided-card.png; PI-000356 Approved, Decided By [TEST] Operator, <code>2026-09-17T19:44:08Z</code>, note saved, Is_Primary true</td>
+<td>Moves from the Pending card (now exactly Factory's 3) to the Decided card (2 items).</td>
+</tr>
+<tr>
+<td>6.5</td>
+<td>pass (both branches; setup note)</td>
+<td>6.5-approval-blocked.png, 6.5b-type-blocked.png; PI-000360/361/358 still Pending where blocked</td>
+<td>The script's "same customer, same type" does not trigger the block by itself: the portal creates a fresh Opportunity per registration, and SWAP-10 blocks on (1) same Opportunity + same partner type or (2) a second Approved Reseller on the customer. First attempt (PI-000357, Referral, own Opportunity) correctly approved — no spec conflict. Then proven per spec: reseller branch — PI-000360 (Reseller) approved, second reseller PI-000361 → "A reseller is already approved for this customer.", nothing written; type branch — PI-000358 re-pointed to the shared Opportunity <code>006W400000Q6fhRIAR</code> → "Another partner of the same type is already approved on this deal.", nothing written. Observation: the type branch is unreachable through pure portal registration (each registration gets its own Opportunity); it needed the junction re-point on our own [TEST] record.</td>
+</tr>
+<tr>
+<td>6.6</td>
+<td>pass</td>
+<td>6.6-needs-info.png; PI-000362 Needs Information, question saved, Decided By/At stamped</td>
+<td>The row stays in the Pending card ("[TEST] Beacon Hill Rollout", Submitted 1:10 PM).</td>
+</tr>
+<tr>
+<td>6.7</td>
+<td>pass</td>
+<td>audit <code>AL-002218</code>, <code>AL-002229</code>, <code>AL-002247</code>, <code>AL-002259</code></td>
+<td>One registration_decision row per decision (3 Approved + 1 Needs Information), actor <code>staff:005W400000SQxN8IAL</code> / [TEST] Operator, target = the junction, Detail JSON per spec (status, note, managerCopy false); Outcome Error with <code>email_send_failed</code> (Path B, deliverability off) exactly as scripted. Blocked approvals wrote no rows.</td>
+</tr>
+<tr>
+<td>6.8</td>
+<td>n/a</td>
+<td>—</td>
+<td>Path A only; Path B pass.</td>
+</tr>
+<tr>
+<td>6.9</td>
+<td>pass</td>
+<td>6.9-kpi-tiles.png</td>
+<td>Partner one dashboard: 1 approved registration, $75,000 approved value, 1 awaiting decision, 100% approval rate (90 days) — exactly the partner's own junctions; list shows only their two registrations.</td>
+</tr>
+<tr>
+<td>6.10</td>
+<td>pass</td>
+<td>6.10-decision-block.png</td>
+<td>Decision block on the approved registration: OUTCOME Approved, the note, DECIDED Sep 17, 2026. The decider's name appears nowhere on the page.</td>
+</tr>
+<tr>
+<td>6.11</td>
+<td>pass (note)</td>
+<td>6.11-reply-sent.png</td>
+<td>Reply sent from the Needs Information page; it appears under "YOUR REPLIES" with its time. Status went to PENDING — spec SWAP-14 ("the status returns to Pending"); the script's "stays Needs Information" reads stale.</td>
+</tr>
+<tr>
+<td>6.12</td>
+<td>pass (note → W15-T6)</td>
+<td>6.12-record-reply.png, 6.12-flow-replied-row.png; audit <code>AL-002265</code> registration_reply Success</td>
+<td>Reply is on PI-000362 with its time in the spec format (<code>## Reply 2026-09-17T20:14:03.552Z</code> + text in Influence_Details__c) and the audit row exists. But the operator cannot SEE the reply in the UI: Influence_Details__c is not on the Partner Influence layout, and the decision flow shows the request ("Information requested on 9/17/2026, 1:11 PM: …") not the answer. Raised as W15-T6.</td>
+</tr>
+<tr>
+<td>6.13</td>
+<td>pass</td>
+<td>6.13-portal-settings.png; SOQL 0 rows; field meta defaultValue false</td>
+<td>Portal Settings: hierarchy, no records ("No records to display"), Decision Manager Copy default unchecked.</td>
+</tr>
+<tr>
+<td>6.14</td>
+<td>pass</td>
+<td>6.14-main-address.png</td>
+<td>Main address (Week 2 build) signed in as partner one: nav is Dashboard + Sign out only, "No deal registrations yet.", no tiles; the registration detail route falls back to the public landing page. Week 5 fully hidden on the public address.</td>
+</tr>
+</tbody>
+</table>
+</div><footer><p class="fmono">Run 2026-09-17 · 59 of 59 applicable · Weeks 1 to 5 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer></section></main></body></html>
