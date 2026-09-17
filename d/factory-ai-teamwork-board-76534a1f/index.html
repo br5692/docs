@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Factory.ai / Fractional — Teamwork Board Snapshot</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+<style>
+  :root {
+    --paper:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec;
+    --ink:#16201d; --ink-soft:#3c4a45; --ink-faint:#6d7b75;
+    --line:#d7ddd4; --line-soft:#e5e9e1;
+    --accent:#0d7a6e; --accent-2:#0a5f56; --accent-wash:#e2efeb;
+    --amber:#a35a12; --amber-wash:#f4e9d9; --rose:#a3323f; --rose-wash:#f3e0e1;
+    --code-bg:#f0f3ee;
+    --shadow:0 1px 2px rgba(22,32,29,.05), 0 8px 28px -18px rgba(22,32,29,.35);
+    --serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root{
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723;
+    --ink:#e7ede9; --ink-soft:#b3c0ba; --ink-faint:#7f8f88;
+    --line:#2a3631; --line-soft:#222d29;
+    --accent:#4fd0be; --accent-2:#6fdccb; --accent-wash:#16302b;
+    --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }}
+  :root[data-theme="light"]{
+    --paper:#f6f7f4; --surface:#ffffff; --surface-2:#eef1ec; --ink:#16201d; --ink-soft:#3c4a45;
+    --ink-faint:#6d7b75; --line:#d7ddd4; --line-soft:#e5e9e1; --accent:#0d7a6e; --accent-2:#0a5f56;
+    --accent-wash:#e2efeb; --amber:#a35a12; --amber-wash:#f4e9d9; --rose:#a3323f; --rose-wash:#f3e0e1;
+    --code-bg:#f0f3ee; --shadow:0 1px 2px rgba(22,32,29,.05), 0 8px 28px -18px rgba(22,32,29,.35);
+  }
+  :root[data-theme="dark"]{
+    --paper:#101614; --surface:#161e1b; --surface-2:#1c2723; --ink:#e7ede9; --ink-soft:#b3c0ba;
+    --ink-faint:#7f8f88; --line:#2a3631; --line-soft:#222d29; --accent:#4fd0be; --accent-2:#6fdccb;
+    --accent-wash:#16302b; --amber:#d89a4e; --amber-wash:#322414; --rose:#e08893; --rose-wash:#331b1e;
+    --code-bg:#131b18; --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px -20px rgba(0,0,0,.8);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{transition:none !important;} }
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  .wrap{max-width:1060px; margin:0 auto; padding:0 28px;}
+
+  header.mast{border-bottom:1px solid var(--line);
+    background:radial-gradient(120% 140% at 88% -20%, var(--accent-wash) 0%, transparent 55%), var(--surface);}
+  .mast-inner{padding:52px 0 40px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent-2); margin:0 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--accent);}
+  h1.title{font-family:var(--serif); font-weight:600; font-size:clamp(2.3rem,5.4vw,3.5rem);
+    line-height:1.04; letter-spacing:-.015em; margin:0 0 18px; text-wrap:balance;}
+  h1.title span{color:var(--accent-2);}
+  .lede{font-size:1.12rem; color:var(--ink-soft); max-width:64ch; margin:0 0 30px; line-height:1.6;}
+  .meta-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .meta-cell{background:var(--surface); padding:14px 16px;}
+  .meta-cell .k{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:5px;}
+  .meta-cell .v{font-size:.92rem; font-weight:600; color:var(--ink);}
+  .meta-cell .v.mono{font-family:var(--mono); font-weight:500; font-size:.82rem;}
+
+  nav.toc{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .toc-inner{display:flex; gap:4px; flex-wrap:wrap; padding:10px 0; align-items:center;}
+  .toc a{font-size:.82rem; color:var(--ink-soft); text-decoration:none; padding:6px 12px;
+    border-radius:999px; font-weight:500; transition:background .15s,color .15s; white-space:nowrap;}
+  .toc a:hover{background:var(--surface-2); color:var(--ink);}
+  .toc a .num{font-family:var(--mono); font-size:.72rem; color:var(--accent-2); margin-right:6px;}
+  .toc .spacer{flex:1;}
+  #themeToggle{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer;}
+  #themeToggle:hover{color:var(--ink); border-color:var(--accent);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px;}
+
+  section.stream{padding:48px 0 12px; border-bottom:1px solid var(--line-soft);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px; flex-wrap:wrap;}
+  .sec-num{font-family:var(--mono); font-size:.9rem; color:var(--accent-2); font-weight:600;}
+  h2.sec-title{font-family:var(--serif); font-weight:600; font-size:clamp(1.6rem,3.4vw,2.1rem);
+    letter-spacing:-.01em; margin:0; line-height:1.1; text-wrap:balance;}
+  .sec-sub{color:var(--ink-faint); font-size:.9rem; margin:6px 0 20px; font-family:var(--mono);}
+  .count{font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); background:var(--surface-2);
+    border:1px solid var(--line); border-radius:999px; padding:3px 10px;}
+
+  .pill{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px;
+    letter-spacing:.05em; text-transform:uppercase; font-weight:600; padding:4px 10px; border-radius:999px;
+    border:1px solid transparent; white-space:nowrap;}
+  .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .pill.live{color:var(--accent-2); background:var(--accent-wash); border-color:color-mix(in srgb, var(--accent) 30%, transparent);}
+  .pill.sandbox{color:var(--amber); background:var(--amber-wash); border-color:color-mix(in srgb, var(--amber) 30%, transparent);}
+  .pill.pending{color:var(--rose); background:var(--rose-wash); border-color:color-mix(in srgb, var(--rose) 30%, transparent);}
+
+  /* task cards */
+  .task{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow); margin:14px 0;}
+  .task-head{display:flex; align-items:baseline; gap:10px;}
+  h3.tname{font-family:var(--serif); font-weight:600; font-size:1.16rem; color:var(--ink); margin:0; line-height:1.25; text-wrap:balance;}
+  .mrow{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 0;}
+  .mpill{font-family:var(--mono); font-size:10.5px; letter-spacing:.03em; color:var(--ink-soft);
+    background:var(--surface-2); border:1px solid var(--line); border-radius:6px; padding:3px 8px;}
+  .mpill.due{color:var(--accent-2); background:var(--accent-wash); border-color:color-mix(in srgb, var(--accent) 30%, transparent);}
+  .mpill.soft{color:var(--ink-faint); background:transparent;}
+  .task-desc{margin-top:14px; padding-top:14px; border-top:1px solid var(--line-soft);}
+  .task-desc p{margin:0 0 10px; color:var(--ink-soft); font-size:.94rem;}
+  .task-desc.empty{color:var(--ink-faint); font-size:.86rem; font-style:italic;}
+
+  h3{color:var(--ink);}
+  p{margin:0 0 14px;} p,li{color:var(--ink-soft);}
+  strong{color:var(--ink); font-weight:650;}
+  a.inl{color:var(--accent-2); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--accent) 40%, transparent);}
+  a.inl:hover{border-bottom-color:var(--accent);}
+  ul.tight{margin:6px 0 10px; padding-left:20px;} ul.tight li{margin-bottom:6px; color:var(--ink-soft); font-size:.94rem;}
+  code{font-family:var(--mono); font-size:.84em; background:var(--code-bg); padding:1.5px 6px; border-radius:5px; color:var(--ink); border:1px solid var(--line-soft);}
+
+  .callout{border-left:3px solid var(--accent); background:var(--accent-wash); padding:14px 18px; border-radius:0 10px 10px 0; margin:18px 0;}
+  .callout.warn{border-left-color:var(--amber); background:var(--amber-wash);}
+  .callout .lbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:600; margin-bottom:6px; color:var(--ink);}
+  .callout p{margin:0; font-size:.92rem; color:var(--ink-soft);}
+
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--surface); box-shadow:var(--shadow);}
+  table{width:100%; border-collapse:collapse; font-size:.88rem; min-width:460px;}
+  thead th{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-faint);
+    text-align:left; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface-2); font-weight:600;}
+  tbody td{padding:11px 16px; border-bottom:1px solid var(--line-soft); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.name{color:var(--ink); font-weight:600;}
+  tbody tr:hover td{background:color-mix(in srgb, var(--accent-wash) 40%, transparent);}
+
+  footer{padding:44px 0 60px; color:var(--ink-faint); font-size:.84rem;}
+  footer .fmono{font-family:var(--mono); font-size:.78rem;}
+
+</style>
+</head>
+<body>
+
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Teamwork board · Read-only snapshot</p>
+  <h1 class="title">Factory.ai / Fractional: the <span>board, mirrored</span></h1>
+  <p class="lede">A faithful, point-in-time copy of the Domestique Teamwork board so you can read every list, task, and description without opening Teamwork. Captured read-only on 2026-08-27. Staff email roster omitted from this shared copy.</p>
+  <div class="meta-grid">
+    <div class="meta-cell"><div class="k">Project</div><div class="v mono">1261212</div></div>
+    <div class="meta-cell"><div class="k">Client</div><div class="v">Factory.ai</div></div>
+    <div class="meta-cell"><div class="k">Status</div><div class="v">Active</div></div>
+    <div class="meta-cell"><div class="k">Lists</div><div class="v">6</div></div>
+    <div class="meta-cell"><div class="k">Open tasks</div><div class="v">38</div></div>
+    <div class="meta-cell"><div class="k">Captured</div><div class="v mono">2026-08-27</div></div>
+  </div>
+</div></header>
+
+<nav class="toc"><div class="wrap toc-inner">
+  <a href="#l3880879"><span class="num">01</span>Phase 1</a>
+  <a href="#l3880884"><span class="num">02</span>Phase 2</a>
+  <a href="#l3880865"><span class="num">03</span>Discovery Sessions &amp; Meetings</a>
+  <a href="#l3878216"><span class="num">04</span>Future Roadmap Items</a>
+  <a href="#l3878215"><span class="num">05</span>General Support</a>
+  <a href="#l3878214"><span class="num">06</span>Fractional Admin</a>
+  <span class="spacer"></span>
+  <button id="themeToggle" aria-label="Toggle colour theme">Theme</button>
+</div></nav>
+
+<main class="wrap">
+  <div class="callout" style="margin-top:28px"><div class="lbl">What this is</div><p>A read-only snapshot, not a live view. It reflects the board as of 2026-08-27 (38 open tasks, none completed). To edit tasks, use Teamwork. For the working analysis and gap review, see the engagement dossier in the same repo.</p></div>
+
+  <section class="stream" id="l1">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">Phase 1 — Technical Discovery</h2>
+      <span class="pill sandbox">Discovery · in progress</span>
+      <span class="count">7 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3880879.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Align on &amp; Document the North Star Architecture (APOS Vision)</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Capture and socialize the target-state architecture with the client: Salesforce as quantitative SoR, headless API-first data layer, Factory Droid as intelligence/interface layer via MCP, single source for deal registration. This is the reference point the rest of Phase 1 validates against.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Assess Droid&#x27;s Capability Envelope</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Agent tools, memory model, orchestration primitives, API surface. Deliverable: a grounded technical picture, not a vendor pitch.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Determine Deterministic vs. Scaffolded Workflows</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Determine where Droid can drive deterministic workflows directly vs. where it needs a scaffolding layer. Deliverable: clarity on where Droid extends vs. where Domestique adds scaffolding.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Define the Droid-Native vs. Salesforce-Native Split</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Define the right split between Droid-native and Salesforce-native behavior so Droid stays the intelligence layer.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Design the Minimum Viable SFDC Data Model</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Design the minimum viable Salesforce data model for deal registration and partner ops — the headless, API-first data foundation for the build.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Sketch the MCP Server Surface</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Sketch the MCP server surface (read/write/action paths) required for Droid. Deliverable: a concrete integration blueprint for Phase 2.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Deliver the Technical Discovery Memo</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Deliver the Technical Discovery Memo with confirmed Phase 2 scope. Deliverable: green-light decision for the Phase 2 MVP build.</p></div>
+    </div>
+  </section>
+  <section class="stream" id="l2">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">Phase 2 — MVP Build</h2>
+      <span class="pill pending">Gated · not started</span>
+      <span class="count">6 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3880884.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Deal Registration Custom Object (Approval Workflow + SLA Timer)</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Build the deal registration custom object with approval workflow and SLA timer. Deliverable: deal registration lives in one system of record.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Automated Conflict Detection</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Automated conflict detection against Opportunities and Leads. Deliverable: no more channel conflict incidents.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Basic Internal Reporting</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Partner-sourced pipeline, win rate, time-to-approval. Deliverable: leadership can quantify channel contribution.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">MCP Server Exposing Deal Reg &amp; Partner Data</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Build the MCP server exposing deal registration and partner data to Factory Droid. Deliverable: Droid remains the intelligence and interface layer.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">1–2 Core Droid-Driven Flows</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Registration triage, approval nudges. Deliverable: proof the architecture works end-to-end.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Admin Training &amp; 30-Day Post-Launch Support</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><p>Deliverable: Factory&#x27;s team owns operating the MVP from day one.</p></div>
+    </div>
+  </section>
+  <section class="stream" id="l3">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">Discovery Sessions &amp; Meetings</h2>
+      <span class="pill sandbox">Sessions</span>
+      <span class="count">4 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3880865.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Onboarding &amp; Intro to Droid</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 180m</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><ul class="tight">
+<li><strong>Purpose:</strong> get familiar with the Factory Droid platform.</li>
+</ul>
+<ul class="tight">
+<li><strong>Participants:</strong> Ashley + project team (Dan, Blair)</li>
+</ul></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Project Alignment Session (Initial)</h3></div>
+      <div class="mrow"><span class="mpill due">Due 2026-08-28</span><span class="mpill">Priority high</span><span class="mpill">Est 180m</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><ul class="tight">
+<li><strong>Purpose:</strong> align with Mark on project direction and expectations.</li>
+</ul>
+<ul class="tight">
+<li><strong>Participants:</strong> Mark + project team (Dan, Blair)</li>
+</ul></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Web Development Technical Session</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 180m</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><ul class="tight">
+<li><strong>Purpose:</strong> discuss technical requirements for the website interface — specifically how data (e.g., email contact info) will be captured and passed into Salesforce.</li>
+</ul>
+<ul class="tight">
+<li><strong>Participants:</strong> <a class="inl" href="http://Factory.ai">Factory.ai</a> Web Development Team + project team (Dan, Blair)</li>
+</ul></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Stakeholder Requirements Sessions</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 180m</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc"><ul class="tight">
+<li><strong>Purpose:</strong> understand stakeholders&#x27; functional needs, particularly around the interface, data entry, and potential login/user account workflows for partners.</li>
+</ul>
+<ul class="tight">
+<li><strong>Participants:</strong> Relevant stakeholders + project team (Dan, Blair)</li>
+</ul></div>
+    </div>
+  </section>
+  <section class="stream" id="l4">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">Future Roadmap Items</h2>
+      <span class="pill pending">Backlog / admin</span>
+      <span class="count">2 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3878216.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Backlog 1</h3></div>
+      <div class="mrow"><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc"><p>test</p>
+<p>test</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Backlog 2</h3></div>
+      <div class="mrow"><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+  </section>
+  <section class="stream" id="l5">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">General Support</h2>
+      <span class="pill pending">Backlog / admin</span>
+      <span class="count">2 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3878215.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">General HubSpot Support</h3></div>
+      <div class="mrow"><span class="mpill">Est 4m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">General Salesforce Support</h3></div>
+      <div class="mrow"><span class="mpill">Est 4m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+  </section>
+  <section class="stream" id="l6">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2 class="sec-title">Fractional Admin / Meetings</h2>
+      <span class="pill pending">Backlog / admin</span>
+      <span class="count">17 tasks</span>
+    </div>
+    <p class="sec-sub">Teamwork list 3878214.</p>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 1</h3></div>
+      <div class="mrow"><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 1</h3></div>
+      <div class="mrow"><span class="mpill">Est 10m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Admin</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill">Est 120m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc"><p>This task is used to log time against Meetings with the client such as discovery, internal meetings about deliverables and admin work.</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 2</h3></div>
+      <div class="mrow"><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 2</h3></div>
+      <div class="mrow"><span class="mpill">Est 10m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Kickoff Call</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 3</h3></div>
+      <div class="mrow"><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 3</h3></div>
+      <div class="mrow"><span class="mpill">Est 10m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Weekly Status Meetings</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 120m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 4</h3></div>
+      <div class="mrow"><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Week 4</h3></div>
+      <div class="mrow"><span class="mpill">Est 10m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Monthly Prioritization Call</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 60m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Weekly Recap / Status Update</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 45m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Engagement Check in</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc"><p>Meeting with the Head of Client Services mid way through the engagement to gather feedback on the progress so far and overall experience with Domestique</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Engagement Review</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 60m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc"><p>Meeting with the Head of Client services towards the end of the contract cycle to discuss feedback on the engagement as a whole and discuss next steps with Domestique</p></div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Proactivity Playbook</h3></div>
+      <div class="mrow"><span class="mpill">Priority medium</span><span class="mpill">Est 120m</span><span class="mpill soft">Created 2026-08-24 · Ava Kachure</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+    <div class="task">
+      <div class="task-head"><h3 class="tname">Internal Sync</h3></div>
+      <div class="mrow"><span class="mpill">Priority high</span><span class="mpill">Est 30m</span><span class="mpill soft">Created 2026-08-27 · Emma Hoeft</span></div>
+      <div class="task-desc empty">No description on the board.</div>
+    </div>
+  </section>
+
+  <section class="stream" id="team" style="border-bottom:none">
+    <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">Project participants</h2></div>
+    <p class="sec-sub">The people named on the tasks and in our discovery docs. The board itself lists 35 Domestique members as followers; the full roster with emails is kept in the private repo snapshot, not here.</p>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th>Who</th><th>Side</th><th>Role on this engagement</th></tr></thead>
+      <tbody>
+        <tr><td class="name">Mark Kobe</td><td>Factory.ai</td><td>Head of partnerships. Owns the vision and the alignment session.</td></tr>
+        <tr><td class="name">Ashley</td><td>Factory.ai</td><td>Special projects. Runs the Droid onboarding/intro.</td></tr>
+        <tr><td class="name">Roman</td><td>Factory.ai</td><td>RevOps. Owns their Salesforce, provisions access.</td></tr>
+        <tr><td class="name">Alex Biale</td><td>Domestique</td><td>Co-founder, exec sponsor. Owns Slack Connect.</td></tr>
+        <tr><td class="name">Emma Hoeft</td><td>Domestique</td><td>Account manager / Salesforce lead. Built this board.</td></tr>
+        <tr><td class="name">Dan Vandenbor</td><td>Domestique</td><td>Salesforce, discovery + hands-on. Named on the sessions.</td></tr>
+        <tr><td class="name">Blair Purdy</td><td>Domestique</td><td>Build. Named on the sessions.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer>
+    <p class="fmono">Read-only snapshot · captured 2026-08-27 · project 1261212 · 38 open tasks</p>
+    <p>Source of truth for the live board is Teamwork. This copy exists so the board can be read and referenced anywhere, including from another machine via the repo.</p>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    var btn=document.getElementById('themeToggle'), root=document.documentElement;
+    btn.addEventListener('click', function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur) cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      var next=cur==='dark'?'light':'dark';
+      root.setAttribute('data-theme', next);
+      btn.textContent=next==='dark'?'Light':'Dark';
+    });
+  })();
+</script>
+</body>
+</html>
