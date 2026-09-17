@@ -51,7 +51,7 @@
     <div class="meta-cell"><div class="k">Plan</div><div class="v">Workstreams 1 to 3, seven weeks</div></div>
     <div class="meta-cell"><div class="k">Calendar</div><div class="v">Week 1 of 7</div></div>
     <div class="meta-cell"><div class="k">Built and verified</div><div class="v">Weeks 1, 2, 3</div></div>
-    <div class="meta-cell"><div class="k">In build</div><div class="v">Week 4</div></div>
+    <div class="meta-cell"><div class="k">Closing</div><div class="v">Week 4</div></div>
     <div class="meta-cell"><div class="k">Updated</div><div class="v">2026-09-16</div></div>
   </div>
 </div></header>
@@ -68,7 +68,7 @@
     <div class="wk"><div class="n">Week 1</div><div class="t">Foundation</div><span class="pill live">verified</span></div>
     <div class="wk"><div class="n">Week 2</div><div class="t">Registration and sign-in</div><span class="pill live">verified</span></div>
     <div class="wk"><div class="n">Week 3</div><div class="t">Contract signature</div><span class="pill live">verified</span></div>
-    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill sandbox">in build</span></div>
+    <div class="wk"><div class="n">Week 4</div><div class="t">Deal registration</div><span class="pill sandbox">built, closing</span></div>
     <div class="wk"><div class="n">Week 5</div><div class="t">Deal decisions</div><span class="pill later">spec ready</span></div>
     <div class="wk"><div class="n">Week 6</div><div class="t">Dashboard tiles, UAT starts</div><span class="pill later">later</span></div>
     <div class="wk"><div class="n">Week 7</div><div class="t">Launch</div><span class="pill later">later</span></div>
@@ -142,23 +142,23 @@
 </section>
 
 <section class="stream" id="w4">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill sandbox">in build</span></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Week 4: Deal registration</h2><span class="pill sandbox">built · checkpoint verified 2026-09-17</span></div>
   <p class="sec-sub">Workstream 3, the registration half. A partner registers a deal, the customer is matched or created, and the registration waits as Pending for the decision work in Week 5.</p>
   <div class="tbl-scroll"><table>
-    <thead><tr><th>Requirement</th><th>What is being built</th><th>How it works</th><th>State</th></tr></thead>
+    <thead><tr><th>Requirement</th><th>What was built</th><th>How it works</th><th>State</th></tr></thead>
     <tbody>
-      <tr><td class="req">Create Account and Contact if not in CRM</td><td>A customer match step and a create step in the web service.</td><td class="how">Match by website domain, then by name, then the contact by email. Create only when nothing matches. New customer Accounts are marked as portal-created.</td><td>Built, verification pending</td></tr>
-      <tr><td class="req">Net-new routed for assignment</td><td>An Unassigned Customers list on the operator tab.</td><td class="how">Accounts cannot be owned by a queue on the platform, so new customers are owned by the integration user and listed for leadership to reassign.</td><td>Built, verification pending</td></tr>
-      <tr><td class="req">Partner Influence record created Pending</td><td>The registration row on Factory's junction object.</td><td class="how">Deal name, value, close date, partner role, attribution (Sourced or Influenced), submitted by and when. The Opportunity is matched or created in the first open stage.</td><td>Built, verification pending</td></tr>
-      <tr><td class="req">Surface the junction on the Opportunity</td><td>The link from the registration to the Opportunity.</td><td class="how">Queryable now. A related list on Factory's Opportunity page needs Factory's yes.</td><td>Built, verification pending</td></tr>
-      <tr><td class="req">Pending registrations on the dashboard</td><td>A Register a deal form and the registrations list and detail.</td><td class="how">Three steps: customer, deal, attribution. A duplicate registration for the same contact is refused with a plain sentence.</td><td>Built, verification pending</td></tr>
-      <tr><td class="req">Received email</td><td>A confirmation email when a registration is created.</td><td class="how">A flow on the junction sends it from a template and writes an audit row.</td><td>Built, verification pending</td></tr>
+      <tr><td class="req">Create Account and Contact if not in CRM</td><td>A customer match step and a create step in the web service.</td><td class="how">Match by website domain, then by name, then the contact by email. Create only when nothing matches. New customer Accounts are marked as portal-created.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Net-new routed for assignment</td><td>An Unassigned Customers list on the operator tab.</td><td class="how">Accounts cannot be owned by a queue on the platform, so new customers are owned by the integration user and listed for leadership to reassign.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Partner Influence record created Pending</td><td>The registration row on Factory's junction object.</td><td class="how">Deal name, value, close date, partner role, attribution (Sourced or Influenced), submitted by and when. The Opportunity is matched or created in the first open stage.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Surface the junction on the Opportunity</td><td>The link from the registration to the Opportunity.</td><td class="how">Queryable now. A related list on Factory's Opportunity page needs Factory's yes.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Pending registrations on the dashboard</td><td>A Register a deal form and the registrations list and detail.</td><td class="how">Three steps: customer, deal, attribution. A duplicate registration for the same contact is refused with a plain sentence.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
+      <tr><td class="req">Received email</td><td>A confirmation email when a registration is created.</td><td class="how">A flow on the junction sends it from a template and writes an audit row.</td><td>Built, verified on the hosted stack; review close-out in progress</td></tr>
       <tr><td class="req">Week toggle</td><td>The portal shows only the weeks Factory is meant to see.</td><td class="how">One setting per side hides later weeks' pages and refuses their actions. The main portal address shows Week 2 alone; a separate preview shows everything.</td><td>Built, verified on the hosted stack</td></tr>
     </tbody>
   </table></div>
   <h3>Clips</h3>
   <div class="clips">
-    <div class="clip soon" data-clip="w4-register"><div class="ph">clip coming · register a deal</div><div class="cap">A partner registers a deal. The customer, Opportunity and pending registration appear in Salesforce.<div class="m">about 30 s · after verification</div></div></div>
+    <div class="clip" data-clip="w4-register"><video controls playsinline preload="metadata" src="clips/w4-register.mp4"></video><div class="cap">A partner registers a deal. The customer, Opportunity and pending registration appear in Salesforce.<div class="m">48 s</div></div></div>
   </div>
 </section>
 
