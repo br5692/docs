@@ -25,6 +25,7 @@
   pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
 </style>
 <style>
+.say{font-size:1.12rem;line-height:1.55;border-left:3px solid var(--accent);padding-left:14px;margin:0;color:var(--ink)}
 .show{margin:14px 0 0;font-size:.9rem;color:var(--ink-soft)}
 .show .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:5px;padding:2px 7px;margin-right:8px;white-space:nowrap}
 section.stream ul{margin:4px 0 0;padding-left:20px}
@@ -42,12 +43,15 @@ h2.sec-title{margin:0}
 <header class="mast"><div class="wrap"><div class="mast-inner">
 <p class="eyebrow"><span class="dot"></span> Factory Partner Portal &middot; Week 1 &middot; prep sheet</p>
 <h1 class="title">Week 1 <span>briefing</span></h1>
-<p class="lede">Everything Week 1 delivered, at three bullets each. Week 1 is the foundation the rest sits on: the data model inside Factory&rsquo;s own org, a service that talks to it, a sign-in that uses no password, and a record of every call. Each item ends with the link that proves it, which is worth opening live rather than describing.</p>
+<p class="lede">Everything Week 1 delivered, at three bullets each. Each item ends with the link that proves it, which is worth opening live rather than describing.</p>
 </div></div></header>
 <nav class="toc"><div class="wrap"><div class="toc-inner">
-<a href="#i1"><span class="num">1</span>Data model</a><a href="#i2"><span class="num">2</span>Certificate</a><a href="#i3"><span class="num">3</span>Tool layer</a><a href="#i4"><span class="num">4</span>Permissions</a><a href="#i5"><span class="num">5</span>Audit log</a><a href="#i6"><span class="num">6</span>Hosting</a><a href="#cols">Columns</a><a href="#fields">Fields</a><a href="#qs">Questions</a><a href="#open">Open</a>
+<a href="#one">In one line</a><a href="#i1"><span class="num">1</span>Data model</a><a href="#i2"><span class="num">2</span>Certificate</a><a href="#i3"><span class="num">3</span>Tool layer</a><a href="#i4"><span class="num">4</span>Permissions</a><a href="#i5"><span class="num">5</span>Audit log</a><a href="#i6"><span class="num">6</span>Hosting</a><a href="#cols">Columns</a><a href="#fields">Fields</a><a href="#qs">Questions</a><a href="#open">Open</a>
 </div></div></nav>
 <main class="wrap">
+<section class="stream" id="one"><div class="sec-head"><h2 class="sec-title">The whole week in one line</h2></div>
+<p class="say">Week 1 is the foundation everything else sits on: the data model inside your org, a service that talks to it, a sign-in that uses no password, and a record of every single call.</p>
+<p class="sec-sub">If the call only has room for one sentence about Week 1, that is the sentence. The six items below are the same thing at more depth.</p></section>
 <section class="stream" id="i1">
 <div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">Data model</h2></div>
 <ul><li>47 fields across five objects, every one an addition. Nothing Factory already had was renamed, retyped or removed.</li><li>Partner Influence is <strong>their</strong> object, not a new one, and four of its fields came straight from their own metadata export. The Portal Audit Log is the only genuinely new object.</li><li>Every field carries help text in Setup, so their admin can read what each one does without asking us.</li></ul>
