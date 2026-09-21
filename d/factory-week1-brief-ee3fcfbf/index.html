@@ -1,0 +1,95 @@
+<title>Week 1 Briefing</title>
+<style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:40px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;display:flex;align-items:center;gap:10px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,3rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}h1.title span{color:inherit}
+  .lede{font-size:1.02rem;color:var(--ink-soft);max-width:64ch;margin:0}
+  section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);letter-spacing:-.01em;margin:0;line-height:1.1}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 14px;max-width:70ch}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul,ol{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:9px 11px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);white-space:nowrap}td.exp{color:var(--ink)}td.chk{min-width:120px;border-left:1px dashed var(--line)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
+  footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
+  a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
+</style>
+<style>
+.say{font-size:1.12rem;line-height:1.55;border-left:3px solid var(--accent);padding-left:14px;margin:0 0 4px;color:var(--ink)}
+.howto{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:22px 0}
+.howto p{margin:0 0 8px} .howto p:last-child{margin:0}
+</style>
+<header class="mast"><div class="wrap"><div class="mast-inner">
+<p class="eyebrow"><span class="dot"></span> Factory Partner Portal &middot; Week 1 &middot; what to say</p>
+<h1 class="title">Week 1 <span>briefing</span></h1>
+<p class="lede">Six things were built in Week 1. Nobody should memorise 47 fields before a call. Keep this open instead. Each item gives one line to say, the detail underneath if the room pushes, and the exact place to click if somebody wants to see it.</p>
+<div class="howto">
+<p><strong>How to use it.</strong> Read only the bold line out loud. Stop there. Most of the room wants the one line.</p>
+<p>If a question comes back, the bullets under it are the answer, in the order they are usually asked.</p>
+<p>If somebody wants proof, the last line of each item is a link that opens the thing itself. Opening it live is stronger than describing it.</p>
+</div>
+</div></div></header>
+<nav class="toc"><div class="wrap"><div class="toc-inner">
+<a href="#i1"><span class="num">1</span>Data model</a><a href="#i2"><span class="num">2</span>Certificate</a><a href="#i3"><span class="num">3</span>Tool layer</a><a href="#i4"><span class="num">4</span>Permissions</a><a href="#i5"><span class="num">5</span>Audit log</a><a href="#i6"><span class="num">6</span>Hosting</a><a href="#fields">Fields</a><a href="#qs">Questions</a><a href="#open">Open</a>
+</div></div></nav>
+<main class="wrap">
+<section class="stream"><div class="sec-head"><h2 class="sec-title">The whole week in one line</h2></div>
+<p class="say">&ldquo;Week 1 is the foundation everything else sits on: the data model inside your org, a service that talks to it, a sign-in that uses no password, and a record of every single call.&rdquo;</p>
+<p class="sec-sub">If the call only has room for one sentence about Week 1, that is the sentence. The six items below are the same thing at more depth.</p></section>
+<section class="stream" id="i1">
+<div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">The data model</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;We added 47 fields across five objects in your sandbox. We changed nothing you already had.&rdquo;</p>
+<h3>If they push</h3><ul><li>Fourteen fields on Account, three on Contact, twenty on Partner Influence, nine on the Portal Audit Log, one on Portal Settings.</li><li>Partner Influence is <strong>your</strong> object, not a new one. Four of its fields came straight from your own metadata export, so they match what Roman already uses. The rest are ours, added beside them.</li><li>The Portal Audit Log is the one genuinely new object. Nothing else in the org was renamed, retyped or removed.</li><li>Every field carries help text in Setup, so an admin who has never met this project can read what each one is for.</li></ul>
+<h3>If they want to see it</h3><p><a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ObjectManager/Account/FieldsAndRelationships/view" target="_blank" rel="noopener">Setup, Object Manager, Account</a>, filter on Portal or Partner. The full 47-field table with help text is in the <a href="https://br5692.github.io/docs/d/factory-test-script-b810a522/" target="_blank" rel="noopener">test script</a>.</p>
+</section><section class="stream" id="i2">
+<div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Certificate sign-in</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;The service proves who it is with a certificate, the way an ID card works. There is no password anywhere in this system.&rdquo;</p>
+<h3>If they push</h3><ul><li>The key pair was made outside Salesforce. The public half sits on the connected app in your org. The private half lives in the service&rsquo;s secret store and never leaves it.</li><li>Salesforce checks the signature on every request for a session. A stolen copy of the public half is useless without the private half.</li><li>The certificate runs to December 2028. Replacing it is a configuration change, not a code change.</li><li>It signs in as one named integration user on an API-only profile, so everything the service does is attributable to that user.</li></ul>
+<h3>If they want to see it</h3><p><a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ManageExternalClientApplication/0xIW40000002ayf/detail" target="_blank" rel="noopener">Setup, External Client App Manager, Partner Portal Tool Layer</a>, then Settings, then OAuth Settings.</p>
+</section><section class="stream" id="i3">
+<div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">The tool layer</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;One service, two doors, one set of rules. The portal calls it over the web. An agent calls the same thing over MCP. Both land in the same code.&rdquo;</p>
+<h3>If they push</h3><ul><li>Thirteen actions are live. Every one is available through both doors from a single list, so a new action never has to be built twice.</li><li>Five more names are reserved for later weeks. Calling one of them is refused cleanly and recorded, rather than returning a confusing error.</li><li>The service holds no data of its own. It reads and writes Salesforce and keeps no copy.</li><li>This is the piece that makes the portal and an agent the same customer of the same rules. It was the part of the brief that asked for one layer everything routes through.</li></ul>
+<h3>If they want to see it</h3><p><a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1" target="_blank" rel="noopener">The service health check</a> reports its version and whether Salesforce is reachable.</p>
+</section><section class="stream" id="i4">
+<div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">Permissions and the rules it holds</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;One table decides who is allowed to call what. Five kinds of caller, and nothing gets past it.&rdquo;</p>
+<h3>If they push</h3><ul><li>The five: anonymous, partner, staff, account executive, agent.</li><li>Applying is anonymous only. The dashboard is partner only. The application queue is staff only. Agents can read and check conflicts, but cannot make a decision.</li><li>A second rule sits on top: a signed-in partner whose contract is not signed can only see who they are and their contract status. Nothing else opens until the contract is signed.</li><li>A refusal is a recorded event, not a silent failure. You can see every attempt that was turned down and who made it.</li></ul>
+<h3>If they want to see it</h3><p><a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log</a>, filter Outcome to Denied.</p>
+</section><section class="stream" id="i5">
+<div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">The audit log</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;Every call writes one row, including the ones we refuse. There are 516 rows in the sandbox today.&rdquo;</p>
+<h3>If they push</h3><ul><li>Nine columns: what was done, who did it, the outcome, the record it touched, a request id, the inputs with secrets stripped, and when.</li><li>Who is recorded two ways. A partner links to their Contact. A staff member links to their User. The blank one tells you which kind of caller it was.</li><li>Outcomes are Success, Denied or Error. Errors in the sandbox today are almost all the notification email failing, because sandbox email is switched off by default. The Salesforce record was still written.</li><li>The request id ties a row to the matching line in the service log, so a support question can be traced end to end.</li></ul>
+<h3>If they want to see it</h3><p><a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log, All</a>.</p>
+</section><section class="stream" id="i6">
+<div class="sec-head"><span class="sec-num">6</span><h2 class="sec-title">Hosting</h2></div>
+<h3>Say this</h3><p class="say">&ldquo;The portal is on Cloudflare Pages and the service is on Render. Both are swappable, and moving either one is a deploy change, not a rewrite.&rdquo;</p>
+<h3>If they push</h3><ul><li>The portal is a plain static site. Any static host serves it. Nothing in it is tied to Cloudflare.</li><li>The service is a container. Any container host runs it. Nothing in it is tied to Render.</li><li>No code anywhere knows which host it is on. Addresses and secrets are configuration.</li><li>If you would rather it ran in your own accounts, that is a handover of configuration, not a rebuild. Say the word and we scope it.</li></ul>
+<h3>If they want to see it</h3><p>Both addresses are in the test script, and both are open right now.</p>
+</section>
+<section class="stream" id="fields"><div class="sec-head"><h2 class="sec-title">The 47 fields, without memorising them</h2></div>
+<p>Do not list fields in a meeting. Speak to the five groups. Each group has one purpose, and that purpose is the answer to almost every question about it.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Object</th><th>Fields</th><th>What the group is for</th></tr></thead><tbody><tr><td><strong>Account</strong></td><td class="n">14</td><td>The partner relationship: what type of partner, where they are in their lifecycle, when they applied and were approved, their commission rate, and the state of their contract.</td></tr><tr><td><strong>Contact</strong></td><td class="n">3</td><td>Sign-in only: when they last signed in, the current link&rsquo;s expiry, and a one-way hash of the link. The link itself is never stored.</td></tr><tr><td><strong>Partner Influence</strong></td><td class="n">20</td><td>One deal registration: who registered it, for which customer, what they claim they did, what it is worth, and the decision with who made it and when.</td></tr><tr><td><strong>Portal Audit Log</strong></td><td class="n">9</td><td>One row per call. The nine columns in item 5.</td></tr><tr><td><strong>Portal Settings</strong></td><td class="n">1</td><td>A single switch: copy the deciding account executive&rsquo;s manager on decision emails.</td></tr></tbody></table></div>
+<p>If anyone wants the field-by-field detail, it is in the <a href="https://br5692.github.io/docs/d/factory-test-script-b810a522/" target="_blank" rel="noopener">test script</a>, with every field&rsquo;s help text, type, week, workstream and a link straight to it in Setup. Send that rather than reading it out.</p></section>
+<section class="stream" id="qs"><div class="sec-head"><h2 class="sec-title">Questions that are likely</h2></div>
+<div class="tbl-scroll"><table><thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody><tr><td>&ldquo;Did you change anything of ours?&rdquo;</td><td>No. Every change is an addition. Nothing was renamed, retyped or removed, and that is a standing rule on the build, not a promise.</td></tr><tr><td>&ldquo;Where does the data live?&rdquo;</td><td>In your sandbox. The service keeps no copy of anything.</td></tr><tr><td>&ldquo;What if we pick a different esign tool?&rdquo;</td><td>Two fields hold the external id and the signing link. Changing tools is a webhook change, not a redesign. We still need your answer on which tool.</td></tr><tr><td>&ldquo;Can our own agents call this?&rdquo;</td><td>Yes. That is the second door, and it is already live.</td></tr><tr><td>&ldquo;Is any of this in production?&rdquo;</td><td>No. Everything so far is in the sandbox, by design.</td></tr><tr><td>&ldquo;Who can reach the portal today?&rdquo;</td><td>Anyone with the address sees the landing and application pages. The dashboard needs an approved partner and an emailed sign-in link.</td></tr><tr><td>&ldquo;How do we know it works?&rdquo;</td><td>166 automated test cases cover the service and the portal, and there is a 61-step script a person runs by hand. The link is in the notes below.</td></tr></tbody></table></div></section>
+<section class="stream" id="open"><div class="sec-head"><h2 class="sec-title">Say these plainly if they come up</h2></div>
+<ul>
+<li>Sandbox email is off by default, so notification emails only send while it is switched on for a session. The Salesforce records are written either way.</li>
+<li>The commission definition is still open. The field exists and is empty until Factory defines it.</li>
+<li>The esign tool is still open, and it is blocking the contract step from being finished properly.</li>
+<li>Week 6 is specified but not approved, and nothing for it has been built.</li>
+</ul>
+<p class="sec-sub">Saying what is not finished is what makes the finished parts believable. Do not soften these.</p></section>
+</main>
+<footer class="wrap"><p>Unlisted page. Anyone with the address can open it. Nobody can find it by browsing.</p></footer>
