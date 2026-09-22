@@ -57,7 +57,7 @@ th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:upp
 td.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 tr:last-child td{border-bottom:none}
 tr.total td{font-weight:700;color:var(--ink);background:var(--surface-2)}
-details{border-bottom:1px solid var(--line-soft);padding:8px 0}summary{cursor:pointer;font-weight:600;color:var(--ink)}pre{font-family:var(--mono);font-size:12px;background:var(--code-bg);border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px;white-space:pre-wrap;word-break:break-word;margin:8px 0 0}
+details{border-bottom:1px solid var(--line-soft);padding:8px 0}.ret{display:block;font-family:var(--mono);font-size:12px;font-weight:400;color:var(--ink-faint);margin:3px 0 0 18px;overflow-wrap:anywhere}summary{cursor:pointer;font-weight:600;color:var(--ink)}pre{font-family:var(--mono);font-size:12px;background:var(--code-bg);border:1px solid var(--line-soft);border-radius:8px;padding:10px 12px;white-space:pre-wrap;word-break:break-word;margin:8px 0 0}
 footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-size:12px}
 </style>
 </head>
@@ -174,40 +174,86 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 
 <section>
 <div class="sec-head"><span class="sec-num">09</span><h2>How each figure was pulled</h2></div>
-<p class="sec-sub">Read-only SOQL against production, run on 22 September 2026. Open any line to see the query.</p>
-<details><summary>Marketing opps by quarter</summary><pre>SELECT CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate)), COUNT(Id) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c = &#x27;Marketing&#x27; AND CreatedDate &gt;= 2025-01-01T00:00:00Z GROUP BY CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate))</pre></details>
-<details><summary>Form submissions: 871 of 892 on contacts</summary><pre>SELECT COUNT(Id) FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Contact WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))  -- queryAll; same with Lead for the other 21</pre></details>
-<details><summary>Demo form: 387 submissions, 372 people outside Stay</summary><pre>SELECT COUNT_DISTINCT(WhoId), COUNT(Id) FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject = &#x27;Submitted Form \&#x27;Book Demo (Website Form)\&#x27;&#x27;  -- then minus people with @stay.ai emails (2 people, 5 submissions)</pre></details>
-<details><summary>Not booked: 92 people</summary><pre>SELECT Id, WhoId, CreatedDate, Subject FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Subject LIKE &#x27;Submitted Form%&#x27; OR Subject LIKE &#x27;Demo Not Scheduled%&#x27;)  -- queryAll; people = distinct WhoId on &#x27;Demo Not Scheduled&#x27;, minus @stay.ai emails</pre></details>
-<details><summary>Follow-up on the 92: 19 booked, 45 contacted, 47 neither</summary><pre>SELECT WhoId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)  -- queryAll; first non-automated task after the flag
-SELECT WhoId, CreatedDate FROM Event WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)  -- a meeting created after the flag
--- Automated rows excluded from rep follow-up: created by HubSpot Integration User, or subject containing [Gong In], [In], Submitted Form, Demo Not Scheduled, Clicked</pre></details>
-<details><summary>The 47: 16 business prospects</summary><pre>SELECT Id, Email, Title, Account.RecordType.DeveloperName, AccountId FROM Contact WHERE Id IN (&lt;the 33 contacts&gt;)
-SELECT Id, Email, Status, Owner.Name, Owner.IsActive FROM Lead WHERE Id IN (&lt;the 14 leads&gt;)
-SELECT AccountId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE AccountId IN (&lt;their accounts&gt;)
--- removed: personal email domains, stay.ai, partner accounts, accounts where a rep worked a colleague after the flag</pre></details>
-<details><summary>Deactivated owners on the 92: 23</summary><pre>SELECT Owner.IsActive, COUNT(Id) FROM Contact WHERE Id IN (&lt;the 92&gt;) GROUP BY Owner.IsActive
+<p class="sec-sub">Read-only SOQL against production. The grey value on each line is what the query returned when this page was built (22 Sep 2026, 4:34 PM ET); open a line to see the query. Grouped lines read label: count, or label: count / ARR. Re-running later can differ slightly as new records arrive. Lines that say "computed in the audit script" are worked out from the rows those queries return.</p>
+<details><summary>Demo requests: 372 people, 387 submissions<span class="ret">people = 354, submissions = 369 + people = 18, submissions = 18 → total people = 372, submissions = 387</span></summary><pre>SELECT COUNT_DISTINCT(WhoId) people, COUNT(Id) submissions FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject = &#x27;Submitted Form \&#x27;Book Demo (Website Form)\&#x27;&#x27; AND WhoId IN (SELECT Id FROM Contact WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: people = 354, submissions = 369
+SELECT COUNT_DISTINCT(WhoId) people, COUNT(Id) submissions FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject = &#x27;Submitted Form \&#x27;Book Demo (Website Form)\&#x27;&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: people = 18, submissions = 18
+-- add the two lines together
+  → total people = 372, submissions = 387</pre></details>
+<details><summary>Flagged not booked: 92 people<span class="ret">people = 78 + people = 14 → total people = 92</span></summary><pre>SELECT COUNT_DISTINCT(WhoId) people FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Demo Not Scheduled%&#x27; AND WhoId IN (SELECT Id FROM Contact WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: people = 78
+SELECT COUNT_DISTINCT(WhoId) people FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Demo Not Scheduled%&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: people = 14
+-- add the two lines together
+  → total people = 92</pre></details>
+<details><summary>Deactivated owners on the 92: 23<span class="ret">computed in the audit script (open for the queries)</span></summary><pre>Computed in the script: owner status of the 92 flagged people.
+SELECT Owner.IsActive, COUNT(Id) FROM Contact WHERE Id IN (&lt;the 92&gt;) GROUP BY Owner.IsActive
 SELECT Owner.IsActive, COUNT(Id) FROM Lead WHERE Id IN (&lt;the 92&gt;) GROUP BY Owner.IsActive</pre></details>
-<details><summary>Demo router: 125 bookings, median 2.1 days</summary><pre>SELECT Id, CreatedDate, StartDateTime, Canceled_CP__c, Booked_By_Prospect_CP__c, Router_Name_CP__c FROM Event WHERE IsDeleted = false AND Chilipiper_Event__c = true AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z  -- queryAll; Router_Name_CP__c = &#x27;NEW - Book a Demo&#x27;; StartDateTime minus CreatedDate, cancelled excluded</pre></details>
-<details><summary>Routing: 1 rule, inactive</summary><pre>Tooling: SELECT Name, Active, EntityDefinitionId FROM AssignmentRule</pre></details>
-<details><summary>Routing: no queues</summary><pre>SELECT Id, Name FROM Group WHERE Type = &#x27;Queue&#x27;</pre></details>
-<details><summary>Stale leads: 250 on five deactivated owners</summary><pre>SELECT Email, CreatedBy.Name, CreatedDate FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)
-SELECT COUNT_DISTINCT(WhoId) FROM Task WHERE Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false)
-SELECT Id, Name, IsActive FROM User WHERE Id IN (SELECT OwnerId FROM Lead WHERE Status = &#x27;New&#x27;)</pre></details>
-<details><summary>Leads: 135 of 226 with no task or meeting</summary><pre>SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z
-SELECT WhoId FROM Task WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z)  -- queryAll
-SELECT WhoId FROM Event WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z)  -- queryAll</pre></details>
-<details><summary>Opportunity first activity is mostly Gong</summary><pre>SELECT WhatId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhatId IN (SELECT Id FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;))  -- queryAll; earliest per opportunity, classified by subject prefix</pre></details>
-<details><summary>Scoring: leads and contacts</summary><pre>SELECT COUNT(Id) FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Rating != null OR pi__score__c &gt; 0 OR pi__Pardot_Last_Scored_At__c != null)
-SELECT COUNT(Id) FROM Contact WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)  -- 6,997; then AND pi__score__c != null returns 0
-SELECT COUNT(Id), MIN(CreatedDate), MAX(CreatedDate) FROM Contact WHERE pi__score__c != null AND pi__score__c != 0
-SELECT MAX(CreatedDate) FROM Contact WHERE pi__score__c != null</pre></details>
-<details><summary>LeadSource blank: 220</summary><pre>SELECT LeadSource, COUNT(Id) FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z GROUP BY LeadSource</pre></details>
-<details><summary>Segments: 46 of 213 unsegmented</summary><pre>SELECT Id, Account.Account_Segment__c FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;)</pre></details>
-<details><summary>Channels table</summary><pre>SELECT Deal_Source__c, IsWon, COUNT(Id), SUM(Amount) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22 GROUP BY Deal_Source__c, IsWon
--- re-checked row by row: SELECT Id, Deal_Source__c, IsWon, Amount FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22</pre></details>
-<details><summary>Growth by channel</summary><pre>SELECT CALENDAR_YEAR(CreatedDate), Deal_Source__c, COUNT(Id) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND CreatedDate &gt;= 2025-01-01T00:00:00Z GROUP BY CALENDAR_YEAR(CreatedDate), Deal_Source__c</pre></details>
-<details><summary>Partner named: 168 of 204</summary><pre>SELECT COUNT(Id), COUNT(Partner__c) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c = &#x27;Partner&#x27; AND CreatedDate &gt;= 2026-01-01T00:00:00Z</pre></details>
+<details><summary>After the flag: 19 booked, 45 contacted, 47 neither<span class="ret">computed in the audit script (open for the queries)</span></summary><pre>Computed in audit/inbound-audit-2026-09-22/verify_rewrite.py: for each of the 92, the first Task or Event created after the flag.
+SELECT WhoId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)
+SELECT WhoId, CreatedDate FROM Event WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)
+-- Automated rows excluded from rep follow-up: created by HubSpot Integration User, or subject containing [Gong In], [In], Submitted Form, Demo Not Scheduled, Clicked</pre></details>
+<details><summary>Of the 47: 16 business prospects<span class="ret">computed in the audit script (open for the queries)</span></summary><pre>Computed in the same script: removes personal email domains, partner accounts, and accounts where a rep worked a colleague after the flag.
+SELECT Id, Email, AccountId, Account.RecordType.DeveloperName FROM Contact WHERE Id IN (&lt;the 33 contacts&gt;)
+SELECT Id, Email FROM Lead WHERE Id IN (&lt;the 14 leads&gt;)</pre></details>
+<details><summary>Demo router: 125 booked, 13 cancelled<span class="ret">booked = 125 | cancelled = 13 | first_booking = 2026-03-01</span></summary><pre>SELECT COUNT(Id) booked FROM Event WHERE IsDeleted = false AND Router_Name_CP__c = &#x27;NEW - Book a Demo&#x27; AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z
+  → returned: booked = 125
+SELECT COUNT(Id) cancelled FROM Event WHERE IsDeleted = false AND Router_Name_CP__c = &#x27;NEW - Book a Demo&#x27; AND Canceled_CP__c = true AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z
+  → returned: cancelled = 13
+SELECT MIN(CreatedDate) first_booking FROM Event WHERE IsDeleted = false AND Router_Name_CP__c = &#x27;NEW - Book a Demo&#x27;
+  → returned: first_booking = 2026-03-01
+-- median 2.1 days = StartDateTime minus CreatedDate on the 112 not cancelled, in the script</pre></details>
+<details><summary>Form submissions: 871 of 892 on contacts<span class="ret">on_contacts = 871 | on_leads = 21</span></summary><pre>SELECT COUNT(Id) on_contacts FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Contact WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: on_contacts = 871
+SELECT COUNT(Id) on_leads FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: on_leads = 21</pre></details>
+<details><summary>Marketing opps by quarter<span class="ret">2025 1: 38 · 2025 2: 46 · 2025 3: 45 · 2025 4: 38 · 2026 1: 50 · 2026 2: 40 · 2026 3: 21</span></summary><pre>SELECT CALENDAR_YEAR(convertTimezone(CreatedDate)) yr, CALENDAR_QUARTER(convertTimezone(CreatedDate)) qtr, COUNT(Id) n FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c = &#x27;Marketing&#x27; AND CreatedDate &gt;= 2025-01-01T00:00:00Z GROUP BY CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate)) ORDER BY CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate))
+  → returned: 2025 1: 38 · 2025 2: 46 · 2025 3: 45 · 2025 4: 38 · 2026 1: 50 · 2026 2: 40 · 2026 3: 21</pre></details>
+<details><summary>Inbound opportunities: 213<span class="ret">n = 213</span></summary><pre>SELECT COUNT(Id) n FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;)
+  → returned: n = 213</pre></details>
+<details><summary>Routing: 1 rule, inactive<span class="ret">Name = New Partner Assignment, Active = False</span></summary><pre>Tooling: SELECT Name, Active FROM AssignmentRule
+  → returned: Name = New Partner Assignment, Active = False</pre></details>
+<details><summary>Routing: no queues<span class="ret">queues = 0</span></summary><pre>SELECT COUNT(Id) queues FROM Group WHERE Type = &#x27;Queue&#x27;
+  → returned: queues = 0</pre></details>
+<details><summary>New leads on deactivated owners: 250, 17 with a form<span class="ret">n = 250 | with_form = 17 | Michael Yates: 161 · Gio Demaio: 50 · Amir Torabi: 36 · Peyton Bills: 2 · Nicole Smith: 1</span></summary><pre>SELECT COUNT(Id) n FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)
+  → returned: n = 250
+SELECT COUNT_DISTINCT(WhoId) with_form FROM Task WHERE Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false AND (NOT Email LIKE &#x27;%@stay.ai&#x27;))
+  → returned: with_form = 17
+SELECT Owner.Name owner, COUNT(Id) n FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false AND (NOT Email LIKE &#x27;%@stay.ai&#x27;) GROUP BY Owner.Name ORDER BY COUNT(Id) DESC
+  → returned: Michael Yates: 161 · Gio Demaio: 50 · Amir Torabi: 36 · Peyton Bills: 2 · Nicole Smith: 1</pre></details>
+<details><summary>Leads: 226 created (the 135 with no task or meeting is computed in the script)<span class="ret">n = 226</span></summary><pre>SELECT COUNT(Id) n FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z
+  → returned: n = 226
+-- 135 computed in the script: leads with no Task and no Event
+SELECT WhoId FROM Task WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z)
+  → returned: 389 rows
+SELECT WhoId FROM Event WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z)
+  → returned: 80 rows</pre></details>
+<details><summary>Opportunity first activity: 123 Gong calls, 26 inbound emails<span class="ret">computed in the audit script (open for the queries)</span></summary><pre>Computed in the script: earliest Task per opportunity, classified by subject prefix.
+SELECT WhatId, CreatedDate, Subject FROM Task WHERE IsDeleted = false AND WhatId IN (SELECT Id FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;))
+  → returned: 2486 rows</pre></details>
+<details><summary>Scoring: 0 leads, 0 contacts in the window<span class="ret">scored_leads = 0 | contacts = 6,997 | scored_contacts = 0</span></summary><pre>SELECT COUNT(Id) scored_leads FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Rating != null OR pi__score__c &gt; 0 OR pi__Pardot_Last_Scored_At__c != null)
+  → returned: scored_leads = 0
+SELECT COUNT(Id) contacts FROM Contact WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)
+  → returned: contacts = 6,997
+SELECT COUNT(Id) scored_contacts FROM Contact WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND pi__score__c != null
+  → returned: scored_contacts = 0</pre></details>
+<details><summary>Older scores: 322 contacts, last created 8 Jul 2024<span class="ret">n = 322, first_created = 2023-01-16, last_created = 2024-06-18 | last_any_score = 2024-07-08</span></summary><pre>SELECT COUNT(Id) n, MIN(CreatedDate) first_created, MAX(CreatedDate) last_created FROM Contact WHERE pi__score__c != null AND pi__score__c != 0
+  → returned: n = 322, first_created = 2023-01-16, last_created = 2024-06-18
+SELECT MAX(CreatedDate) last_any_score FROM Contact WHERE pi__score__c != null
+  → returned: last_any_score = 2024-07-08</pre></details>
+<details><summary>LeadSource blank: 220 of 226<span class="ret">blank = 220</span></summary><pre>SELECT COUNT(Id) blank FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND LeadSource = null
+  → returned: blank = 220</pre></details>
+<details><summary>Unsegmented inbound opps: 46 of 213<span class="ret">n = 46</span></summary><pre>SELECT COUNT(Id) n FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;) AND Account.Account_Segment__c = null
+  → returned: n = 46</pre></details>
+<details><summary>Channels: 187 won, 405 lost, $2,305,617<span class="ret">lost: 405 / 9,242,612 · won: 187 / 2,305,617 | Marketing lost: 125 / 2,428,580 · Marketing won: 42 / 485,422 · Events lost: 47 / 958,600 · Events won: 13 / 182,749 · Partner lost: 117 / 1,526,692 · Partner won: 71 / 931,910 · Sales lost: 81 / 2,756,664 · Sales won: 31 / 373,291 · Founder lost: 16 / 537,476 · Founder won: 10 / 228,500 · CX lost: 19 / 1,034,600 · CX won: 20 / 103,745</span></summary><pre>SELECT IsWon, COUNT(Id) n, SUM(Amount) arr FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22 GROUP BY IsWon
+  → returned: lost: 405 / 9,242,612 · won: 187 / 2,305,617
+SELECT Deal_Source__c src, IsWon, COUNT(Id) n, SUM(Amount) arr FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22 GROUP BY Deal_Source__c, IsWon ORDER BY Deal_Source__c
+  → returned: Marketing lost: 125 / 2,428,580 · Marketing won: 42 / 485,422 · Events lost: 47 / 958,600 · Events won: 13 / 182,749 · Partner lost: 117 / 1,526,692 · Partner won: 71 / 931,910 · Sales lost: 81 / 2,756,664 · Sales won: 31 / 373,291 · Founder lost: 16 / 537,476 · Founder won: 10 / 228,500 · CX lost: 19 / 1,034,600 · CX won: 20 / 103,745</pre></details>
+<details><summary>Growth: Partner 145 to 204, Marketing 167 to 111<span class="ret">2025 Marketing: 167 · 2026 Marketing: 111 · 2025 Partner: 145 · 2026 Partner: 204</span></summary><pre>SELECT CALENDAR_YEAR(CreatedDate) yr, Deal_Source__c src, COUNT(Id) n FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c IN (&#x27;Partner&#x27;,&#x27;Marketing&#x27;) AND CreatedDate &gt;= 2025-01-01T00:00:00Z GROUP BY CALENDAR_YEAR(CreatedDate), Deal_Source__c ORDER BY Deal_Source__c, CALENDAR_YEAR(CreatedDate)
+  → returned: 2025 Marketing: 167 · 2026 Marketing: 111 · 2025 Partner: 145 · 2026 Partner: 204</pre></details>
+<details><summary>Partner named: 168 of 204<span class="ret">deals = 204, with_partner = 168</span></summary><pre>SELECT COUNT(Id) deals, COUNT(Partner__c) with_partner FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c = &#x27;Partner&#x27; AND CreatedDate &gt;= 2026-01-01T00:00:00Z
+  → returned: deals = 204, with_partner = 168</pre></details>
 </section>
 
 <footer>Compiled 22 September 2026</footer>
