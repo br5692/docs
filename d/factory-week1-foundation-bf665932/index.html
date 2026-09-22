@@ -91,36 +91,43 @@ footer{padding:28px 0;color:var(--ink-faint);font-size:.85rem;border-top:1px sol
 <section class="stream" id="s2"><div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Certificate sign-on</h2> <span class="pill live">running</span></div>
 <p><strong>The service proves who it is by signing a message. It never sends a secret.</strong> No password exists anywhere in this system.</p>
 
-<h3>The two halves</h3>
+<h3>The key and the token are two different things</h3>
 <ul>
-<li>One key pair was made. A key pair is two matching halves.</li>
-<li>The <strong>private key</strong> is the half that signs. Only the service holds it.</li>
-<li>The <strong>public certificate</strong> is the half that checks a signature. Salesforce holds it.</li>
-<li>The public half cannot sign anything. It can only verify.</li>
-<li>The private half never leaves the service. It never enters Salesforce.</li>
+<li>The <strong>key pair</strong> was generated once, by hand, outside Salesforce. The service never generates a key and cannot.</li>
+<li>The <strong>private key</strong> signs. Only the service holds it. It is long-lived and secret.</li>
+<li>The <strong>public certificate</strong> checks a signature. Salesforce holds it. It cannot sign anything.</li>
+<li>The <strong>token</strong> is what the service builds on every connection. It is short-lived and carries no secret.</li>
 </ul>
 
 <h3>Set up once</h3>
 <div class="flow col">
-<div class="b"><b>1. Make the key pair</b><span>done outside Salesforce, on a machine we control</span></div><div class="ar">&darr;</div>
-<div class="b"><b>2. Give the private key to the service</b><span>stored as a secret, never printed, never committed</span></div><div class="ar">&darr;</div>
-<div class="b"><b>3. Put the public certificate on the connected app</b><span>pasted into the External Client App in Factory&rsquo;s org</span></div>
+<div class="b"><b>1. Generate the key pair by hand</b><span>outside Salesforce, on a machine we control</span></div><div class="ar">&darr;</div>
+<div class="b"><b>2. Give the private key to the service</b><span>an environment secret on the host, never in the repository</span></div><div class="ar">&darr;</div>
+<div class="b"><b>3. Put the public certificate on the connected app</b><span>held in Factory&rsquo;s org, on the External Client App</span></div>
 </div>
 
 <h3>Every time the service connects</h3>
 <div class="flow col">
-<div class="b"><b>1. The service writes a short note</b><span>it says: this app, acting as this user, valid for a few minutes</span></div><div class="ar">&darr;</div>
-<div class="b"><b>2. The service signs the note</b><span>it uses the private key. The key itself is not attached</span></div><div class="ar">&darr;</div>
-<div class="b"><b>3. Salesforce checks the signature</b><span>it uses the public certificate it already holds</span></div><div class="ar">&darr;</div>
+<div class="b"><b>1. The service builds a token</b><span>which app, which user to act as, which login address, expires in minutes</span></div><div class="ar">&darr;</div>
+<div class="b"><b>2. The service signs the token with the private key</b><span>the key is not attached and is not sent</span></div><div class="ar">&darr;</div>
+<div class="b"><b>3. Salesforce checks the signature against the certificate</b><span>only the matching private key could have produced it</span></div><div class="ar">&darr;</div>
 <div class="b"><b>4. Salesforce returns a session</b><span>the service makes its calls with that session</span></div>
 </div>
 
-<h3>Why this beats a password</h3>
+<h3>Why a token the service made itself can be trusted</h3>
 <ul>
-<li>A password must be sent to be checked. Anyone who reads it can reuse it.</li>
-<li>A signature proves the service holds the private key. The key is never sent.</li>
-<li>A stolen copy of the public certificate is useless. It cannot sign.</li>
-<li>The note expires in minutes. A copied note is worthless soon after.</li>
+<li>Salesforce does not trust the contents. It trusts the signature.</li>
+<li>Anyone can write a token claiming to be this app. Nobody else can sign one that verifies.</li>
+<li>The maths runs one way. A certificate or a signature cannot be worked backwards into the key.</li>
+<li>Salesforce also rejects the token if the issuer is not this app, the subject is not a pre-authorised user, the audience is not its own login address, or the expiry has passed.</li>
+</ul>
+
+<h3>What is exposed, and what is not</h3>
+<ul>
+<li>The private key never travels. It is not sent to Salesforce, not inside the token, not in any request. There is nothing to intercept in the exchange.</li>
+<li>The token does travel, over TLS. It lasts minutes and is addressed to one audience. Intercepting it yields a short-lived token, not the key.</li>
+<li>The real risk is the host, not the wire. Whoever holds the private key can act as the integration user until the certificate is replaced.</li>
+<li>The key is an environment secret and is never printed, logged or committed. Replacing the pair is a configuration change with no code change.</li>
 </ul>
 
 <h3>Low level</h3>
