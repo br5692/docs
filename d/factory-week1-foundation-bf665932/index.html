@@ -37,13 +37,20 @@ h3{font-family:var(--sans);font-weight:700;font-size:.78rem;letter-spacing:.11em
 .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
 .pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
-.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0;font-family:var(--mono);font-size:.78rem}
-.flow .b{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:120px;box-shadow:var(--shadow)}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:18px 0;font-family:var(--mono);font-size:.78rem}
+.flow .b{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;flex:1 1 150px;min-width:0;box-shadow:var(--shadow)}
 .flow .b b{display:block;font-family:var(--sans);font-size:.82rem;margin-bottom:3px}
-.flow .b span{color:var(--ink-faint)}
-.flow .ar{align-self:center;color:var(--accent-2);padding:0 10px;font-size:1rem}
-.flow.col{flex-direction:column;align-items:flex-start;gap:6px}
-.flow.col .ar{padding:2px 0 2px 22px}
+.flow .b span{color:var(--ink-faint);display:block;word-break:break-word}
+.flow .ar{align-self:center;color:var(--accent-2);font-size:1.05rem;line-height:1;flex:0 0 auto;padding:0 2px}
+.flow.col{flex-direction:column;align-items:stretch}
+.flow.col .b{flex:0 0 auto;width:100%}
+.flow.col .ar{align-self:flex-start;padding:0 0 0 26px}
+@media (max-width:760px){
+  .flow{flex-direction:column;align-items:stretch;gap:6px}
+  .flow .b{flex:0 0 auto;width:100%}
+  .flow .ar{align-self:flex-start;padding:0 0 0 26px;transform:rotate(90deg)}
+  .flow.col .ar{transform:none}
+}
 .note{background:var(--surface-2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin:18px 0}
 .note p{margin:0}
 td.mono,.fmono{font-family:var(--mono);font-size:.78rem}
@@ -62,15 +69,14 @@ footer{padding:28px 0;color:var(--ink-faint);font-size:.85rem;border-top:1px sol
 <section class="stream" id="s1"><div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">One service, two doors</h2> <span class="pill live">running</span></div>
 <p>The portal and an agent are the same customer of the same rules. Both doors reach one function, so permissions and logging cannot drift apart between them.</p>
 <div class="flow">
-<div class="b"><b>Portal</b><span>browser</span></div><div class="ar">&rarr;</div>
-<div class="b"><b>POST /actions/:name</b><span>session cookie</span></div><div class="ar">&searr;</div>
-<div class="b"><b>dispatchAction</b><span>one function</span></div><div class="ar">&rarr;</div>
-<div class="b"><b>Salesforce</b><span>read and write</span></div>
+<div class="b"><b>Portal</b><span>browser &middot; session cookie &middot; POST /actions/:name</span></div>
+<div class="b"><b>Agent</b><span>MCP client &middot; bearer key &middot; POST /mcp</span></div>
 </div>
-<div class="flow">
-<div class="b"><b>Agent</b><span>MCP client</span></div><div class="ar">&rarr;</div>
-<div class="b"><b>POST /mcp</b><span>bearer key</span></div><div class="ar">&nearr;</div>
-<div class="b"><b>same function</b><span>same table, same log</span></div>
+<div class="flow col">
+<div class="ar">&darr;</div>
+<div class="b"><b>dispatchAction</b><span>one function: the permission table, the week gate, one audit row</span></div>
+<div class="ar">&darr;</div>
+<div class="b"><b>Salesforce</b><span>read and write, Factory&rsquo;s own org</span></div>
 </div>
 <h3>Low level</h3>
 <ul>
