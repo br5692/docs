@@ -3,12 +3,42 @@
   "info": {
     "title": "Factory Partner Portal tool layer",
     "version": "1.0.0",
-    "description": "One service with two doors. This document covers the web door. Agents use the MCP door at POST /mcp, which publishes the same actions with the same schemas, generated from the same list, and is discoverable at runtime through tools/list. This document is generated from the service's own definitions, so it cannot disagree with the code."
+    "description": "One service with two doors. This document covers the web door. Agents use the MCP door at `POST /mcp`, which publishes the same actions with the same schemas, generated from the same list, and is discoverable at runtime through `tools/list`. This document is generated from the service's own definitions, so it cannot disagree with the code. Sandbox only."
   },
   "servers": [
     {
       "url": "https://factory-partner-portal-tool-layer.onrender.com",
       "description": "Hosted sandbox service"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health and metadata",
+      "description": "Liveness and the org's own reference data."
+    },
+    {
+      "name": "Authentication",
+      "description": "Passwordless sign-in for partners. A one-time link, single use, fifteen minutes."
+    },
+    {
+      "name": "Identity",
+      "description": "Who the caller is."
+    },
+    {
+      "name": "Applications",
+      "description": "A company applying to be a partner, and the review of it."
+    },
+    {
+      "name": "Contracts",
+      "description": "Partner contract state. Week 3."
+    },
+    {
+      "name": "Deal registrations",
+      "description": "A partner registering a deal, and the checks around it. Week 4."
+    },
+    {
+      "name": "Dashboard",
+      "description": "Partner dashboard reads and replies. Week 5."
     }
   ],
   "components": {
@@ -17,18 +47,190 @@
         "type": "apiKey",
         "in": "cookie",
         "name": "fp_session",
-        "description": "A signed session for a partner, set by /auth/verify."
+        "description": "A signed session for a partner, set by /auth/verify. Seven days."
       },
       "bearerKey": {
         "type": "http",
         "scheme": "bearer",
         "description": "A key identifying staff, an account executive or an agent."
       }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "requestId": {
+                "type": "string",
+                "description": "Matches the Request ID on the audit row and the line in the service log."
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "RateLimited": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "const": "rate_limited"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Registration": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "dealName": {
+            "type": "string"
+          },
+          "estimatedValue": {
+            "type": "number"
+          },
+          "expectedClose": {
+            "type": "string"
+          },
+          "partnerRole": {
+            "type": "string"
+          },
+          "influenceType": {
+            "type": "string"
+          },
+          "allocationSplit": {
+            "type": "number"
+          },
+          "partnerAccountId": {
+            "type": "string"
+          },
+          "customerAccountId": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "opportunityId": {
+            "type": "string"
+          },
+          "submittedBy": {
+            "type": "string"
+          },
+          "submittedAt": {
+            "type": "string"
+          },
+          "decisionNote": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "Application": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "partnerType": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Applied",
+              "In Review",
+              "Approved",
+              "Denied",
+              "Inactive"
+            ]
+          },
+          "appliedAt": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "primaryContact": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "status"
+        ]
+      },
+      "MatchedAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          }
+        }
+      },
+      "MatchedContact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "paths": {
     "/health": {
       "get": {
+        "tags": [
+          "Health and metadata"
+        ],
         "summary": "Liveness, the running commit, and whether Salesforce answers.",
         "parameters": [
           {
@@ -43,24 +245,77 @@
         ],
         "responses": {
           "200": {
-            "description": "ok true, the commit, and the Salesforce state."
+            "description": "The service state.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "sf": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "ok": true,
+                  "version": "8daf156",
+                  "sf": "ok"
+                }
+              }
+            }
           }
         }
       }
     },
     "/meta/partner-types": {
       "get": {
+        "tags": [
+          "Health and metadata"
+        ],
         "summary": "Factory's own Partner Type picklist, read live from the org.",
         "responses": {
           "200": {
-            "description": "The picklist values."
+            "description": "The picklist values as they stand in the org.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/auth/request": {
       "post": {
-        "summary": "Asks for a sign-in link. Always answers the same way, whatever the address.",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Asks for a sign-in link.",
+        "description": "Always answers the same way, whatever the address, so the page cannot be used to discover who is a partner. Capped at five per email an hour and twenty per address an hour.",
         "requestBody": {
           "required": true,
           "content": {
@@ -73,30 +328,59 @@
                   },
                   "website": {
                     "type": "string",
-                    "description": "Honeypot. Any value writes nothing."
+                    "description": "Honeypot. Any value writes nothing and sends nothing."
                   }
                 },
                 "required": [
                   "email"
                 ],
                 "additionalProperties": false
+              },
+              "example": {
+                "email": "name@example.com"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The neutral message. Reveals nothing about the address."
+            "description": "The neutral message. Identical for a known and an unknown address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited. Retry-After in seconds."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/auth/verify": {
       "get": {
-        "summary": "Exchanges a one-time link for a session. Single use, fifteen minutes.",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Exchanges a one-time link for a session.",
+        "description": "Single use and valid for fifteen minutes. The link is stored only as a one-way hash, which is cleared the moment it is used.",
         "parameters": [
           {
             "name": "token",
@@ -112,26 +396,84 @@
             "description": "Session cookie set."
           },
           "401": {
-            "description": "Unknown, used or expired link."
+            "description": "Unknown, already used, or expired link.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/auth/me": {
       "get": {
+        "tags": [
+          "Authentication"
+        ],
         "summary": "Who the current session belongs to.",
         "responses": {
           "200": {
-            "description": "The caller."
+            "description": "The caller and their account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contactId": {
+                      "type": "string"
+                    },
+                    "accountId": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "accountName": {
+                      "type": "string"
+                    },
+                    "partnerType": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
-            "description": "No session."
+            "description": "No session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/auth/sign-out": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "summary": "Clears the session cookie.",
         "responses": {
           "200": {
@@ -142,7 +484,11 @@
     },
     "/contracts/webhook/{provider}": {
       "post": {
-        "summary": "Signing-provider callback. No provider is configured yet, so a named route is refused.",
+        "tags": [
+          "Contracts"
+        ],
+        "summary": "Signing-provider callback.",
+        "description": "No provider is configured yet, so a named provider route is refused. The signature is checked before anything is read.",
         "parameters": [
           {
             "name": "provider",
@@ -158,18 +504,49 @@
             "description": "Accepted."
           },
           "401": {
-            "description": "Signature rejected."
+            "description": "Signature rejected.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "No such provider configured."
+            "description": "No such provider is configured.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/whoami": {
       "post": {
+        "tags": [
+          "Identity"
+        ],
         "summary": "Returns the authenticated caller identity.",
-        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner, staff, staff-ae, agent. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -192,24 +569,80 @@
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "identity": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "identity"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/submit_partner_application": {
       "post": {
+        "tags": [
+          "Applications"
+        ],
         "summary": "Submits a public partner application (anonymous callers only).",
-        "description": "Callers permitted: anonymous. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** anonymous. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\nThe same body for a created, attached, duplicate or bot submission. The real outcome is in the audit row.",
         "security": [
           {
             "sessionCookie": []
@@ -250,7 +683,6 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "companyName",
                   "website",
@@ -258,31 +690,99 @@
                   "lastName",
                   "email",
                   "partnerType"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "companyName": "<companyName>",
+                "website": "example.com",
+                "firstName": "<firstName>",
+                "lastName": "<lastName>",
+                "email": "name@example.com",
+                "partnerType": "<partnerType>",
+                "note": "<note>",
+                "company_url_confirm": "<company_url_confirm>"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "ok"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/list_registrations": {
       "post": {
+        "tags": [
+          "Deal registrations"
+        ],
         "summary": "Lists deal registrations (own account for partners, any for staff and agent).",
-        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner, staff, staff-ae, agent. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -305,24 +805,83 @@
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registrations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Registration"
+                      }
+                    }
+                  },
+                  "required": [
+                    "registrations"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/get_registration": {
       "post": {
+        "tags": [
+          "Deal registrations"
+        ],
         "summary": "Gets one deal registration by id, scoped like list_registrations.",
-        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner, staff, staff-ae, agent. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -342,34 +901,93 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "id"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "id": "0000000000000000AA"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registration": {
+                      "$ref": "#/components/schemas/Registration"
+                    }
+                  },
+                  "required": [
+                    "registration"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/list_applications": {
       "post": {
+        "tags": [
+          "Applications"
+        ],
         "summary": "Lists partner applications pending review (staff only).",
-        "description": "Callers permitted: staff, staff-ae. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** staff, staff-ae. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -392,24 +1010,83 @@
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "applications": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Application"
+                      }
+                    }
+                  },
+                  "required": [
+                    "applications"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/get_application": {
       "post": {
+        "tags": [
+          "Applications"
+        ],
         "summary": "Gets one pending partner application by id (staff only).",
-        "description": "Callers permitted: staff, staff-ae. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** staff, staff-ae. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -429,34 +1106,93 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "id"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "id": "0000000000000000AA"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "application": {
+                      "$ref": "#/components/schemas/Application"
+                    }
+                  },
+                  "required": [
+                    "application"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/check_partner_conflicts": {
       "post": {
+        "tags": [
+          "Applications"
+        ],
         "summary": "Checks whether an email or domain already exists as an Account or Contact, returning status and Account name only.",
-        "description": "Callers permitted: staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** staff, staff-ae, agent. **Callable from portal week 1.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\nStatus and Account name only. No other partner detail is returned.",
         "security": [
           {
             "sessionCookie": []
@@ -480,30 +1216,82 @@
                   }
                 },
                 "additionalProperties": false
+              },
+              "example": {
+                "email": "name@example.com",
+                "domain": "example.com"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/get_contract_status": {
       "post": {
+        "tags": [
+          "Contracts"
+        ],
         "summary": "Gets the contract state of the caller's own account (partner) or a given accountId (staff, agent).",
-        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 3. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner, staff, staff-ae, agent. **Callable from portal week 3.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\nThe contract state of the account in question.",
         "security": [
           {
             "sessionCookie": []
@@ -524,30 +1312,81 @@
                   }
                 },
                 "additionalProperties": false
+              },
+              "example": {
+                "accountId": "0000000000000000AA"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/match_customer": {
       "post": {
+        "tags": [
+          "Deal registrations"
+        ],
         "summary": "Matches an existing customer Account by exact website domain, then by exact name, or a Contact by email. Read-only.",
-        "description": "Callers permitted: partner. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner. **Callable from portal week 4.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\naccount is present only when match is account, contact only when match is contact.",
         "security": [
           {
             "sessionCookie": []
@@ -573,34 +1412,106 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "customerName"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "customerName": "<customerName>",
+                "customerDomain": "example.com",
+                "contactEmail": "name@example.com"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "match": {
+                      "type": "string",
+                      "enum": [
+                        "account",
+                        "contact",
+                        "none"
+                      ]
+                    },
+                    "account": {
+                      "$ref": "#/components/schemas/MatchedAccount"
+                    },
+                    "contact": {
+                      "$ref": "#/components/schemas/MatchedContact"
+                    }
+                  },
+                  "required": [
+                    "match"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/create_deal_registration": {
       "post": {
+        "tags": [
+          "Deal registrations"
+        ],
         "summary": "Creates a Pending deal registration for the caller's partner account, matching or creating the customer Account, Contact, and open Opportunity and recording any same-tier or second-reseller conflicts without blocking.",
-        "description": "Callers permitted: partner. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner. **Callable from portal week 4.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -647,7 +1558,6 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "customerName",
                   "customerDomain",
@@ -659,31 +1569,100 @@
                   "expectedClose",
                   "partnerRole",
                   "attribution"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "customerName": "<customerName>",
+                "customerDomain": "example.com",
+                "contactName": "<contactName>",
+                "contactEmail": "name@example.com",
+                "dealName": "<dealName>",
+                "description": "<description>",
+                "estimatedValue": 0,
+                "expectedClose": "2026-12-31",
+                "partnerRole": "<partnerRole>",
+                "attribution": "<attribution>"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/check_deal_conflicts": {
       "post": {
+        "tags": [
+          "Deal registrations"
+        ],
         "summary": "Returns the structured conflicts block stored on a deal registration (staff, staff-ae, agent).",
-        "description": "Callers permitted: staff, staff-ae, agent. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** staff, staff-ae, agent. **Callable from portal week 4.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\nThe stored conflicts block is merged into the same object alongside these fields.",
         "security": [
           {
             "sessionCookie": []
@@ -703,34 +1682,99 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "registrationId"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "registrationId": "0000000000000000AA"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "registrationId": {
+                      "type": "string"
+                    },
+                    "verdict": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "registrationId"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/get_dashboard_kpis": {
       "post": {
+        "tags": [
+          "Dashboard"
+        ],
         "summary": "Returns the four dashboard KPI tiles computed from the caller's own registrations (partner only).",
-        "description": "Callers permitted: partner. Callable from portal week 5. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner. **Callable from portal week 5.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal. \n\nThe dashboard tiles computed from the caller's own registrations.",
         "security": [
           {
             "sessionCookie": []
@@ -753,24 +1797,72 @@
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
     },
     "/actions/respond_to_information_request": {
       "post": {
+        "tags": [
+          "Dashboard"
+        ],
         "summary": "Replies to a Needs Information request on the caller's own registration, returning it to Pending (partner only).",
-        "description": "Callers permitted: partner. Callable from portal week 5. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "description": "**Callers permitted:** partner. **Callable from portal week 5.** An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
         "security": [
           {
             "sessionCookie": []
@@ -793,27 +1885,90 @@
                     "type": "string"
                   }
                 },
-                "additionalProperties": false,
                 "required": [
                   "registrationId",
                   "message"
-                ]
+                ],
+                "additionalProperties": false
+              },
+              "example": {
+                "registrationId": "0000000000000000AA",
+                "message": "<message>"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "The action result."
+            "description": "The action result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "const": "Pending"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "status"
+                  ]
+                }
+              }
+            }
           },
           "403": {
-            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Unknown action."
+            "description": "Unknown action.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "FORBIDDEN",
+                    "message": "Identity partner may not call list_applications",
+                    "requestId": "3f1c8a60-7b2e-4c51-9a0d-2e6f8b41c9d2"
+                  }
+                }
+              }
+            }
           },
           "429": {
-            "description": "Rate limited."
+            "description": "Rate limited. Retry-After carries the seconds remaining. The body is identical to the sign-in limit so it reveals nothing else.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimited"
+                },
+                "example": {
+                  "error": "rate_limited"
+                }
+              }
+            }
           }
         }
       }
