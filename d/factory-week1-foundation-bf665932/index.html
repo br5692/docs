@@ -1,0 +1,179 @@
+<title>Week 1 Foundation</title>
+<style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:40px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;display:flex;align-items:center;gap:10px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,3rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}h1.title span{color:inherit}
+  .lede{font-size:1.02rem;color:var(--ink-soft);max-width:64ch;margin:0}
+  section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);letter-spacing:-.01em;margin:0;line-height:1.1}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 14px;max-width:70ch}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul,ol{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:9px 11px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);white-space:nowrap}td.exp{color:var(--ink)}td.chk{min-width:120px;border-left:1px dashed var(--line)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
+  footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
+  a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
+</style><style>
+nav.toc{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.toc-inner{display:flex;gap:6px;flex-wrap:wrap;padding:10px 0;align-items:center}
+.toc a{font-size:.8rem;color:var(--ink-soft);text-decoration:none;padding:6px 11px;border-radius:999px;font-weight:500;white-space:nowrap;border:1px solid var(--line-soft);background:var(--surface)}
+.toc a:hover{background:var(--surface-2);color:var(--ink);text-decoration:none;border-color:var(--accent)}
+.toc a .num{font-family:var(--mono);font-size:.7rem;color:var(--accent-2);margin-right:5px}
+.sec-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sec-num{font-family:var(--mono);font-size:.95rem;color:var(--accent-2);font-weight:600}
+h2.sec-title{margin:0}
+h3{font-family:var(--sans);font-weight:700;font-size:.78rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-faint);margin:26px 0 10px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.live{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.pill.sandbox{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0;font-family:var(--mono);font-size:.78rem}
+.flow .b{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;min-width:120px;box-shadow:var(--shadow)}
+.flow .b b{display:block;font-family:var(--sans);font-size:.82rem;margin-bottom:3px}
+.flow .b span{color:var(--ink-faint)}
+.flow .ar{align-self:center;color:var(--accent-2);padding:0 10px;font-size:1rem}
+.flow.col{flex-direction:column;align-items:flex-start;gap:6px}
+.flow.col .ar{padding:2px 0 2px 22px}
+.note{background:var(--surface-2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin:18px 0}
+.note p{margin:0}
+td.mono,.fmono{font-family:var(--mono);font-size:.78rem}
+footer{padding:28px 0;color:var(--ink-faint);font-size:.85rem;border-top:1px solid var(--line);margin-top:30px}
+</style>
+<header class="mast"><div class="wrap"><div class="mast-inner">
+<p class="eyebrow"><span class="dot"></span> Factory Partner Portal &middot; Week 1 &middot; technical reference</p>
+<h1 class="title">Week 1 <span>foundation</span></h1>
+<p class="lede">The parts nobody sees. A data model inside Factory&rsquo;s own org, one service that talks to it, a sign-in that uses no password, one table of rules, and a record of every call. Everything below runs in the partial sandbox today and can be opened from the links in each section.</p>
+</div></div></header>
+<nav class="toc"><div class="wrap"><div class="toc-inner">
+<a href="#s1"><span class="num">1</span>Shape</a><a href="#s2"><span class="num">2</span>Sign-on</a><a href="#s3"><span class="num">3</span>Actions</a><a href="#s4"><span class="num">4</span>Callers</a><a href="#s5"><span class="num">5</span>Audit log</a><a href="#s6"><span class="num">6</span>Hosting</a><a href="#s7"><span class="num">7</span>Data model</a>
+</div></div></nav>
+<main class="wrap">
+
+<section class="stream" id="s1"><div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">One service, two doors</h2> <span class="pill live">running</span></div>
+<p>The portal and an agent are the same customer of the same rules. Both doors reach one function, so permissions and logging cannot drift apart between them.</p>
+<div class="flow">
+<div class="b"><b>Portal</b><span>browser</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>POST /actions/:name</b><span>session cookie</span></div><div class="ar">&searr;</div>
+<div class="b"><b>dispatchAction</b><span>one function</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>Salesforce</b><span>read and write</span></div>
+</div>
+<div class="flow">
+<div class="b"><b>Agent</b><span>MCP client</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>POST /mcp</b><span>bearer key</span></div><div class="ar">&nearr;</div>
+<div class="b"><b>same function</b><span>same table, same log</span></div>
+</div>
+<h3>Low level</h3>
+<ul>
+<li>MCP is not a second server. It is a second endpoint in the same process, and its tool list is generated from the same action list that serves the web door.</li>
+<li>A new action appears in both doors from one place. It cannot exist in one and not the other.</li>
+<li>The service stores nothing. It reads and writes Salesforce and keeps no copy of any data.</li>
+<li>Five reserved action names answer with a recorded refusal rather than an unknown-action error, so a caller ahead of the build gets a clear answer.</li>
+</ul>
+<p class="show"><span class="lbl">Open it</span> <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1" target="_blank" rel="noopener">The health check</a> reports the exact commit running and whether Salesforce is reachable.</p>
+</section>
+
+<section class="stream" id="s2"><div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Certificate sign-on</h2> <span class="pill live">running</span></div>
+<p>No password exists anywhere in this system. The service proves who it is with a certificate, the way an ID card works.</p>
+<div class="flow col">
+<div class="b"><b>1. Key pair made outside Salesforce</b><span>private half never enters the org</span></div><div class="ar">&darr;</div>
+<div class="b"><b>2. Public certificate sits on the connected app</b><span>External Client App, named-user JWT enabled</span></div><div class="ar">&darr;</div>
+<div class="b"><b>3. Service signs a short-lived token</b><span>private key held in its secret store</span></div><div class="ar">&darr;</div>
+<div class="b"><b>4. Salesforce verifies and returns a session</b><span>as one named API-only user</span></div>
+</div>
+<h3>Low level</h3>
+<ul>
+<li>Subject <code>CN=Partner Portal Tool Layer, O=Domestique</code>, valid to 18 December 2028. Replacing it is a configuration change, not a code change.</li>
+<li>The public half on its own is useless to anyone who copies it. Only the private key can produce a valid signature.</li>
+<li>The integration user sits on an API-only profile with one permission set. Every write the service makes is attributable to that user.</li>
+<li>Three certificate records in Certificate and Key Management are provisioning leftovers and are used by nothing. The live certificate is held inline on the app.</li>
+</ul>
+<p class="show"><span class="lbl">Open it</span> <a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ManageExternalClientApplication/0xIW40000002ayf/detail" target="_blank" rel="noopener">External Client App Manager, Partner Portal Tool Layer</a>, then Settings, then OAuth Settings.</p>
+</section>
+
+<section class="stream" id="s3"><div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">Every action that exists</h2> <span class="pill live">13 live</span></div>
+<p>Thirteen actions are implemented. Each is available through both doors. The week column is the earliest portal week that may call it, so a caller on the Week 2 address is refused anything marked later.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Action</th><th>Who may call it</th><th>Week</th><th>What it does</th></tr></thead><tbody><tr><td class="mono">whoami</td><td>partner, staff, AE, agent</td><td class="n">1</td><td>Returns the authenticated caller identity.</td></tr><tr><td class="mono">submit_partner_application</td><td>anonymous</td><td class="n">1</td><td>Submits a public partner application.</td></tr><tr><td class="mono">list_registrations</td><td>partner, staff, AE, agent</td><td class="n">1</td><td>Lists deal registrations. Own account for a partner, any for staff.</td></tr><tr><td class="mono">get_registration</td><td>partner, staff, AE, agent</td><td class="n">1</td><td>Gets one deal registration, scoped the same way.</td></tr><tr><td class="mono">list_applications</td><td>staff, AE</td><td class="n">1</td><td>Lists partner applications pending review.</td></tr><tr><td class="mono">get_application</td><td>staff, AE</td><td class="n">1</td><td>Gets one pending partner application.</td></tr><tr><td class="mono">check_partner_conflicts</td><td>staff, AE, agent</td><td class="n">1</td><td>Checks whether an email or domain already exists.</td></tr><tr><td class="mono">get_contract_status</td><td>partner, staff, AE, agent</td><td class="n">3</td><td>Gets the contract state of the caller's own account.</td></tr><tr><td class="mono">match_customer</td><td>partner</td><td class="n">4</td><td>Matches an existing customer account by website domain.</td></tr><tr><td class="mono">create_deal_registration</td><td>partner</td><td class="n">4</td><td>Creates a Pending deal registration.</td></tr><tr><td class="mono">check_deal_conflicts</td><td>staff, AE, agent</td><td class="n">4</td><td>Returns the conflicts block on a registration.</td></tr><tr><td class="mono">get_dashboard_kpis</td><td>partner</td><td class="n">5</td><td>Returns the dashboard KPI tiles.</td></tr><tr><td class="mono">respond_to_information_request</td><td>partner</td><td class="n">5</td><td>Replies to a Needs Information request.</td></tr></tbody></table></div>
+<p>Five further names are reserved for later weeks and answer with a recorded refusal: <code>attach_agent_review</code>, <code>route_registration</code>, <code>accept_registration</code>, <code>reject_registration</code>, <code>confirm_partner_attach</code>.</p>
+<h3>The web door</h3>
+<div class="tbl-scroll"><table><thead><tr><th>Endpoint</th><th>Purpose</th></tr></thead><tbody>
+<tr><td class="mono">GET /health</td><td>Liveness, the running commit, and whether Salesforce answers.</td></tr>
+<tr><td class="mono">POST /auth/request</td><td>Asks for a sign-in link.</td></tr>
+<tr><td class="mono">GET /auth/verify</td><td>Exchanges a link for a session.</td></tr>
+<tr><td class="mono">GET /auth/me</td><td>Who the session belongs to.</td></tr>
+<tr><td class="mono">POST /auth/sign-out</td><td>Clears the session.</td></tr>
+<tr><td class="mono">POST /actions/:name</td><td>Runs one action.</td></tr>
+<tr><td class="mono">POST /mcp</td><td>The agent door.</td></tr>
+<tr><td class="mono">POST /contracts/webhook/:provider</td><td>Signing-provider callback. No provider is configured yet.</td></tr>
+<tr><td class="mono">GET /meta/partner-types</td><td>Serves Factory&rsquo;s own partner type picklist, read live from the org.</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="stream" id="s4"><div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">Callers and rules</h2> <span class="pill live">enforced</span></div>
+<p>One table decides who may call what. There are five kinds of caller and nothing gets past the table.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Caller</th><th>What it is</th><th>What it may reach</th></tr></thead><tbody><tr><td class="mono">anonymous</td><td>Nobody is signed in.</td><td>Apply, request a sign-in link, open a sign-in link. Nothing else.</td></tr><tr><td class="mono">partner</td><td>A Contact at an approved partner, holding a signed session cookie.</td><td>Their own account's data only. Never another partner's.</td></tr><tr><td class="mono">staff</td><td>A Factory user with a bearer key.</td><td>The review queues and the applications.</td></tr><tr><td class="mono">account executive</td><td>A Factory user with a bearer key, marked as an AE.</td><td>Everything staff may do, plus the deal decisions.</td></tr><tr><td class="mono">agent</td><td>An automation holding a bearer key.</td><td>Reads and conflict checks. Never a decision.</td></tr></tbody></table></div>
+<h3>Rules that sit on top</h3>
+<ul>
+<li>A partner whose contract is not signed can only see who they are and their contract status. Every other partner action is refused. The gate is a switch, off until Week 3.</li>
+<li>A partner is scoped to their own account by the query itself, not by the page. Asking for another partner&rsquo;s registration returns nothing.</li>
+<li>Sign-in requires both the company and the person to be approved.</li>
+<li>Every refusal writes an audit row with the reason. Nothing fails silently.</li>
+<li>Sign-in requests are capped at five per email an hour and twenty per address an hour.</li>
+</ul>
+<p class="show"><span class="lbl">Open it</span> <a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log</a> with Outcome filtered to Denied shows the table doing its job.</p>
+</section>
+
+<section class="stream" id="s5"><div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">The audit log</h2> <span class="pill live">running</span></div>
+<p>Every call writes exactly one row, including the ones that are refused.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Column</th><th>What it holds</th></tr></thead><tbody>
+<tr><td><strong>Occurred At</strong></td><td>When it ran.</td></tr>
+<tr><td><strong>Action</strong></td><td>What was called.</td></tr>
+<tr><td><strong>Outcome</strong></td><td>Success, Denied or Error.</td></tr>
+<tr><td><strong>Partner Contact</strong></td><td>The partner who made the call.</td></tr>
+<tr><td><strong>Salesforce User</strong></td><td>The Salesforce user who made the call.</td></tr>
+<tr><td><strong>Caller</strong></td><td>The raw identity behind those two.</td></tr>
+<tr><td><strong>Record</strong></td><td>A link to the record the row acted on.</td></tr>
+<tr><td><strong>Request ID</strong></td><td>Joins the row to the matching line in the service log.</td></tr>
+<tr><td><strong>Inputs</strong></td><td>What was sent in, with secrets stripped.</td></tr>
+</tbody></table></div>
+<div class="note"><p>Only one of Partner Contact and Salesforce User is ever filled. Which one tells you whether a partner or a member of staff made the call. A partner is a Contact and never a Salesforce user, so partners never consume a licence.</p></div>
+</section>
+
+<section class="stream" id="s6"><div class="sec-head"><span class="sec-num">6</span><h2 class="sec-title">Hosting</h2> <span class="pill sandbox">Domestique accounts</span></div>
+<div class="flow">
+<div class="b"><b>Browser</b><span>partner or staff</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>Cloudflare Pages</b><span>static portal</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>Render</b><span>service container</span></div><div class="ar">&rarr;</div>
+<div class="b"><b>Salesforce</b><span>Factory&rsquo;s org</span></div>
+</div>
+<ul>
+<li>The portal is plain static files. Any static host serves it.</li>
+<li>The service is a container. Any container host runs it.</li>
+<li>Nothing in the code knows which host it is on. Addresses and secrets are configuration.</li>
+<li>Moving either into Factory&rsquo;s own accounts is a handover of configuration, not a rebuild.</li>
+<li>The health address reports the running commit, so what is deployed is never in doubt.</li>
+</ul>
+</section>
+
+<section class="stream" id="s7"><div class="sec-head"><span class="sec-num">7</span><h2 class="sec-title">The data model</h2> <span class="pill live">additive only</span></div>
+<p>Forty-nine fields across five objects, every one an addition. Nothing Factory already had was renamed, retyped or removed.</p>
+<div class="tbl-scroll"><table><thead><tr><th>Object</th><th>Fields</th><th>What the group is for</th></tr></thead><tbody><tr><td><strong>Account</strong></td><td class="n">14</td><td>Partner type, lifecycle stage, applied and approved dates, commission rate, contract state, the decision note and the primary contact.</td></tr><tr><td><strong>Contact</strong></td><td class="n">4</td><td>Portal access status, plus the three sign-in fields: a one-way hash of the current link, its expiry, and the last sign-in.</td></tr><tr><td><strong>Partner Influence</strong></td><td class="n">20</td><td>One deal registration: who registered it, for which customer, what they claim, what it is worth, and the decision.</td></tr><tr><td><strong>Portal Audit Log</strong></td><td class="n">10</td><td>One row per call. Nine columns plus a link to the record touched.</td></tr><tr><td><strong>Portal Settings</strong></td><td class="n">1</td><td>One switch: copy the deciding account executive's manager on decision emails.</td></tr></tbody></table></div>
+<ul>
+<li>Partner Influence is Factory&rsquo;s own object. Four of its fields came from their metadata export and match what their team already uses.</li>
+<li>The Portal Audit Log is the only genuinely new object.</li>
+<li>Every field carries help text in Setup, so an admin who has never met this project can read what each one is for.</li>
+</ul>
+<p class="show"><span class="lbl">Open it</span> <a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ObjectManager/Account/FieldsAndRelationships/view" target="_blank" rel="noopener">Object Manager, Account</a>, filtered on Portal or Partner. The full field-by-field table with help text and a Setup link each is in the manual test script.</p>
+</section>
+
+</main>
+<footer class="wrap"><p>Compiled 2026-09-22 from the partial sandbox and the repository at <code>br5692/factory-partner-portal</code>. Unlisted page: anyone with the address can open it, nobody can find it by browsing.</p></footer>
