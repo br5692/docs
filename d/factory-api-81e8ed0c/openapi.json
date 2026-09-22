@@ -1,0 +1,822 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Factory Partner Portal tool layer",
+    "version": "1.0.0",
+    "description": "One service with two doors. This document covers the web door. Agents use the MCP door at POST /mcp, which publishes the same actions with the same schemas, generated from the same list, and is discoverable at runtime through tools/list. This document is generated from the service's own definitions, so it cannot disagree with the code."
+  },
+  "servers": [
+    {
+      "url": "https://factory-partner-portal-tool-layer.onrender.com",
+      "description": "Hosted sandbox service"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "fp_session",
+        "description": "A signed session for a partner, set by /auth/verify."
+      },
+      "bearerKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "A key identifying staff, an account executive or an agent."
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Liveness, the running commit, and whether Salesforce answers.",
+        "parameters": [
+          {
+            "name": "deep",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Any value also checks Salesforce."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok true, the commit, and the Salesforce state."
+          }
+        }
+      }
+    },
+    "/meta/partner-types": {
+      "get": {
+        "summary": "Factory's own Partner Type picklist, read live from the org.",
+        "responses": {
+          "200": {
+            "description": "The picklist values."
+          }
+        }
+      }
+    },
+    "/auth/request": {
+      "post": {
+        "summary": "Asks for a sign-in link. Always answers the same way, whatever the address.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string",
+                    "description": "Honeypot. Any value writes nothing."
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The neutral message. Reveals nothing about the address."
+          },
+          "429": {
+            "description": "Rate limited. Retry-After in seconds."
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "get": {
+        "summary": "Exchanges a one-time link for a session. Single use, fifteen minutes.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session cookie set."
+          },
+          "401": {
+            "description": "Unknown, used or expired link."
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Who the current session belongs to.",
+        "responses": {
+          "200": {
+            "description": "The caller."
+          },
+          "401": {
+            "description": "No session."
+          }
+        }
+      }
+    },
+    "/auth/sign-out": {
+      "post": {
+        "summary": "Clears the session cookie.",
+        "responses": {
+          "200": {
+            "description": "Cleared."
+          }
+        }
+      }
+    },
+    "/contracts/webhook/{provider}": {
+      "post": {
+        "summary": "Signing-provider callback. No provider is configured yet, so a named route is refused.",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accepted."
+          },
+          "401": {
+            "description": "Signature rejected."
+          },
+          "404": {
+            "description": "No such provider configured."
+          }
+        }
+      }
+    },
+    "/actions/whoami": {
+      "post": {
+        "summary": "Returns the authenticated caller identity.",
+        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/submit_partner_application": {
+      "post": {
+        "summary": "Submits a public partner application (anonymous callers only).",
+        "description": "Callers permitted: anonymous. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "companyName": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "partnerType": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "company_url_confirm": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "companyName",
+                  "website",
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "partnerType"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/list_registrations": {
+      "post": {
+        "summary": "Lists deal registrations (own account for partners, any for staff and agent).",
+        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/get_registration": {
+      "post": {
+        "summary": "Gets one deal registration by id, scoped like list_registrations.",
+        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/list_applications": {
+      "post": {
+        "summary": "Lists partner applications pending review (staff only).",
+        "description": "Callers permitted: staff, staff-ae. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/get_application": {
+      "post": {
+        "summary": "Gets one pending partner application by id (staff only).",
+        "description": "Callers permitted: staff, staff-ae. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/check_partner_conflicts": {
+      "post": {
+        "summary": "Checks whether an email or domain already exists as an Account or Contact, returning status and Account name only.",
+        "description": "Callers permitted: staff, staff-ae, agent. Callable from portal week 1. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/get_contract_status": {
+      "post": {
+        "summary": "Gets the contract state of the caller's own account (partner) or a given accountId (staff, agent).",
+        "description": "Callers permitted: partner, staff, staff-ae, agent. Callable from portal week 3. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accountId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/match_customer": {
+      "post": {
+        "summary": "Matches an existing customer Account by exact website domain, then by exact name, or a Contact by email. Read-only.",
+        "description": "Callers permitted: partner. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerName": {
+                    "type": "string"
+                  },
+                  "customerDomain": {
+                    "type": "string"
+                  },
+                  "contactEmail": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "customerName"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/create_deal_registration": {
+      "post": {
+        "summary": "Creates a Pending deal registration for the caller's partner account, matching or creating the customer Account, Contact, and open Opportunity and recording any same-tier or second-reseller conflicts without blocking.",
+        "description": "Callers permitted: partner. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerName": {
+                    "type": "string"
+                  },
+                  "customerDomain": {
+                    "type": "string"
+                  },
+                  "contactName": {
+                    "type": "string"
+                  },
+                  "contactEmail": {
+                    "type": "string"
+                  },
+                  "dealName": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "estimatedValue": {
+                    "type": "number"
+                  },
+                  "expectedClose": {
+                    "type": "string"
+                  },
+                  "partnerRole": {
+                    "type": "string"
+                  },
+                  "attribution": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "customerName",
+                  "customerDomain",
+                  "contactName",
+                  "contactEmail",
+                  "dealName",
+                  "description",
+                  "estimatedValue",
+                  "expectedClose",
+                  "partnerRole",
+                  "attribution"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/check_deal_conflicts": {
+      "post": {
+        "summary": "Returns the structured conflicts block stored on a deal registration (staff, staff-ae, agent).",
+        "description": "Callers permitted: staff, staff-ae, agent. Callable from portal week 4. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "registrationId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "registrationId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/get_dashboard_kpis": {
+      "post": {
+        "summary": "Returns the four dashboard KPI tiles computed from the caller's own registrations (partner only).",
+        "description": "Callers permitted: partner. Callable from portal week 5. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    },
+    "/actions/respond_to_information_request": {
+      "post": {
+        "summary": "Replies to a Needs Information request on the caller's own registration, returning it to Pending (partner only).",
+        "description": "Callers permitted: partner. Callable from portal week 5. An earlier week is refused with a recorded denial. Every call writes exactly one audit row, including a refusal.",
+        "security": [
+          {
+            "sessionCookie": []
+          },
+          {
+            "bearerKey": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "registrationId": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "registrationId",
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The action result."
+          },
+          "403": {
+            "description": "The permission table or the week gate refused the call. One audit row, outcome Denied."
+          },
+          "404": {
+            "description": "Unknown action."
+          },
+          "429": {
+            "description": "Rate limited."
+          }
+        }
+      }
+    }
+  }
+}
