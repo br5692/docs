@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partner Portal API</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔌</text></svg>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui.min.css">
+<style>
+  body{margin:0;background:#fafafa}
+  .hdr{font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:#141413;color:#fff;padding:14px 20px}
+  .hdr b{display:block;font-size:1.05rem;margin-bottom:3px}
+  .hdr span{color:#a8a5a0}
+  .hdr a{color:#4fd0be}
+  #ui .topbar{display:none}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <b>Factory Partner Portal &middot; web service API</b>
+  <span>Generated from the service&rsquo;s own definitions, so it cannot disagree with the code. Agents use the MCP door at <code>POST /mcp</code>, which publishes the same actions with the same schemas and is discoverable at runtime. Sandbox only. <a href="./openapi.json">openapi.json</a></span>
+</div>
+<div id="ui"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.14/swagger-ui-bundle.min.js"></script>
+<script>
+  window.ui = SwaggerUIBundle({ url: "./openapi.json", dom_id: "#ui", deepLinking: true, tryItOutEnabled: false, supportedSubmitMethods: [], docExpansion: "list" });
+</script>
+</body>
+</html>
