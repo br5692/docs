@@ -65,13 +65,13 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <header class="mast"><div class="wrap mast-inner">
 <p class="eyebrow">Stay AI · Inbound audit · 22 September 2026</p>
 <h1>Inbound audit: demo requests, follow-up, routing, scoring and channels</h1>
-<p class="lede">Answers the questions from the 22 September call: are people who ask for a demo followed up, is the demo request routed, how fast is the response, is lead scoring in use, and which channels perform. Figures cover the 12 months to 22 September 2026 unless a line says otherwise.</p>
+<p class="lede">Answers the questions from the 22 September call: are people who ask for a demo followed up, is the demo request routed, how fast is the response, is lead scoring in use, and which channels perform. Figures cover the 12 months to 22 September 2026 unless a line says otherwise, and leave out records belonging to Stay's own staff (@stay.ai addresses).</p>
 <div class="meta-grid">
 <div class="meta-cell"><div class="k">Org</div><div class="v">stayai-prod</div></div>
 <div class="meta-cell"><div class="k">Window</div><div class="v">22 Sep 25 &ndash; 22 Sep 26</div></div>
-<div class="meta-cell"><div class="k">Demo requests</div><div class="v">374 people</div></div>
-<div class="meta-cell"><div class="k">Flagged not booked</div><div class="v">94</div></div>
-<div class="meta-cell"><div class="k">No follow-up logged</div><div class="v">48</div></div>
+<div class="meta-cell"><div class="k">Demo requests</div><div class="v">372 people</div></div>
+<div class="meta-cell"><div class="k">Flagged not booked</div><div class="v">92</div></div>
+<div class="meta-cell"><div class="k">No follow-up logged</div><div class="v">47</div></div>
 </div></div></header>
 
 <div class="wrap">
@@ -79,26 +79,26 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <section>
 <div class="sec-head"><span class="sec-num">01</span><h2>The red flag</h2><span class="pill bad">real, and measurable</span></div>
 <p class="sec-sub">The risk raised on the call: someone asks to talk to sales, and nobody follows up.</p>
-<p>374 people submitted the website <em>Book Demo</em> form (392 submissions). When someone submits and does not book a slot, HubSpot logs a <code>Demo Not Scheduled</code> task about 30 minutes later. <strong>94 people got that flag.</strong></p>
+<p>372 people outside Stay submitted the website <em>Book Demo</em> form (387 submissions). When someone submits and does not book a slot, HubSpot logs a <code>Demo Not Scheduled</code> task about 30 minutes later. <strong>92 people got that flag.</strong></p>
 <div class="tbl-scroll"><table>
-<tr><th>What happened after the flag (94 people)</th><th>Count</th></tr>
-<tr><td>Booked a meeting later</td><td class="n">20</td></tr>
+<tr><th>What happened after the flag (92 people)</th><th>Count</th></tr>
+<tr><td>Booked a meeting later</td><td class="n">19</td></tr>
 <tr><td>Got a rep email or call (mostly Outreach sequence emails)</td><td class="n">45</td></tr>
-<tr class="total"><td>Neither, on record</td><td class="n">48</td></tr>
+<tr class="total"><td>Neither, on record</td><td class="n">47</td></tr>
 </table></div>
 <p>The first two rows overlap by 19 people. Where a rep did reach out, the median wait was <strong>43.5 hours</strong>, and 20 of the 45 heard back within a day.</p>
-<div class="callout"><p><strong>Of the 48 with no follow-up on record, 16 are business prospects with a company email address.</strong> The other 32 used a personal address (28), are internal, sit on a partner account, or had a rep work a colleague at the same company.</p>
-<p style="margin-top:10px"><strong>23 of the 94 are owned by a deactivated user</strong>, including all 14 leads among the 48. Nobody is assigned to call them back.</p></div>
+<div class="callout"><p><strong>Of the 47 with no follow-up on record, 16 are business prospects with a company email address.</strong> The other 31 used a personal address (28), sit on a partner account, or had a rep work a colleague at the same company.</p>
+<p style="margin-top:10px"><strong>23 of the 92 are owned by a deactivated user</strong>, including all 14 leads among the 47. Nobody is assigned to call them back.</p></div>
 </section>
 
 <section>
 <div class="sec-head"><span class="sec-num">02</span><h2>Inbound volume</h2><span class="pill warn">marketing falling</span></div>
 <p class="sec-sub">How much comes in, by the measures the CRM holds.</p>
 <ul>
-<li>374 people asked for a demo through the website form (392 submissions).</li>
+<li>372 people outside Stay asked for a demo through the website form (387 submissions).</li>
 <li>125 demos booked through the Chili Piper demo router since March 2026.</li>
 <li>213 opportunities created with a Marketing or Events deal source.</li>
-<li>226 lead records created. The Lead object is lightly used; 892 of the 913 form submissions logged in the window sit on contacts, not leads.</li>
+<li>226 lead records created. The Lead object is lightly used; 871 of the 892 form submissions logged in the window sit on contacts, not leads.</li>
 </ul>
 <p>Marketing-sourced opportunities ran 38 to 46 a quarter through 2025, 50 in Q1 2026 and 40 in Q2, then 21 in Q3 to 22 September.</p>
 </section>
@@ -108,7 +108,7 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <p class="sec-sub">The demo booking path is routed. Record ownership in Salesforce is not.</p>
 <p><strong>Demo requests are routed by Chili Piper.</strong> The <code>NEW - Book a Demo</code> router has booked 125 demos since its first booking in March 2026, every one scheduled by the prospect. The median wait from booking to meeting is <strong>2.1 days</strong>, and 99 of the 112 not cancelled were inside a week. 13 were cancelled.</p>
 <p><strong>Salesforce lead assignment is switched off.</strong> One assignment rule exists, <code>New Partner Assignment</code>, and it is inactive. The org has no queues. Unless someone changes it by hand, a record keeps the owner it was created with, even after that person leaves.</p>
-<p>That is how <strong>251 leads in status New ended up owned by five deactivated users</strong>, mostly Michael Yates and Gio Demaio. Only 17 of them show a website form submission, so most are not inbound requests, but nobody can work any of them while they sit there.</p>
+<p>That is how <strong>250 leads in status New ended up owned by five deactivated users</strong>, mostly Michael Yates and Gio Demaio. Only 17 of them show a website form submission, so most are not inbound requests, but nobody can work any of them while they sit there.</p>
 </section>
 
 <section>
@@ -126,7 +126,7 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <div class="sec-head"><span class="sec-num">05</span><h2>Lead scoring</h2><span class="pill bad">stopped</span></div>
 <p class="sec-sub">Scoring used to run, and stopped in mid-2024.</p>
 <ul>
-<li>Pardot is installed with <code>pi__score__c</code> and <code>pi__Pardot_Last_Scored_At__c</code>. <strong>None of the 226 leads and none of the 7,009 contacts created in the window carry a score.</strong></li>
+<li>Pardot is installed with <code>pi__score__c</code> and <code>pi__Pardot_Last_Scored_At__c</code>. <strong>None of the 226 leads and none of the 6,997 contacts created in the window carry a score.</strong></li>
 <li>322 older contacts carry a non-zero score, all created between January 2023 and June 2024. No contact created after 8 July 2024 has a score value at all.</li>
 <li>The standard <code>Rating</code> field is empty on all 226 leads, so there is no hot-lead flag.</li>
 <li><code>LeadSource</code> is blank on 220 of 226 leads, so lead-level attribution is unusable.</li>
@@ -137,7 +137,6 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <div class="sec-head"><span class="sec-num">06</span><h2>Tracking gaps</h2><span class="pill warn">partly instrumented</span></div>
 <p class="sec-sub">What the CRM cannot see today.</p>
 <ul>
-<li><strong>No-shows are not recorded anywhere.</strong> The Chili Piper no-show flag is false on every meeting it has ever logged, and no opportunity has a no-show demo status. Missed demos are a cheap re-engagement list, and today it is invisible.</li>
 <li><strong>46 of the 213 inbound opportunities</strong> (Marketing and Events deal sources) sit on an account with no segment.</li>
 <li><strong>Form capture cannot be checked from the CRM.</strong> Whether every web form submission becomes a record needs the form tool and the website analytics alongside it. Everything here measures what reached Salesforce.</li>
 </ul>
@@ -165,11 +164,10 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <div class="sec-head"><span class="sec-num">08</span><h2>What to fix</h2></div>
 <p class="sec-sub">The first three answer the red flag directly. None require new tooling.</p>
 <ul>
-<li><strong>Give the Demo Not Scheduled list an owner</strong> and a one-business-day response. Today the median is 43.5 hours and 48 of 94 have nothing on record.</li>
-<li><strong>Reassign records owned by deactivated users</strong>, starting with the 23 demo requesters, then the 251 New leads.</li>
+<li><strong>Give the Demo Not Scheduled list an owner</strong> and a one-business-day response. Today the median is 43.5 hours and 47 of 92 have nothing on record.</li>
+<li><strong>Reassign records owned by deactivated users</strong>, starting with the 23 demo requesters, then the 250 New leads.</li>
 <li><strong>Turn on lead assignment.</strong> A queue plus an active rule, so a new record never lands on someone who has left.</li>
 <li><strong>Decide on Pardot scoring.</strong> Switch it back on and route hot leads first, or retire it.</li>
-<li><strong>Record no-shows</strong> so missed demos become a re-engagement list.</li>
 <li><strong>Close the partner gap.</strong> Make <code>Partner</code> required when the deal source is Partner, fill the 36 blanks, and build the partner performance view on it.</li>
 </ul>
 </section>
@@ -178,22 +176,22 @@ footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-s
 <div class="sec-head"><span class="sec-num">09</span><h2>How each figure was pulled</h2></div>
 <p class="sec-sub">Read-only SOQL against production, run on 22 September 2026. Open any line to see the query.</p>
 <details><summary>Marketing opps by quarter</summary><pre>SELECT CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate)), COUNT(Id) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND Deal_Source__c = &#x27;Marketing&#x27; AND CreatedDate &gt;= 2025-01-01T00:00:00Z GROUP BY CALENDAR_YEAR(convertTimezone(CreatedDate)), CALENDAR_QUARTER(convertTimezone(CreatedDate))</pre></details>
-<details><summary>Form submissions: 892 of 913 on contacts</summary><pre>SELECT Who.Type, COUNT(Id) FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Submitted Form%&#x27; GROUP BY Who.Type  -- queryAll</pre></details>
-<details><summary>Demo form: 392 submissions, 374 people</summary><pre>SELECT COUNT_DISTINCT(WhoId), COUNT(Id) FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject = &#x27;Submitted Form \&#x27;Book Demo (Website Form)\&#x27;&#x27;</pre></details>
-<details><summary>Not booked: 94 people</summary><pre>SELECT Id, WhoId, CreatedDate, Subject FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Subject LIKE &#x27;Submitted Form%&#x27; OR Subject LIKE &#x27;Demo Not Scheduled%&#x27;)  -- queryAll; people = distinct WhoId on &#x27;Demo Not Scheduled&#x27;</pre></details>
-<details><summary>Follow-up on the 94: 20 booked, 45 contacted, 48 neither</summary><pre>SELECT WhoId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhoId IN (&lt;the 94&gt;)  -- queryAll; first non-automated task after the flag
-SELECT WhoId, CreatedDate FROM Event WHERE IsDeleted = false AND WhoId IN (&lt;the 94&gt;)  -- a meeting created after the flag
+<details><summary>Form submissions: 871 of 892 on contacts</summary><pre>SELECT COUNT(Id) FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Contact WHERE (NOT Email LIKE &#x27;%@stay.ai&#x27;))  -- queryAll; same with Lead for the other 21</pre></details>
+<details><summary>Demo form: 387 submissions, 372 people outside Stay</summary><pre>SELECT COUNT_DISTINCT(WhoId), COUNT(Id) FROM Task WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Subject = &#x27;Submitted Form \&#x27;Book Demo (Website Form)\&#x27;&#x27;  -- then minus people with @stay.ai emails (2 people, 5 submissions)</pre></details>
+<details><summary>Not booked: 92 people</summary><pre>SELECT Id, WhoId, CreatedDate, Subject FROM Task WHERE IsDeleted = false AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Subject LIKE &#x27;Submitted Form%&#x27; OR Subject LIKE &#x27;Demo Not Scheduled%&#x27;)  -- queryAll; people = distinct WhoId on &#x27;Demo Not Scheduled&#x27;, minus @stay.ai emails</pre></details>
+<details><summary>Follow-up on the 92: 19 booked, 45 contacted, 47 neither</summary><pre>SELECT WhoId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)  -- queryAll; first non-automated task after the flag
+SELECT WhoId, CreatedDate FROM Event WHERE IsDeleted = false AND WhoId IN (&lt;the 92&gt;)  -- a meeting created after the flag
 -- Automated rows excluded from rep follow-up: created by HubSpot Integration User, or subject containing [Gong In], [In], Submitted Form, Demo Not Scheduled, Clicked</pre></details>
-<details><summary>The 48: 16 business prospects</summary><pre>SELECT Id, Email, Title, Account.RecordType.DeveloperName, AccountId FROM Contact WHERE Id IN (&lt;the 34 contacts&gt;)
+<details><summary>The 47: 16 business prospects</summary><pre>SELECT Id, Email, Title, Account.RecordType.DeveloperName, AccountId FROM Contact WHERE Id IN (&lt;the 33 contacts&gt;)
 SELECT Id, Email, Status, Owner.Name, Owner.IsActive FROM Lead WHERE Id IN (&lt;the 14 leads&gt;)
 SELECT AccountId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE AccountId IN (&lt;their accounts&gt;)
 -- removed: personal email domains, stay.ai, partner accounts, accounts where a rep worked a colleague after the flag</pre></details>
-<details><summary>Deactivated owners on the 94: 23</summary><pre>SELECT Owner.IsActive, COUNT(Id) FROM Contact WHERE Id IN (&lt;the 94&gt;) GROUP BY Owner.IsActive
-SELECT Owner.IsActive, COUNT(Id) FROM Lead WHERE Id IN (&lt;the 94&gt;) GROUP BY Owner.IsActive</pre></details>
+<details><summary>Deactivated owners on the 92: 23</summary><pre>SELECT Owner.IsActive, COUNT(Id) FROM Contact WHERE Id IN (&lt;the 92&gt;) GROUP BY Owner.IsActive
+SELECT Owner.IsActive, COUNT(Id) FROM Lead WHERE Id IN (&lt;the 92&gt;) GROUP BY Owner.IsActive</pre></details>
 <details><summary>Demo router: 125 bookings, median 2.1 days</summary><pre>SELECT Id, CreatedDate, StartDateTime, Canceled_CP__c, Booked_By_Prospect_CP__c, Router_Name_CP__c FROM Event WHERE IsDeleted = false AND Chilipiper_Event__c = true AND CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z  -- queryAll; Router_Name_CP__c = &#x27;NEW - Book a Demo&#x27;; StartDateTime minus CreatedDate, cancelled excluded</pre></details>
 <details><summary>Routing: 1 rule, inactive</summary><pre>Tooling: SELECT Name, Active, EntityDefinitionId FROM AssignmentRule</pre></details>
 <details><summary>Routing: no queues</summary><pre>SELECT Id, Name FROM Group WHERE Type = &#x27;Queue&#x27;</pre></details>
-<details><summary>Stale leads: 251 on five deactivated owners</summary><pre>SELECT Email, CreatedBy.Name, CreatedDate FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false
+<details><summary>Stale leads: 250 on five deactivated owners</summary><pre>SELECT Email, CreatedBy.Name, CreatedDate FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)
 SELECT COUNT_DISTINCT(WhoId) FROM Task WHERE Subject LIKE &#x27;Submitted Form%&#x27; AND WhoId IN (SELECT Id FROM Lead WHERE Status = &#x27;New&#x27; AND CreatedDate &lt; LAST_N_DAYS:90 AND Owner.IsActive = false)
 SELECT Id, Name, IsActive FROM User WHERE Id IN (SELECT OwnerId FROM Lead WHERE Status = &#x27;New&#x27;)</pre></details>
 <details><summary>Leads: 135 of 226 with no task or meeting</summary><pre>SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z
@@ -201,12 +199,10 @@ SELECT WhoId FROM Task WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead
 SELECT WhoId FROM Event WHERE IsDeleted = false AND WhoId IN (SELECT Id FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z)  -- queryAll</pre></details>
 <details><summary>Opportunity first activity is mostly Gong</summary><pre>SELECT WhatId, CreatedDate, CreatedBy.Name, Subject FROM Task WHERE IsDeleted = false AND WhatId IN (SELECT Id FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;))  -- queryAll; earliest per opportunity, classified by subject prefix</pre></details>
 <details><summary>Scoring: leads and contacts</summary><pre>SELECT COUNT(Id) FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (Rating != null OR pi__score__c &gt; 0 OR pi__Pardot_Last_Scored_At__c != null)
-SELECT COUNT(Id) FROM Contact WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND pi__score__c != null
+SELECT COUNT(Id) FROM Contact WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND (NOT Email LIKE &#x27;%@stay.ai&#x27;)  -- 6,997; then AND pi__score__c != null returns 0
 SELECT COUNT(Id), MIN(CreatedDate), MAX(CreatedDate) FROM Contact WHERE pi__score__c != null AND pi__score__c != 0
 SELECT MAX(CreatedDate) FROM Contact WHERE pi__score__c != null</pre></details>
 <details><summary>LeadSource blank: 220</summary><pre>SELECT LeadSource, COUNT(Id) FROM Lead WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z GROUP BY LeadSource</pre></details>
-<details><summary>No-show: zero recorded</summary><pre>SELECT No_Show_CP__c, COUNT(Id) FROM Event WHERE Chilipiper_Event__c = true GROUP BY No_Show_CP__c
-SELECT Demo_Status__c, COUNT(Id) FROM Opportunity WHERE Demo_Status__c != null GROUP BY Demo_Status__c</pre></details>
 <details><summary>Segments: 46 of 213 unsegmented</summary><pre>SELECT Id, Account.Account_Segment__c FROM Opportunity WHERE CreatedDate &gt;= 2025-09-22T00:00:00Z AND CreatedDate &lt; 2026-09-23T00:00:00Z AND Deal_Source__c IN (&#x27;Marketing&#x27;,&#x27;Events&#x27;)</pre></details>
 <details><summary>Channels table</summary><pre>SELECT Deal_Source__c, IsWon, COUNT(Id), SUM(Amount) FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22 GROUP BY Deal_Source__c, IsWon
 -- re-checked row by row: SELECT Id, Deal_Source__c, IsWon, Amount FROM Opportunity WHERE RecordType.DeveloperName = &#x27;New_Business&#x27; AND IsClosed = true AND CloseDate &gt;= 2025-09-22 AND CloseDate &lt;= 2026-09-22</pre></details>
