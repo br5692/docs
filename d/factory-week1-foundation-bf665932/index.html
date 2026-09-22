@@ -89,21 +89,49 @@ footer{padding:28px 0;color:var(--ink-faint);font-size:.85rem;border-top:1px sol
 </section>
 
 <section class="stream" id="s2"><div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Certificate sign-on</h2> <span class="pill live">running</span></div>
-<p>No password exists anywhere in this system. The service proves who it is with a certificate, the way an ID card works.</p>
+<p><strong>The service proves who it is by signing a message. It never sends a secret.</strong> No password exists anywhere in this system.</p>
+
+<h3>The two halves</h3>
+<ul>
+<li>One key pair was made. A key pair is two matching halves.</li>
+<li>The <strong>private key</strong> is the half that signs. Only the service holds it.</li>
+<li>The <strong>public certificate</strong> is the half that checks a signature. Salesforce holds it.</li>
+<li>The public half cannot sign anything. It can only verify.</li>
+<li>The private half never leaves the service. It never enters Salesforce.</li>
+</ul>
+
+<h3>Set up once</h3>
 <div class="flow col">
-<div class="b"><b>1. Key pair made outside Salesforce</b><span>private half never enters the org</span></div><div class="ar">&darr;</div>
-<div class="b"><b>2. Public certificate sits on the connected app</b><span>External Client App, named-user JWT enabled</span></div><div class="ar">&darr;</div>
-<div class="b"><b>3. Service signs a short-lived token</b><span>private key held in its secret store</span></div><div class="ar">&darr;</div>
-<div class="b"><b>4. Salesforce verifies and returns a session</b><span>as one named API-only user</span></div>
+<div class="b"><b>1. Make the key pair</b><span>done outside Salesforce, on a machine we control</span></div><div class="ar">&darr;</div>
+<div class="b"><b>2. Give the private key to the service</b><span>stored as a secret, never printed, never committed</span></div><div class="ar">&darr;</div>
+<div class="b"><b>3. Put the public certificate on the connected app</b><span>pasted into the External Client App in Factory&rsquo;s org</span></div>
 </div>
+
+<h3>Every time the service connects</h3>
+<div class="flow col">
+<div class="b"><b>1. The service writes a short note</b><span>it says: this app, acting as this user, valid for a few minutes</span></div><div class="ar">&darr;</div>
+<div class="b"><b>2. The service signs the note</b><span>it uses the private key. The key itself is not attached</span></div><div class="ar">&darr;</div>
+<div class="b"><b>3. Salesforce checks the signature</b><span>it uses the public certificate it already holds</span></div><div class="ar">&darr;</div>
+<div class="b"><b>4. Salesforce returns a session</b><span>the service makes its calls with that session</span></div>
+</div>
+
+<h3>Why this beats a password</h3>
+<ul>
+<li>A password must be sent to be checked. Anyone who reads it can reuse it.</li>
+<li>A signature proves the service holds the private key. The key is never sent.</li>
+<li>A stolen copy of the public certificate is useless. It cannot sign.</li>
+<li>The note expires in minutes. A copied note is worthless soon after.</li>
+</ul>
+
 <h3>Low level</h3>
 <ul>
-<li>Subject <code>CN=Partner Portal Tool Layer, O=Domestique</code>, valid to 18 December 2028. Replacing it is a configuration change, not a code change.</li>
-<li>The public half on its own is useless to anyone who copies it. Only the private key can produce a valid signature.</li>
-<li>The integration user sits on an API-only profile with one permission set. Every write the service makes is attributable to that user.</li>
-<li>Three certificate records in Certificate and Key Management are provisioning leftovers and are used by nothing. The live certificate is held inline on the app.</li>
+<li>Subject <code>CN=Partner Portal Tool Layer, O=Domestique</code>. Valid to 18 December 2028.</li>
+<li>Replacing the pair is a configuration change. No code changes.</li>
+<li>The service signs in as one named user. That user sits on an API-only profile with one permission set.</li>
+<li>Every write the service makes is attributable to that one user.</li>
+<li>Three certificate records in Certificate and Key Management are provisioning leftovers. Nothing uses them. The live certificate sits on the app.</li>
 </ul>
-<p class="show"><span class="lbl">Open it</span> <a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ManageExternalClientApplication/0xIW40000002ayf/detail" target="_blank" rel="noopener">External Client App Manager, Partner Portal Tool Layer</a>, then Settings, then OAuth Settings.</p>
+<p class="show"><span class="lbl">Open it</span> <a href="https://factoryai--partial.sandbox.my.salesforce-setup.com/lightning/setup/ManageExternalClientApplication/0xIW40000002ayf/detail" target="_blank" rel="noopener">External Client App Manager, Partner Portal Tool Layer</a>, then Settings, then OAuth Settings. The certificate shown there is the public half.</p>
 </section>
 
 <section class="stream" id="s3"><div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">Every action that exists</h2> <span class="pill live">13 live</span></div>
