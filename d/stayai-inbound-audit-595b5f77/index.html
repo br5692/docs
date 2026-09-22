@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Stay AI — Inbound Audit</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔎</text></svg>">
+<style>
+:root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;
+--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;
+--amber:#a35a12;--amber-wash:#f4e9d9;--rose:#a3323f;--rose-wash:#f3e0e1;--code-bg:#f0f3ee;
+--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);
+--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Arial,sans-serif;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;
+--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;
+--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8);}}
+:root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;
+--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;
+--amber:#d89a4e;--amber-wash:#322414;--rose:#e08893;--rose-wash:#331b1e;--code-bg:#131b18;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+header.mast{border-bottom:1px solid var(--line);background:var(--surface)}
+.mast-inner{padding:46px 0 34px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 16px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.015em;margin:0 0 16px;text-wrap:balance}
+h1 span{color:inherit}
+.lede{font-size:1.08rem;color:var(--ink-soft);max-width:62ch;margin:0 0 26px}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.meta-cell{background:var(--surface);padding:12px 14px}
+.meta-cell .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.meta-cell .v{font-size:.9rem;font-weight:600}
+section{padding:42px 0 6px;border-bottom:1px solid var(--line-soft)}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.sec-num{font-family:var(--mono);font-size:.85rem;color:var(--accent-2);font-weight:600}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,3.4vw,2rem);margin:0;line-height:1.1;text-wrap:balance}
+.sec-sub{color:var(--ink-faint);font-size:.93rem;margin:6px 0 20px;max-width:66ch}
+p,li{color:var(--ink-soft);margin:0 0 13px}
+strong{color:var(--ink);font-weight:650}
+ul{margin:0 0 16px;padding-left:20px}li{margin-bottom:6px}
+code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1.5px 6px;border-radius:5px;border:1px solid var(--line-soft)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.bad{color:var(--rose);background:var(--rose-wash);border-color:color-mix(in srgb,var(--rose) 30%,transparent)}
+.pill.warn{color:var(--amber);background:var(--amber-wash);border-color:color-mix(in srgb,var(--amber) 30%,transparent)}
+.pill.ok{color:var(--accent-2);background:var(--accent-wash);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+.callout{background:var(--rose-wash);border:1px solid color-mix(in srgb,var(--rose) 30%,transparent);border-radius:12px;padding:16px 18px;margin:18px 0}
+.callout p{color:var(--ink);margin:0}
+.tbl-scroll{overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}
+td.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+tr.total td{font-weight:700;color:var(--ink);background:var(--surface-2)}
+footer{padding:26px 0 44px;color:var(--ink-faint);font-family:var(--mono);font-size:12px}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap mast-inner">
+<p class="eyebrow">Stay AI · Inbound audit · 22 September 2026</p>
+<h1>Inbound audit: routing, speed to lead, scoring and channel performance</h1>
+<p class="lede">Covers six areas of the inbound motion: lead routing configuration, time to first touch, lead scoring coverage, the demo request path, channel performance by win rate and revenue, and the resulting fix list. All figures are read-only SOQL against production over the last 12 months.</p>
+<div class="meta-grid">
+<div class="meta-cell"><div class="k">Org</div><div class="v">stayai-prod</div></div>
+<div class="meta-cell"><div class="k">Window</div><div class="v">Last 12 months</div></div>
+<div class="meta-cell"><div class="k">Leads</div><div class="v">226</div></div>
+<div class="meta-cell"><div class="k">Inbound opps</div><div class="v">213</div></div>
+<div class="meta-cell"><div class="k">Demos booked</div><div class="v">296</div></div>
+</div></div></header>
+
+<div class="wrap">
+
+<section>
+<div class="sec-head"><span class="sec-num">01</span><h2>Routing</h2><span class="pill bad">broken</span></div>
+<p class="sec-sub">The risk raised on the call: someone asks to talk to sales, and nobody follows up.</p>
+<p><strong>There is no active lead routing.</strong> One assignment rule exists in the entire org, <code>New Partner Assignment</code>, and it is inactive. No queue is used, so every lead is owned by an individual from the moment it is created.</p>
+<div class="callout"><p><strong>130 leads have sat in status New for more than 90 days. 115 of them are owned by two deactivated users</strong> — Michael Yates (79, Leadership) and Amir Torabi (36, Partnerships). Both are <code>IsActive = false</code>. Those leads cannot be followed up, because their owners cannot log in.</p></div>
+</section>
+
+<section>
+<div class="sec-head"><span class="sec-num">02</span><h2>Speed to lead</h2><span class="pill warn">slow and uneven</span></div>
+<p class="sec-sub">Two paths exist. The booking machinery is fast. Rep follow-up around it is not.</p>
+<div class="tbl-scroll"><table>
+<tr><th>Inbound opportunity, time to first logged touch</th><th>Count</th><th>Share</th></tr>
+<tr><td>Within 1 hour</td><td class="n">30</td><td class="n">14%</td></tr>
+<tr><td>Within 24 hours</td><td class="n">52</td><td class="n">25%</td></tr>
+<tr><td>More than 7 days</td><td class="n">46</td><td class="n">22%</td></tr>
+<tr class="total"><td>Median</td><td class="n">40 h</td><td class="n">n=208</td></tr>
+</table></div>
+<p>On the Lead object, <strong>182 of 226 leads (81%) have no logged task ever.</strong> Of the 44 that were worked, the median response was 30 minutes. Leads that get picked up get picked up fast. Most are never picked up.</p>
+<p><strong>Demo booking is healthy.</strong> Median time from opportunity created to demo is 2 days, and 64 of 69 land inside a week. Demo dates only populate reliably since the Chili Piper flow went live on 09-14, so that sample skews recent.</p>
+</section>
+
+<section>
+<div class="sec-head"><span class="sec-num">03</span><h2>Lead scoring</h2><span class="pill bad">installed, unused</span></div>
+<p class="sec-sub">The capability is paid for and switched off.</p>
+<ul>
+<li>Pardot is installed with <code>pi__score__c</code> and <code>pi__Pardot_Last_Scored_At__c</code>. <strong>Zero leads carry a score.</strong></li>
+<li>The standard <code>Rating</code> field is empty on all 226 leads, so there is no hot-lead flag.</li>
+<li><code>LeadSource</code> is blank on 220 of 226 leads, so lead-level attribution is unusable.</li>
+</ul>
+</section>
+
+<section>
+<div class="sec-head"><span class="sec-num">04</span><h2>Demo request path</h2><span class="pill warn">partly instrumented</span></div>
+<p class="sec-sub">296 Chili Piper demos booked in the last 12 months.</p>
+<ul>
+<li>97 attached to an Opportunity, 166 attached to an Account, <strong>33 attached to neither</strong>.</li>
+<li>22 cancelled.</li>
+<li><strong>No-show reads zero across all 296 events.</strong> The field is not being written, rather than nobody missing a demo. Cancelled and no-show demos are the cheapest re-engagement list a team has, and half of it is invisible.</li>
+</ul>
+<p>Separately, 46 of the 213 inbound opportunities sit on an account with no segment at all.</p>
+</section>
+
+<section>
+<div class="sec-head"><span class="sec-num">05</span><h2>Channels</h2><span class="pill ok">verified twice</span></div>
+<p class="sec-sub">Measured on deals closed in the last 12 months, so the cohorts are mature.</p>
+<div class="tbl-scroll"><table>
+<tr><th>Channel</th><th>Won</th><th>Lost</th><th>Win rate</th><th>Won ARR</th><th>Avg ACV</th></tr>
+<tr><td>Partner</td><td class="n">71</td><td class="n">116</td><td class="n">38%</td><td class="n">$931,910</td><td class="n">$13,125</td></tr>
+<tr><td>Marketing</td><td class="n">42</td><td class="n">125</td><td class="n">25%</td><td class="n">$485,422</td><td class="n">$11,558</td></tr>
+<tr><td>Sales (outbound)</td><td class="n">31</td><td class="n">80</td><td class="n">28%</td><td class="n">$373,291</td><td class="n">$12,042</td></tr>
+<tr><td>Founder</td><td class="n">10</td><td class="n">16</td><td class="n">38%</td><td class="n">$228,500</td><td class="n">$22,850</td></tr>
+<tr><td>Events</td><td class="n">13</td><td class="n">47</td><td class="n">22%</td><td class="n">$182,749</td><td class="n">$14,058</td></tr>
+<tr><td>CX</td><td class="n">20</td><td class="n">19</td><td class="n">51%</td><td class="n">$103,745</td><td class="n">$5,187</td></tr>
+<tr class="total"><td>Total</td><td class="n">187</td><td class="n">403</td><td class="n">32%</td><td class="n">$2,305,617</td><td class="n">$12,330</td></tr>
+</table></div>
+<p>The table comes from a grouped aggregate. Recomputing it row by row from all 590 raw closed records produces identical counts, rates and totals.</p>
+<p><strong>Partner carries 40% of all won revenue</strong> at the best win rate of any volume channel, and it is the only channel growing: 145 opportunities created in 2025 against 204 so far in 2026. None of those 204 record which partner sourced them. <strong>Events is the weakest channel</strong> at 22%, 13 wins against 47 losses, and it costs money to attend.</p>
+<p>The CX figure is an artifact rather than channel strength. Those deals are only entered once they are known to close.</p>
+</section>
+
+<section>
+<div class="sec-head"><span class="sec-num">06</span><h2>What to fix</h2></div>
+<p class="sec-sub">The first three answer the routing risk directly. None require new tooling.</p>
+<ul>
+<li><strong>Reassign the 115 stranded leads</strong> off the two deactivated users. Same-day fix, no build.</li>
+<li><strong>Turn on lead routing.</strong> A queue plus an active assignment rule, so no lead is ever owned by nobody.</li>
+<li><strong>Set a follow-up expectation on inbound.</strong> 46 opportunities waited more than a week.</li>
+<li><strong>Decide on Pardot scoring.</strong> Switch it on and route hot leads first, or stop paying for it.</li>
+<li><strong>Fix the no-show field</strong> so cancelled and missed demos become a re-engagement list.</li>
+<li><strong>Capture the sourcing partner</strong> on the opportunity, agreed on the 09-22 call as low hanging fruit.</li>
+</ul>
+</section>
+
+<footer>Compiled 22 September 2026 · read-only SOQL against stayai-prod · no records created, updated or deleted</footer>
+</div>
+</body>
+</html>
