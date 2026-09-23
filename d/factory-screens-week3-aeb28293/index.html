@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Factory Partner Portal, Week 3 Screens</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖼️</text></svg>">
+<style>
+:root{--paper:#f6f7f4;--surface:#fff;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+:root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:44px 0 32px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px}
+h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 14px}h1.title span{color:var(--accent-2)}
+.lede{font-size:1.06rem;color:var(--ink-soft);max-width:62ch;margin:0}
+section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:4px}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);margin:0;line-height:1.1}
+.sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 16px;max-width:66ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:14px 0;overflow:hidden}
+.card img{display:block;width:100%;height:auto}.card.phone{max-width:420px}
+.cap{padding:10px 16px;color:var(--ink-faint);font-family:var(--mono);font-size:.76rem;border-top:1px solid var(--line-soft)}
+footer{padding:36px 0 56px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+</style></head><body>
+<header class="mast"><div class="wrap mast-inner"><p class="eyebrow">Factory.ai · Partner Portal · Week 3 screens</p>
+<h1 class="title">The partner <span>agreement</span></h1>
+<p class="lede">Captured from the Week 3 build on 2026-09-23, against the Factory sandbox. The partner signs the agreement in the e-signature tool Factory chooses; the portal and Salesforce track sent and signed. Wording is placeholder. Fictional partner.</p></div></header>
+<main class="wrap"><section class="stream" id="s1"><div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Dashboard, before the contract</h2></div><p class="sec-sub">Once approved and signed in, the dashboard shows the partner agreement status.</p>
+<div class="card"><img src="01-dashboard-not-sent-desktop.png" alt="Dashboard, before the contract, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="01-dashboard-not-sent-phone.png" alt="Dashboard, before the contract, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section><section class="stream" id="s2"><div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Contract, not sent yet</h2></div><p class="sec-sub">The Contract page tells the partner the agreement is on its way.</p>
+<div class="card"><img src="02-contract-not-sent-desktop.png" alt="Contract, not sent yet, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="02-contract-not-sent-phone.png" alt="Contract, not sent yet, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section><section class="stream" id="s3"><div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Factory sends the contract</h2></div><p class="sec-sub">In Salesforce, Factory pastes the e-signature link on the partner's account and saves. The contract email goes out.</p>
+<div class="card"><img src="09-sf-account.png" alt="Factory sends the contract, Salesforce, 1600 wide" loading="lazy"><div class="cap">Salesforce, 1600 wide</div></div>
+<div class="card"><img src="10-sf-send-contract.png" alt="Factory sends the contract, Salesforce, 1600 wide" loading="lazy"><div class="cap">Salesforce, 1600 wide</div></div>
+</section><section class="stream" id="s4"><div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Email: contract ready to sign</h2></div><p class="sec-sub">Sent to the primary contact with the signing link.</p>
+<div class="card"><img src="07-email-contract-sent.png" alt="Email: contract ready to sign, Email" loading="lazy"><div class="cap">Email</div></div>
+</section><section class="stream" id="s5"><div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Contract, ready to sign</h2></div><p class="sec-sub">One button opens the agreement in the e-signature tool. The page updates when it is signed.</p>
+<div class="card"><img src="03-contract-sent-desktop.png" alt="Contract, ready to sign, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="03-contract-sent-phone.png" alt="Contract, ready to sign, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section><section class="stream" id="s6"><div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Dashboard, contract sent</h2></div><p class="sec-sub">The dashboard card shows the agreement is waiting for a signature.</p>
+<div class="card"><img src="04-dashboard-sent-desktop.png" alt="Dashboard, contract sent, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="04-dashboard-sent-phone.png" alt="Dashboard, contract sent, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section><section class="stream" id="s7"><div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">Contract, signed</h2></div><p class="sec-sub">The signed date, and a way back to the dashboard.</p>
+<div class="card"><img src="05-contract-signed-desktop.png" alt="Contract, signed, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="05-contract-signed-phone.png" alt="Contract, signed, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section><section class="stream" id="s8"><div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">Email: contract signed</h2></div><p class="sec-sub">Sent to the primary contact when the signature comes back.</p>
+<div class="card"><img src="08-email-contract-signed.png" alt="Email: contract signed, Email" loading="lazy"><div class="cap">Email</div></div>
+</section><section class="stream" id="s9"><div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">Dashboard, contract signed</h2></div><p class="sec-sub">The card shows Signed. The portal is open in full.</p>
+<div class="card"><img src="06-dashboard-signed-desktop.png" alt="Dashboard, contract signed, Desktop, 1440 wide" loading="lazy"><div class="cap">Desktop, 1440 wide</div></div>
+<div class="card phone"><img src="06-dashboard-signed-phone.png" alt="Dashboard, contract signed, Phone, 390 wide" loading="lazy"><div class="cap">Phone, 390 wide</div></div>
+</section>
+<footer><p class="fmono">Published 2026-09-23 · 16 screens · captured at 2x</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer></main></body></html>
