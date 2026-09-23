@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Core Check, Weeks 1 and 2</title>
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1c1b19; --soft:#5c5855; --line:#e4e1dd; --accent:#1f6f5c; --warn:#a35a12; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#171716; --card:#201f1d; --ink:#ecebe7; --soft:#a8a39e; --line:#34322f; --accent:#5cc2a6; --warn:#e0a458; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .sub { color: var(--soft); margin: 0 0 24px; }
+  h2 { font-size: 15px; margin: 28px 0 10px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; color: var(--soft); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td.n { width: 44px; font-variant-numeric: tabular-nums; color: var(--soft); }
+  td.c { width: 36px; }
+  td.t { width: 64px; color: var(--soft); font-variant-numeric: tabular-nums; }
+  input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+  a { color: var(--accent); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  .note { border-left: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 12px; color: var(--soft); }
+  .note b { color: var(--warn); }
+  ul { margin: 6px 0 0; padding-left: 18px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Core check, weeks 1 and 2</h1>
+  <p class="sub">Under 10 minutes. It follows the order of the 2026-09-23 client demo, so one pass is also the rehearsal. If a step does not match "Expect", stop and report it.</p>
+
+  <h2>Before you start (1 min)</h2>
+  <div class="card"><table>
+    <tr><th></th><th>Open</th></tr>
+    <tr><td class="c"><input type="checkbox"></td><td>Wake the service: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">tool layer health</a>. Expect <code>"ok":true</code> and <code>"sf":"ok"</code>. The first call can take about 20 seconds.</td></tr>
+    <tr><td class="c"><input type="checkbox"></td><td>Tabs: <a href="https://factory-partner-portal.pages.dev/apply">Apply</a>, <a href="https://factory-partner-portal.pages.dev/sign-in">Sign in</a>, the <b>Partner Review</b> app (App Launcher), and <b>Portal Audit Log, All</b> in Salesforce. Keep your inbox open.</td></tr>
+    <tr><td class="c"><input type="checkbox"></td><td>Use a fresh company name and website each run, and email addresses you can receive (plus addressing works).</td></tr>
+  </table></div>
+
+  <h2>The path (about 8 min)</h2>
+  <div class="card"><table>
+    <tr><th>#</th><th></th><th>Do</th><th>Expect</th><th>Time</th></tr>
+    <tr><td class="n">1</td><td class="c"><input type="checkbox"></td>
+      <td><b>Apply</b> as a new company. Use an email whose domain differs from the website, so the mismatch shows.</td>
+      <td>Application received page. In Salesforce the new Account's application note reads "Email domain mismatch: ... does not match website host ...".</td><td class="t">1 min</td></tr>
+    <tr><td class="n">2</td><td class="c"><input type="checkbox"></td>
+      <td><b>Partner Review</b>, Pending, Companies: find the row, check the primary contact, click Approve, then the solid Approve.</td>
+      <td>The row leaves Pending. Decided, Companies shows it Approved with the time in Pacific.</td><td class="t">1 min</td></tr>
+    <tr><td class="n">3</td><td class="c"><input type="checkbox"></td>
+      <td><b>Inbox</b> for that address.</td>
+      <td>The approval (invite) email arrives.</td><td class="t">½ min</td></tr>
+    <tr><td class="n">4</td><td class="c"><input type="checkbox"></td>
+      <td><b>Sign in</b> with that address and open the link.</td>
+      <td>The link arrives and opens the dashboard with the company name top right.</td><td class="t">1 min</td></tr>
+    <tr><td class="n">5</td><td class="c"><input type="checkbox"></td>
+      <td><b>Same company, second person:</b> Apply with the same website and a new address. Then request a sign-in link for the new address.</td>
+      <td>The application succeeds. Sign-in shows the usual neutral message and <b>no email arrives</b>.</td><td class="t">1 min</td></tr>
+    <tr><td class="n">6</td><td class="c"><input type="checkbox"></td>
+      <td><b>Partner Review</b>, Pending, People: Approve that person, confirm. Request a sign-in link again.</td>
+      <td>This time the link arrives and signs them in.</td><td class="t">1½ min</td></tr>
+    <tr><td class="n">7</td><td class="c"><input type="checkbox"></td>
+      <td><b>Deny path:</b> Apply as another new company, then Deny it in Partner Review with a note.</td>
+      <td>The row moves to Decided as Denied, and the denial email arrives.</td><td class="t">1 min</td></tr>
+    <tr><td class="n">8</td><td class="c"><input type="checkbox"></td>
+      <td><b>Portal Audit Log, All</b>, newest first.</td>
+      <td>One row for every step above. The company approval writes <b>two</b> rows (invite on the Account, access on the contact). Step 5 shows sign-in <b>Denied, no_approved_contact</b>.</td><td class="t">1 min</td></tr>
+  </table></div>
+
+  <div class="note">
+    <b>Good to know for the call</b>
+    <ul>
+      <li>The domain-mismatch warning is on the Account record's application note. The Partner Review app does not show it, so open the Account for question OQ-23.</li>
+      <li>Step 5 is the one path nobody has watched work until now. If it lets the second person straight in, stop and report it tonight.</li>
+      <li>Right before the call: wake the health page again and move the audit cutoff to the current minute.</li>
+    </ul>
+  </div>
+</main>
+</body>
+</html>
