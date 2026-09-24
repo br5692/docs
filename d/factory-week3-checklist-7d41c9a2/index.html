@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Core Check, Week 3</title>
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1c1b19; --soft:#5c5855; --line:#e4e1dd; --accent:#1f6f5c; --warn:#a35a12; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#171716; --card:#201f1d; --ink:#ecebe7; --soft:#a8a39e; --line:#34322f; --accent:#5cc2a6; --warn:#e0a458; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .sub { color: var(--soft); margin: 0 0 24px; }
+  h2 { font-size: 15px; margin: 28px 0 10px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; color: var(--soft); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td.n { width: 44px; font-variant-numeric: tabular-nums; color: var(--soft); }
+  td.c { width: 36px; }
+  td.t { width: 64px; color: var(--soft); font-variant-numeric: tabular-nums; }
+  input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+  a { color: var(--accent); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  .note { border-left: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 12px; color: var(--soft); }
+  .note b { color: var(--warn); }
+  ul { margin: 6px 0 0; padding-left: 18px; }
+</style>
+</head>
+<body><main>
+<h1>Core check, Week 3</h1>
+<p class="sub">About 15 minutes on the live site. It covers the Week 3 items (e-signature and status sync, pre-approved invite, timestamps) and the changes from the Week 2 review. If a step does not match "Expect", stop and report it.</p>
+<h2>Before you start (1 min)</h2>
+<div class="note"><ul>
+<li>Wake the service: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1">tool layer health</a>. Expect <code>"ok":true</code> and <code>"sf":"ok"</code>. The first call can take about 20 seconds.</li>
+<li>Tabs: <a href="https://factory-partner-portal.pages.dev/apply">Apply</a>, the <a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review">Partner Review app</a>, and Portal Audit Log, All in Salesforce. Keep the Domestique inbox open.</li>
+<li>Use a fresh company name and website each run.</li>
+</ul></div>
+<h2>The path (about 14 min)</h2>
+<div class="card"><table><thead><tr><th></th><th>#</th><th>Do</th><th>Expect</th><th>Time</th></tr></thead><tbody><tr><td class="c"><input type="checkbox"></td><td class="n">1</td><td>Apply as a new company. Use a fresh company name and website, and an address at <code>blair.purdy+&lt;tag&gt;@domestique.info</code>.</td><td>A "Check your inbox" page naming your address. Partner Review Pending does <b>not</b> show the company yet.</td><td class="t">1 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">2</td><td>Inbox: open the verification email and click its link.</td><td>A "Thanks" page. The company now shows in Partner Review, Pending, Accounts.</td><td class="t">1 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">3</td><td>Partner Review, Pending: on that row click Approve, then Preview email, then confirm.</td><td>The email preview opens at once, no loading state. Buttons read Approve, Deny, Waitlist. The toast has a View link (the row moved to Decided). Decided shows Approved with the decided time. The invite email arrives.</td><td class="t">1½ min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">4</td><td>Partner Review, Decided: on that row click Send contract and confirm.</td><td>The Contract cell changes to Sent in place and the row is highlighted. The toast has <b>no</b> View link. The "ready to sign" email arrives.</td><td class="t">1 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">5</td><td>Click the button in the "ready to sign" email.</td><td>It opens the Contract page already signed in, with no sign-in step. Status Sent, and "Open the agreement to sign".</td><td class="t">½ min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">6</td><td>Open the agreement and sign it in DocuSign, then Finish.</td><td>You return to the Contract page, and it shows Signed with Download within about 30 seconds. The "contract is signed" email arrives.</td><td class="t">2 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">7</td><td>Salesforce: open the Account.</td><td>Contract Status Signed, Contract Signed At set, Partner Lifecycle Status "3. Activation", and a file named "Partner Contract &lt;company&gt; &lt;date&gt;".</td><td class="t">1 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">8</td><td>Click the "ready to sign" email button a second time.</td><td>The sign-in page opens with your email filled in. The new sign-in link returns you to the Contract page, not the dashboard.</td><td class="t">1 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">9</td><td>Partner Review: Invite partner. Type a company and website, then check Preview email before and after filling in the contact. Press Escape once, reopen, then send.</td><td>Preview stays unavailable until first name, last name and email are filled, then shows "First Last &lt;email&gt;" and "Hi First". Escape and a click outside close the form. The toast has no View link, and the new row is highlighted in Decided with the Invited tag. The invite email arrives and its link signs them in.</td><td class="t">2 min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">10</td><td>Colleague: apply with the step 1 website and a new address, then click the verification link.</td><td>You land signed in on the dashboard. The welcome email names the primary contact. Decided shows the person Approved with the note "Approved automatically: ...".</td><td class="t">1½ min</td></tr><tr><td class="c"><input type="checkbox"></td><td class="n">11</td><td>Portal Audit Log, All, newest first.</td><td>One row for each step, including <code>verify_partner_application</code>, <code>send_partner_contract</code>, <code>contract_webhook</code> (docusign), <code>contract_signed</code>, and sign-in with mode <code>contract_link</code>. No link or token appears in any row.</td><td class="t">1 min</td></tr></tbody></table></div>
+<h2>Good to know</h2>
+<div class="note"><ul>
+<li>Use a Domestique address. Gmail filters the sandbox sender, because factory.ai's email settings do not list Salesforce yet. This is on the handoff list.</li>
+<li>DocuSign runs on our developer account with a one-page sample agreement until Factory's plan upgrade and Mark's template arrive. Switching over is configuration only.</li>
+<li>Optional decline check: on another approved company send a contract, choose Other Options, Decline to Sign in DocuSign. Partner Review shows Declined and Send contract.</li>
+</ul></div>
+</main></body></html>
