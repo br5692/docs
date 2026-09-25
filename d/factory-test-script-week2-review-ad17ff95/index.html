@@ -31,6 +31,20 @@
   a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
   pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
 </style>
+<style>
+  figure.shot{margin:14px 0 26px;}
+  figure.shot .frame{position:relative; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff; box-shadow:var(--shadow);}
+  figure.shot img{display:block; width:100%; height:auto;}
+  figure.shot figcaption{font-size:.9rem; color:var(--ink-soft); margin-top:8px;}
+  .mark{position:absolute; border:2.5px solid #D93025; border-radius:5px; box-shadow:0 0 0 3px rgba(217,48,37,.18), 0 0 14px rgba(217,48,37,.35); pointer-events:none;}
+  .mark .mtag{position:absolute; left:-2.5px; bottom:100%; margin-bottom:4px; background:#D93025; color:#fff; font-family:var(--mono); font-size:11px; letter-spacing:.02em; line-height:1; padding:4px 7px; border-radius:4px; white-space:nowrap;}
+  .mark.tag-below .mtag{bottom:auto; top:100%; margin-top:4px; margin-bottom:0;}
+  .mark.tag-right .mtag{left:auto; right:-2.5px;}
+  @media (max-width:700px){ .mark .mtag{display:none;} .mark{border-width:2px; border-radius:4px;} }
+  tr.shot-tr{background:transparent;}
+  tr.shot-tr td{padding:16px 16px 26px; border-bottom:1px solid var(--line-soft); background:var(--surface-2);}
+  tr.shot-tr:last-child td{border-bottom:none;}
+</style>
 </head>
 <body>
 <header class="mast"><div class="wrap mast-inner">
@@ -57,8 +71,11 @@
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
       <tr><td class="n">1.1</td><td>Apply at <a href="https://factory-partner-portal.pages.dev/apply" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/apply</a> as a new company, with a fresh name and website and a Domestique plus address.</td><td class="exp">A "Check your inbox" page naming your address. The company is not in Partner Review yet.</td><td class="why">Nothing is created until the applicant proves the address.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-1.1-check-inbox.png" target="_blank" rel="noopener"><img src="img/r-1.1-check-inbox.png" alt="Check your inbox" loading="lazy" width="1440" height="900"></a><span class="mark tag-below" style="left:35.14%;top:45.33%;width:29.43%;height:9.78%"><span class="mtag">Check your inbox</span></span></div><figcaption>Check your inbox</figcaption></figure></td></tr>
       <tr><td class="n">1.2</td><td>Open the verification email and click its link.</td><td class="exp">A "Thanks" page. The company now shows in Partner Review, Pending, Accounts.</td><td class="why">The verified link creates the application.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-1.2-thanks.png" target="_blank" rel="noopener"><img src="img/r-1.2-thanks.png" alt="Verified" loading="lazy" width="1440" height="900"></a><span class="mark tag-below" style="left:35.14%;top:47.5%;width:27.85%;height:5.78%"><span class="mtag">Verified</span></span></div><figcaption>Verified</figcaption></figure></td></tr>
       <tr><td class="n">1.3</td><td>Click the same verification link again.</td><td class="exp">A page saying the application is already with Factory. Still one row in Pending.</td><td class="why">A link can't create a second application.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-1.3-already-applied.png" target="_blank" rel="noopener"><img src="img/r-1.3-already-applied.png" alt="Already applied" loading="lazy" width="1440" height="900"></a></div><figcaption>Already applied</figcaption></figure></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -69,11 +86,17 @@
     <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
     <tbody>
       <tr><td class="n">2.1</td><td>Pending: on the 1.1 company click Approve, then Preview email. Change one word in the message, then confirm.</td><td class="exp">The preview opens at once, with the subject and message editable. The toast has a View link, and the row shows in Decided as Approved with the decided time. The approval email arrives with your edit.</td><td class="why">Approve shows the email first, and it can be edited for that one send.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.1-preview-edit.png" target="_blank" rel="noopener"><img src="img/r-2.1-preview-edit.png" alt="Edit the preview" loading="lazy" width="1408" height="399"></a></div><figcaption>Edit the preview</figcaption></figure><figure class="shot"><div class="frame"><a href="img/r-2.1-approval-email-edited.png" target="_blank" rel="noopener"><img src="img/r-2.1-approval-email-edited.png" alt="Screenshot of the result." loading="lazy" width="1440" height="900"></a></div><figcaption>Screenshot of the result.</figcaption></figure></td></tr>
       <tr><td class="n">2.2</td><td>Apply, verify and approve a second company without editing the email.</td><td class="exp">The email arrives with the standard template text, without the edit from 2.1.</td><td class="why">An edit changes one send, never the template.</td><td>Inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.2-standard-template.png" target="_blank" rel="noopener"><img src="img/r-2.2-standard-template.png" alt="Screenshot of the result." loading="lazy" width="1440" height="900"></a></div><figcaption>Screenshot of the result.</figcaption></figure></td></tr>
       <tr><td class="n">2.3</td><td>Apply and verify a third company, then click Waitlist on it and confirm.</td><td class="exp">The row moves to the Waitlist tab. No email arrives. A sign-in request for that address sends no link.</td><td class="why">Waitlisted applicants get no email and no access.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Waitlist; inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.3-waitlist-tab.png" target="_blank" rel="noopener"><img src="img/r-2.3-waitlist-tab.png" alt="Waitlist tab" loading="lazy" width="1440" height="114"></a></div><figcaption>Waitlist tab</figcaption></figure></td></tr>
       <tr><td class="n">2.4</td><td>Waitlist tab: Approve that company and confirm.</td><td class="exp">It moves to Decided as Approved, and the approval email arrives.</td><td class="why">Factory can decide on a waitlisted applicant later.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.4-decided-approved.png" target="_blank" rel="noopener"><img src="img/r-2.4-decided-approved.png" alt="Approved" loading="lazy" width="1440" height="900"></a></div><figcaption>Approved</figcaption></figure></td></tr>
       <tr><td class="n">2.5</td><td>Apply and verify a fourth company, then Deny it with Preview email and confirm.</td><td class="exp">Decided shows Denied. The denial email arrives.</td><td class="why">Deny works with the same preview step.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.5-decided-denied.png" target="_blank" rel="noopener"><img src="img/r-2.5-decided-denied.png" alt="Denied" loading="lazy" width="1440" height="900"></a></div><figcaption>Denied</figcaption></figure></td></tr>
       <tr><td class="n">2.6</td><td>Colleague: apply using the 1.1 company's website and a new address, then click the verification link.</td><td class="exp">You land signed in on the dashboard. A welcome email arrives naming the company's primary contact. Decided shows the person Approved with the note "Approved automatically: ...".</td><td class="why">A new contact at an approved company is approved automatically.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr class="shot-tr"><td colspan="5"><figure class="shot"><div class="frame"><a href="img/r-2.6-welcome-email.png" target="_blank" rel="noopener"><img src="img/r-2.6-welcome-email.png" alt="Screenshot of the result." loading="lazy" width="1440" height="900"></a></div><figcaption>Screenshot of the result.</figcaption></figure></td></tr>
     </tbody>
   </table></div>
 </section>
