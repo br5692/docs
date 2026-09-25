@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Partner Portal, manual test script, Week 3</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
+<style>
+  :root{--paper:#f6f7f4;--surface:#fff;--surface-2:#eef1ec;--ink:#16201d;--ink-soft:#3c4a45;--ink-faint:#6d7b75;--line:#d7ddd4;--line-soft:#e5e9e1;--accent:#0d7a6e;--accent-2:#0a5f56;--accent-wash:#e2efeb;--amber:#a35a12;--amber-wash:#f4e9d9;--code-bg:#f0f3ee;--shadow:0 1px 2px rgba(22,32,29,.05),0 8px 28px -18px rgba(22,32,29,.35);--serif:"Charter","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,monospace}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}}
+  :root[data-theme="dark"]{--paper:#101614;--surface:#161e1b;--surface-2:#1c2723;--ink:#e7ede9;--ink-soft:#b3c0ba;--ink-faint:#7f8f88;--line:#2a3631;--line-soft:#222d29;--accent:#4fd0be;--accent-2:#6fdccb;--accent-wash:#16302b;--amber:#d89a4e;--amber-wash:#322414;--code-bg:#131b18;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px -20px rgba(0,0,0,.8)}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  header.mast{border-bottom:1px solid var(--line);background:radial-gradient(120% 140% at 88% -20%,var(--accent-wash) 0%,transparent 55%),var(--surface)}.mast-inner{padding:40px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-2);margin:0 0 12px;display:flex;align-items:center;gap:10px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,5vw,3rem);line-height:1.06;letter-spacing:-.015em;margin:0 0 12px;text-wrap:balance}h1.title span{color:inherit}
+  .lede{font-size:1.02rem;color:var(--ink-soft);max-width:64ch;margin:0}
+  section.stream{padding:36px 0 8px;border-bottom:1px solid var(--line-soft)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;flex-wrap:wrap}.sec-num{font-family:var(--mono);font-size:.9rem;color:var(--accent-2);font-weight:600}
+  h2.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.9rem);letter-spacing:-.01em;margin:0;line-height:1.1}
+  .sec-sub{color:var(--ink-faint);font-size:.95rem;margin:4px 0 14px;max-width:70ch}
+  p{margin:0 0 12px}p,li{color:var(--ink-soft)}ul,ol{padding-left:20px;margin:0 0 12px}li{margin-bottom:5px}code{font-family:var(--mono);font-size:.84em;background:var(--code-bg);padding:1px 5px;border-radius:4px;color:var(--ink)}
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{padding:9px 11px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2)}tr:last-child td{border-bottom:none}
+  td.n{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint);white-space:nowrap}td.exp{color:var(--ink)}td.chk{min-width:120px;border-left:1px dashed var(--line)}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:12px 16px;margin:12px 0}
+  footer{padding:30px 0 50px;color:var(--ink-faint);font-size:.84rem}footer .fmono{font-family:var(--mono);font-size:.78rem}
+  @media print{nav,header.mast{background:none}.tbl-scroll{border:none}td.chk{border-left:1px solid #999}}
+  td.why{color:var(--ink-faint);font-size:.88rem}
+  a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px;word-break:break-all}a:hover{color:var(--accent)}
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:10px 0 16px;font-family:var(--mono);font-size:.86rem;line-height:1.55;overflow-x:auto;white-space:pre}pre code{background:none;padding:0;border:0;font:inherit;color:inherit}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap mast-inner">
+  <p class="eyebrow"><span class="dot"></span> Factory.ai · Partner Portal · Manual test script</p>
+  <h1 class="title">Week 3, <span>by hand</span></h1>
+  <p class="lede">Contract signing, invites and timestamps, plus the changes from Wednesday's review. Run top to bottom on the hosted stack, about 40 minutes. Each row: what to do, what should happen, what it proves, where to confirm. Anything off: reply with the step number and what you saw.</p>
+</div></header>
+<main class="wrap">
+
+<section class="stream" id="setup">
+  <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Setup</h2></div>
+  <ul>
+    <li>Portal: <a href="https://factory-partner-portal.pages.dev" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev</a> (runs the Week 3 build).</li>
+    <li>Wake the service first: <a href="https://factory-partner-portal-tool-layer.onrender.com/health?deep=1" target="_blank" rel="noopener">health check</a>. Expect <code>"ok":true</code> and <code>"sf":"ok"</code>. The first call can take about 20 seconds.</li>
+    <li>Keep three tabs open: the <a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a> app, <a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log, All</a>, and your Domestique inbox.</li>
+    <li>Use a fresh company name and website for each new applicant, and a Domestique address with a plus tag (<code>blair.purdy+&lt;tag&gt;@domestique.info</code>).</li>
+  </ul>
+</section>
+
+<section class="stream" id="w3a">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Apply with email verification</h2></div>
+  <p class="sec-sub">You are the applicant. Five minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1.1</td><td>Apply at <a href="https://factory-partner-portal.pages.dev/apply" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/apply</a> as a new company. Use a fresh company name and website, and an address at <code>blair.purdy+&lt;tag&gt;@domestique.info</code>.</td><td class="exp">A "Check your inbox" page naming your address. The company is not in Partner Review yet.</td><td class="why">Nothing is created until the applicant proves the address.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+      <tr><td class="n">1.2</td><td>Open the verification email and click its link.</td><td class="exp">A "Thanks" page. The company now shows in Partner Review, Pending, Accounts.</td><td class="why">The verified link creates the application.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+      <tr><td class="n">1.3</td><td>Click the same verification link again.</td><td class="exp">A page saying the application is already with Factory. Still one row in Pending.</td><td class="why">A link can't create a second application.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Pending</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w3b">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Review decisions and Wednesday's changes</h2></div>
+  <p class="sec-sub">You are the Factory operator, in Partner Review. Ten minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
+    <tbody>
+      <tr><td class="n">2.1</td><td>Pending: on the 1.1 company click Approve, then Preview email. Change one word in the message, then confirm.</td><td class="exp">The preview opens at once, with the subject and message editable. The toast has a View link, and the row shows in Decided as Approved with the decided time. The approval email arrives with your edit.</td><td class="why">Approve shows the email first and it can be edited for that one send.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr><td class="n">2.2</td><td>Approve a second new applicant without editing the email.</td><td class="exp">The email arrives with the standard template text, without the edit from 2.1.</td><td class="why">An edit changes one send, never the template.</td><td>Inbox</td></tr>
+      <tr><td class="n">2.3</td><td>Apply and verify a third company, then click Waitlist on it and confirm.</td><td class="exp">The row moves to the Waitlist tab. No email arrives. A sign-in request for that address sends no link.</td><td class="why">Waitlisted applicants get no email and no access.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Waitlist; inbox</td></tr>
+      <tr><td class="n">2.4</td><td>Waitlist tab: Approve that company and confirm.</td><td class="exp">It moves to Decided as Approved, and the approval email arrives.</td><td class="why">Factory can decide on a waitlisted applicant later.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr><td class="n">2.5</td><td>Apply and verify a fourth company, then Deny it with Preview email and confirm.</td><td class="exp">Decided shows Denied. The denial email arrives.</td><td class="why">Deny works with the same preview step.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr><td class="n">2.6</td><td>Colleague: apply using the 1.1 company's website and a new address, then click the verification link.</td><td class="exp">You land signed in on the dashboard. A welcome email arrives naming the company's primary contact. Decided shows the person Approved with the note "Approved automatically: ...".</td><td class="why">A new contact at an approved company is approved automatically.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w3c">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Contract signing (e-signature link and status sync)</h2></div>
+  <p class="sec-sub">Operator, then partner. Fifteen minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
+    <tbody>
+      <tr><td class="n">3.1</td><td>Decided: on the 1.1 company the Contract cell reads Not sent. Click Send contract and confirm.</td><td class="exp">The confirmation names the contact. The Contract cell changes to Sent in place and the row is highlighted. The toast has no View link. The "ready to sign" email arrives.</td><td class="why">Factory sends the agreement from Partner Review.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; inbox</td></tr>
+      <tr><td class="n">3.2</td><td>Click the button in the "ready to sign" email.</td><td class="exp">The Contract page opens already signed in, with status Sent and "Open the agreement to sign".</td><td class="why">The email link signs the partner straight in to the contract.</td><td>Browser</td></tr>
+      <tr><td class="n">3.3</td><td>Open the agreement, sign it in DocuSign, then click Finish.</td><td class="exp">You return to the Contract page. Within about 30 seconds it shows Signed with the signed date. The "contract is signed" email arrives.</td><td class="why">Signing through the DocuSign API, with the result sent back to the portal.</td><td>Browser; inbox</td></tr>
+      <tr><td class="n">3.4</td><td>Salesforce: open the 1.1 company's Account.</td><td class="exp">Contract Status Signed, Contract Signed At set, Partner Lifecycle Status "3. Activation", and a file named "Partner Contract &lt;company&gt; &lt;date&gt;".</td><td class="why">Salesforce updates automatically when signing completes.</td><td>Salesforce, Account</td></tr>
+      <tr><td class="n">3.5</td><td>Click the "ready to sign" email button a second time.</td><td class="exp">The sign-in page opens with your email filled in. The new sign-in link returns you to the Contract page, not the dashboard.</td><td class="why">A used contract link can't be reused, and sign-in brings the partner back to the contract.</td><td>Browser; inbox</td></tr>
+      <tr><td class="n">3.6</td><td>Open the dashboard.</td><td class="exp">The contract card shows Signed.</td><td class="why">The partner sees the contract status.</td><td>Browser</td></tr>
+      <tr><td class="n">3.7</td><td>Decided: on the 2.2 company send a contract. In DocuSign choose Other Options, then Decline to Sign.</td><td class="exp">Partner Review shows Declined, with Send contract available again. The Account has Contract Declined At set.</td><td class="why">A declined agreement is recorded and can be resent.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided; Salesforce, Account</td></tr>
+      <tr><td class="n">3.8</td><td>Decided: look at a row whose contract is Sent and not yet signed.</td><td class="exp">No resend button on that row. The Contract buttons line up across rows.</td><td class="why">Only a declined agreement offers a resend.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w3d">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Pre-approved invite</h2></div>
+  <p class="sec-sub">Operator, then the invited partner. Five minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
+    <tbody>
+      <tr><td class="n">4.1</td><td>Partner Review: Invite partner. Type a company and website, then check Preview email before and after filling in the contact.</td><td class="exp">Preview stays unavailable until first name, last name and email are filled in, then shows "First Last &lt;email&gt;" and "Hi First".</td><td class="why">The invite email is built from the contact entered.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a></td></tr>
+      <tr><td class="n">4.2</td><td>Press Escape, reopen the form, click outside it, reopen it again, then fill it in and send.</td><td class="exp">Escape and a click outside both close the form. After sending, the toast has no View link, and the new row is highlighted in Decided as Approved with the Invited tag.</td><td class="why">One step creates the approved partner and sends the invitation.</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">Partner Review</a>, Decided</td></tr>
+      <tr><td class="n">4.3</td><td>Open the invite email and follow its link.</td><td class="exp">You are signed in as the invited partner, with the same contract step as any approved partner.</td><td class="why">An invited partner goes through the same flow as one who applied.</td><td>Inbox; browser</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="w3e">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Timestamps and audit</h2></div>
+  <p class="sec-sub">Salesforce. Five minutes.</p>
+  <div class="tbl-scroll"><table>
+    <thead><tr><th>#</th><th>Do</th><th>Expect</th><th>Proves</th><th>Confirm where</th></tr></thead>
+    <tbody>
+      <tr><td class="n">5.1</td><td>Salesforce: open the 1.1 company's Account.</td><td class="exp">Partner Applied At, Portal Decided At, Contract Sent At and Contract Signed At are all set, in the order the steps happened.</td><td class="why">Each stage of the partner's onboarding has a timestamp.</td><td>Salesforce, Account</td></tr>
+      <tr><td class="n">5.2</td><td>Open <a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/o/Portal_Audit_Log__c/list?filterName=Portal_Audit_Log_All" target="_blank" rel="noopener">Portal Audit Log, All</a>, newest first.</td><td class="exp">One row for each step, including <code>verify_partner_application</code>, <code>send_partner_contract</code>, <code>contract_webhook</code> (docusign), <code>contract_signed</code>, and sign-in with mode <code>contract_link</code>. No link or token appears in any row.</td><td class="why">Every step is audited, and no secret ends up in the log.</td><td>Salesforce</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="stream" id="after" style="border-bottom:none">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">After the pass</h2></div>
+  <ul>
+    <li>Leave the test companies in the sandbox; nothing needs deleting.</li>
+    <li>Send findings back as step number plus what you saw.</li>
+  </ul>
+  <h3>Notes</h3>
+  <ul>
+    <li>Use a Domestique address. Gmail filters the sandbox sender until factory.ai's email settings list Salesforce, which is on the handoff list.</li>
+    <li>DocuSign runs on our developer account with a ten-page placeholder agreement until Factory's plan upgrade. Switching to Factory's account is a settings change.</li>
+    <li>Step 2.6: our automated suite did not see the colleague email in its last run, and that is being checked now. If the email does not arrive, note it against 2.6.</li>
+  </ul>
+<footer><p class="fmono">Written 2026-09-25 · 22 checks · Week 3 on the hosted stack</p><p>Unlisted link. Anyone with the address can view; nobody can find it by browsing.</p></footer>
+</section>
+</main>
+</body>
+</html>
