@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Weeks 4-5 Demo Run Sheet</title>
+<style>
+:root{--bg:#f6f3ee;--surface:#fffdf9;--ink:#1f1d1a;--soft:#6a655d;--line:#e2dcd2;--accent:#b4441c;--ok:#2f6f45}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151412;--surface:#1e1c19;--ink:#ece8e1;--soft:#a39d93;--line:#34312c;--accent:#f08a5d;--ok:#7fc795}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 64px}
+.eyebrow{font:12px ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+h1{font:600 2rem/1.15 "Charter","Iowan Old Style",Georgia,serif;margin:6px 0 4px}
+h2{font:600 1.3rem "Charter","Iowan Old Style",Georgia,serif;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.lede{color:var(--soft);margin:0 0 8px}
+.copy{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0}
+.copy .lbl{min-width:150px;font-weight:600;font-size:.92rem}
+.copy code{flex:1;font:.88rem ui-monospace,Menlo,monospace;overflow-wrap:anywhere;color:var(--ink)}
+.copy a{color:inherit;text-decoration:none}
+button{font:600 .85rem -apple-system,sans-serif;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer;min-width:74px}
+button.done{background:var(--ok);color:#fff;border-color:var(--ok)}
+ol{padding-left:22px;margin:6px 0}li{margin:8px 0}
+.exp{color:var(--soft);font-size:.92rem}
+.k{font:600 .78rem ui-monospace,Menlo,monospace;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:1px 6px;white-space:nowrap}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+.step b.n{color:var(--accent);margin-right:6px}
+.note{font-size:.92rem;color:var(--soft);margin:6px 0}
+@media (max-width:600px){.copy{flex-wrap:wrap}.copy .lbl{min-width:0;width:100%}}
+</style></head><body><main>
+<div class="eyebrow">Factory partner portal · Weeks 4 and 5 review</div>
+<h1>Demo run sheet</h1>
+<p class="lede">Copy buttons for every link and sign-in value. Setup before the call, then ten demo steps in order.</p>
+
+<h2>Links</h2>
+<div class="copy"><span class="lbl">Portal sign-in</span><code><a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank">https://factory-partner-portal.pages.dev/sign-in</a></code><button>Copy</button></div>
+<div class="copy"><span class="lbl">Partner Review</span><code><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank">https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review</a></code><button>Copy</button></div>
+<div class="copy"><span class="lbl">Unassigned customers</span><code><a href="https://factoryai--partial.sandbox.my.salesforce.com/lightning/n/Portal_Unassigned_Customers" target="_blank">https://factoryai--partial.sandbox.my.salesforce.com/lightning/n/Portal_Unassigned_Customers</a></code><button>Copy</button></div>
+<div class="copy"><span class="lbl">Wake the service</span><code><a href="https://factory-partner-portal-tool-layer.onrender.com/health" target="_blank">https://factory-partner-portal-tool-layer.onrender.com/health</a></code><button>Copy</button></div>
+<p class="note">Open the wake link 5 minutes before the call, and again after any quiet stretch over 15 minutes.</p>
+
+<h2>Sign-in values</h2>
+<div class="copy"><span class="lbl">Partner A (normal window)</span><code>blair.purdy+invite98873@domestique.info</code><button>Copy</button></div>
+<div class="copy"><span class="lbl">Partner B (private window)</span><code>blair.purdy+invite65332@domestique.info</code><button>Copy</button></div>
+<p class="note">Partner A is Harborline Partners 98873. Partner B is Harborline Partners 65332, used in setup only. A sign-in link lasts 15 minutes and works once.</p>
+
+<h2>Setup (before the call)</h2>
+<div class="step"><b class="n">1</b>Partner A: sign in at the portal, then click the link in the inbox.</div>
+<div class="step"><b class="n">2</b>Partner A: register three deals. For each: Register a deal, <span class="k">Fill: new deal</span> on step 1, Next, <span class="k">Fill: new deal</span> on step 2, Next, Submit. Write down the companies: <b>deal 1</b> approve, <b>deal 2</b> needs info, <b>deal 3</b> deny.</div>
+<div class="step"><b class="n">3</b>Partner B, private window: sign in and register deal 1 again by typing it. Same company name, domain and deal name as deal 1. A different contact email:
+<div class="copy"><span class="lbl">Contact email</span><code>sam.patel@</code><button>Copy</button></div><p class="note">Paste, then add deal 1's domain. Close the private window after submit.</p></div>
+<div class="step"><b class="n">4</b>Open Partner Review in a separate tab.</div>
+
+<h2>Demo (partner A's window and Partner Review)</h2>
+<div class="step"><b class="n">1</b><b>Register a deal.</b> Register a deal, <span class="k">Fill: new deal</span> on steps 1 and 2, Submit.<div class="exp">Expect: the registration page shows Pending.</div></div>
+<div class="step"><b class="n">2</b><b>Duplicate refused.</b> Register a deal, <span class="k">Fill: same deal again</span> on steps 1 and 2, Submit.<div class="exp">Expect: "A registration for this contact is already open."</div></div>
+<div class="step"><b class="n">3</b><b>Pending registration in Salesforce.</b> Partner Review, Deals, Pending: open the deal's Partner Influence record.<div class="exp">Expect: Pending, Deal Description shown, no Opportunity.</div></div>
+<div class="step"><b class="n">4</b><b>Approve deal 1.</b> Approve, Preview email, Approve, Send email.<div class="exp">Expect: "Approved". The Opportunity is on deal 1's Account, stage 1. Research.</div></div>
+<div class="step"><b class="n">5</b><b>Conflict rule.</b> Partner B's deal 1 row.<div class="exp">Expect: Approve greyed out. Hover the warning icon: "Another partner of the same type…"</div></div>
+<div class="step"><b class="n">6</b><b>Needs info on deal 2.</b> Needs info, type a message, Ask.<div class="exp">Expect: the row moves to Needs information; an email arrives.</div></div>
+<div class="step"><b class="n">7</b><b>Deny deal 3.</b> Deny, type a reason, Deny.<div class="exp">Expect: "Denied"; an email arrives.</div></div>
+<div class="step"><b class="n">8</b><b>Partner A's dashboard.</b> Check the tiles, then open deal 3.<div class="exp">Expect: the tiles change; deal 3 shows Denied and the reason.</div></div>
+<div class="step"><b class="n">9</b><b>Partner reply.</b> Open deal 2, type a reply, Send.<div class="exp">Expect: Pending again, with the reply.</div></div>
+<div class="step"><b class="n">10</b><b>Unassigned customers.</b> Open the link above, sort by Created Date.<div class="exp">Expect: the new companies are listed.</div></div>
+
+<h2>Questions to ask</h2>
+<ol>
+<li>Which partner roles do you use on a deal? (Built: Referral, Reseller, Services.)</li>
+<li>Should the duplicate check be per contact or per deal?</li>
+<li>Who should own the Opportunity on approval, and should Lead Source be "Partnerships"? Are stage 1. Research and type New Logo right?</li>
+<li>Should every partner have a Partner Type before approval?</li>
+</ol>
+</main>
+<script>
+document.querySelectorAll('.copy button').forEach(function(b){b.addEventListener('click',function(){var t=b.parentElement.querySelector('code').innerText.trim();
+var done=function(){b.textContent='Copied';b.classList.add('done');setTimeout(function(){b.textContent='Copy';b.classList.remove('done')},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fb(t);done()})}else{fb(t);done()}})});
+function fb(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()}
+</script></body></html>
