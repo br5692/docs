@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Steel Tide Legendaries</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#f4f5f2;--card:#ffffff;--fg:#1d2420;--muted:#5d6a63;--line:#dfe3df;--accent:#0f7f6a;--accent-fg:#ffffff;--tag:#e9efec;--on:#e3f3ee;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1412;--card:#161d1a;--fg:#e4ebe7;--muted:#93a39b;--line:#26302c;--accent:#3fc3a4;--accent-fg:#06110d;--tag:#1e2824;--on:#163329;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1412;--card:#161d1a;--fg:#e4ebe7;--muted:#93a39b;--line:#26302c;--accent:#3fc3a4;--accent-fg:#06110d;--tag:#1e2824;--on:#163329;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:20px 120px}
+h1{font-size:1.5rem;margin:0 0 4px;text-wrap:balance}
+p.lead{color:var(--muted);margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 16px}
+.bar button,.foot button{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:8px 12px;font:inherit;cursor:pointer}
+.count{color:var(--muted);font-variant-numeric:tabular-nums}
+h2{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+.row{display:grid;grid-template-columns:auto 2.2em 1fr;gap:10px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px}
+.row.on{background:var(--on);border-color:var(--accent)}
+.row input[type=checkbox]{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent)}
+.num{color:var(--muted);font-variant-numeric:tabular-nums;padding-top:2px}
+.body{min-width:0}
+.name{font-weight:650}
+.eff{color:var(--fg)}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tag{font-size:.72rem;letter-spacing:.04em;background:var(--tag);color:var(--muted);border-radius:5px;padding:1px 6px}
+.note{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--bg);color:var(--fg);font:inherit;font-size:.9rem}
+.foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.foot .in{max-width:860px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.foot button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:650}
+#out{width:100%;min-height:70px;margin-top:8px;display:none;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:13px ui-monospace,Menlo,monospace;padding:6px}
+.msg{color:var(--accent);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Steel Tide: 100 new legendaries</h1>
+<p class="lead">Tick the ones you approve. Add a note if you want a change. Then tap <b>Copy my picks</b> and paste the text back into the chat. Your ticks are saved on this device. Tags: Mech = works in every mode incl. Boss Rush; Siege = needs the army/commander; Rush = Boss Rush only. Cheap = numbers only; FX = needs a small effect.</p>
+<div class="bar"><button id="all">Tick all</button><button id="none">Clear all</button><span class="count" id="count"></span></div>
+<div id="list"></div>
+</div>
+<div class="foot"><div class="in"><button class="primary" id="copy">Copy my picks</button><span class="msg" id="msg"></span></div><textarea id="out" readonly></textarea></div>
+<script>
+const L=[
+["Weapons","Overclock Rounds","+15% weapon fire rate.","Mech","Cheap"],
+["Weapons","Heavy Slugs","Sniper +40% damage, 20% slower fire rate.","Mech","Cheap"],
+["Weapons","Executioner","+50% damage to enemies below 25% HP.","Mech","Cheap"],
+["Weapons","Weak Point Hunter","Weak-spot hits deal +30% damage.","Mech","Cheap"],
+["Weapons","Stagger Specialist","+40% stagger from all your weapons.","Mech","Cheap"],
+["Weapons","Point Blank","Shotgun +30% damage within 15 wu.","Mech","Cheap"],
+["Weapons","Laser Focus","Lasers gain +5% damage per second on the same target (max +40%).","Mech","Cheap"],
+["Weapons","Chem Spread","Chem Lance gas clouds are 30% bigger.","Mech","Cheap"],
+["Weapons","Corrosive Gas","Targets in Chem gas take +15% damage from everything.","Mech","Cheap"],
+["Weapons","Breacher Pierce","Breacher shells pierce one extra enemy.","Mech","Cheap"],
+["Weapons","Ricochet","Sniper shots bounce to a second target for 50%.","Mech","FX"],
+["Weapons","Range Finder","Your damage falloff starts 30% farther out.","Mech","Cheap"],
+["Weapons","Critical Eye","10% chance per hit to deal double damage.","Mech","Cheap"],
+["Weapons","Sniper Nest","After standing still 1 s, sniper deals +30% damage.","Mech","Cheap"],
+["Weapons","Sprint Shot","+15% damage while moving at full speed.","Mech","Cheap"],
+["Missiles","Missile Swarm","RMB salvo fires 2 extra missiles.","Mech","Cheap"],
+["Missiles","Heavy Payload","Missile splash radius +25%.","Mech","Cheap"],
+["Missiles","Tight Tracking","Missiles turn tighter and miss less.","Mech","Cheap"],
+["Missiles","Cluster Missiles","RMB missiles split into 3 bomblets on impact.","Mech","FX"],
+["Missiles","Storm Front","Missile Storm lasts 50% longer.","Mech","Cheap"],
+["Missiles","Quick Storm","Missile Storm cooldown -30%.","Mech","Cheap"],
+["Abilities","Afterimage","Mirage lasts 5 s longer.","Mech","Cheap"],
+["Abilities","Mirror Legion","Mirage makes 3 copies instead of 2.","Mech","Cheap"],
+["Abilities","Tremor","Shock Slam radius +50%.","Mech","Cheap"],
+["Abilities","Aftershock","Shock Slam hits again 1 s later for 50%.","Mech","FX"],
+["Abilities","Ground Pound","Shock Slam from the air hits twice as hard.","Mech","Cheap"],
+["Abilities","Deep Freeze","Shatterfrost freezes 1 s longer.","Mech","Cheap"],
+["Abilities","Shatter","Frozen enemies take +50% damage.","Mech","Cheap"],
+["Abilities","Surge Battery","Reactor Surge lasts 3 s longer.","Mech","Cheap"],
+["Abilities","Overcharge","During Reactor Surge your hits stagger +50%.","Mech","Cheap"],
+["Abilities","Double Judgement","Judgement strikes twice.","Mech","Cheap"],
+["Abilities","Hammerfall","Orbital Hammer cooldown -25%.","Mech","Cheap"],
+["Abilities","Twin Hammer","Orbital Hammer drops a second hammer 2 s later.","Mech","Cheap"],
+["Abilities","Cooldown Core","All ability cooldowns -10%.","Mech","Cheap"],
+["Abilities","Kill Momentum","Each kill shortens your ability cooldowns by 0.2 s.","Mech","Cheap"],
+["Abilities","Lance Calibration","Orbital Lance cooldown -20%.","Mech","Cheap"],
+["Abilities","Lance Echo","The Orbital Lance fires a smaller second strike 3 s later.","Mech","Cheap"],
+["Shield","Bubble Bounce","Shield Bubble reflects 25% of the damage it blocks.","Mech","FX"],
+["Shield","Fortified Bubble","Shield Bubble lasts 3 s longer.","Mech","Cheap"],
+["Shield","Shared Bubble","Shield Bubble also covers teammates inside it.","Mech","Cheap"],
+["Shield","Overload Pulse","When your shield breaks it releases a damaging pulse.","Mech","FX"],
+["Movement","Fuel Cells","+40% max fuel.","Mech","Cheap"],
+["Movement","Efficient Thrusters","Dash and hover use 25% less fuel.","Mech","Cheap"],
+["Movement","Afterburner Trail","Boosting leaves a fire trail that burns ground enemies.","Mech","FX"],
+["Movement","Fuel Siphon","Each kill restores 2% fuel.","Mech","Cheap"],
+["Movement","Hover Gunner","+20% damage while hovering.","Mech","Cheap"],
+["Movement","Stomp","Landing from a jump damages nearby enemies.","Mech","FX"],
+["Movement","Juggernaut Stride","Your mech can't be knocked back.","Mech","Cheap"],
+["Dodge","Dodge Strike","A perfect dodge gives +25% damage for 4 s.","Mech","Cheap"],
+["Dodge","Dodge Refuel","A perfect dodge restores 20% fuel.","Mech","Cheap"],
+["Dodge","Time Slip","A perfect dodge slows nearby enemies 50% for 2 s.","Mech","Cheap"],
+["Survival","Field Repair","Regenerate 1% HP per second after 5 s without taking damage.","Mech","Cheap"],
+["Survival","Vampiric Rounds","2% of your weapon damage heals your mech.","Mech","Cheap"],
+["Survival","Scavenger","Each kill restores 0.5% HP.","Mech","Cheap"],
+["Survival","Last Stand","Below 25% HP you deal +30% damage.","Mech","Cheap"],
+["Survival","Armor Plating","Take 15% less damage.","Mech","Cheap"],
+["Survival","Thick Hull","+25% max HP.","Mech","Cheap"],
+["Survival","Berserk","+5% damage for every 10% HP you are missing.","Mech","Cheap"],
+["Survival","Thorns","Enemies that hit you up close take 20% of it back.","Mech","Cheap"],
+["Survival","Kinetic Battery","Taking damage speeds up your ability cooldowns.","Mech","Cheap"],
+["Targets","Boss Slayer","+15% damage to bosses.","Mech","Cheap"],
+["Targets","Elite Hunter","+25% damage to elites.","Mech","Cheap"],
+["Targets","Swarm Sweeper","+25% damage to swarm units.","Mech","Cheap"],
+["Targets","Stagger Extender","Staggers you cause last 2 s longer.","Mech","Cheap"],
+["Targets","Mark for Death","Your hard-locked target takes +15% damage from everyone.","Mech","Cheap"],
+["Targets","Lock Mastery","Hard lock acquires 50% faster.","Mech","Cheap"],
+["Team","Revive Speed","Revive teammates 50% faster.","Mech","Cheap"],
+["Team","Rally Cry","Reviving a teammate gives you both +20% damage for 6 s.","Mech","Cheap"],
+["Team","Team Link","+5% damage per teammate mech nearby.","Mech","Cheap"],
+["Team","Wingman Uplink","Your AI wingman deals +40% damage.","Mech","Cheap"],
+["Team","Wingman Guard","Your AI wingman takes 20% of the damage aimed at you.","Mech","Cheap"],
+["Drones","Twin Drones","+1 drone.","Mech","Cheap"],
+["Drones","Frost Chain","The Frost Beam chains to a second target.","Mech","FX"],
+["Drones","Cryo Burst","Frozen enemies shatter when killed and damage those nearby.","Mech","FX"],
+["Drones","Gatling Overdrive","Drone gatling +40% fire rate.","Mech","Cheap"],
+["Drones","Mine Layer","Your drones drop a mine every 10 s.","Mech","Cheap"],
+["Drones","Guardian Drones","Drone point defense shoots down twice as many missiles.","Mech","Cheap"],
+["Drones","Spotter","Targets your drone hits take +10% damage from you.","Mech","Cheap"],
+["Drones","Repair Drone","Your drone heals your mech 0.5% per second.","Mech","Cheap"],
+["Calls","Air Support+","Air Support cooldown -30%.","Mech","Cheap"],
+["Calls","Healing Call+","Request Healing heals 50% more.","Mech","Cheap"],
+["Calls","Call Units+","Call Units brings 50% more units.","Siege","Cheap"],
+["Army","Veteran Platoons","Your army has +15% HP.","Siege","Cheap"],
+["Army","Heavy Ordnance","Army heavy guns +20% damage.","Siege","Cheap"],
+["Army","Fast Deploy","Reinforcements arrive 30% faster.","Siege","Cheap"],
+["Army","Field Medics","Army units regenerate 1% HP per second out of combat.","Siege","Cheap"],
+["Army","Titan Plating","The Titan has +25% HP.","Siege","Cheap"],
+["Army","Barrage Drills","Titan barrage cooldown -25%.","Siege","Cheap"],
+["Army","Deck Guns","Mechs riding the Titan deck deal +20% damage.","Siege","Cheap"],
+["Army","Cannon Crew","The Heavy Cannon reloads 25% faster.","Siege","Cheap"],
+["Army","Anti-Tank Rounds","The anti-tank gun deals +30% damage to bosses.","Siege","Cheap"],
+["Army","Captured Ground","Held zones give mechs inside them +10% damage.","Siege","Cheap"],
+["Army","Tower Breaker","+30% damage to hive towers.","Siege","Cheap"],
+["Army","Salvage Magnet","Elite cores are carried home 30% faster.","Siege","Cheap"],
+["Army","Requisition Boost","Commander income +15%.","Siege","Cheap"],
+["Run","Bounty Trail","Each boss killed this run gives +3% damage (stacks).","Rush","Cheap"],
+["Run","Second Wind","Fully heal between Boss Rush rounds.","Rush","Cheap"],
+["Run","Gambler","The next votes show 4 cards instead of 3.","Mech","Cheap"],
+["Run","Reroll","Once per vote, reroll the cards.","Mech","Cheap"],
+["Run","Adrenaline","When a boss dies: +30% speed and fire rate for 10 s.","Mech","Cheap"]
+];
+const KEY='st-legend-100-v1';
+let st={};try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+const list=document.getElementById('list');let group='';
+L.forEach((r,i)=>{const n=i+1;if(r[0]!==group){group=r[0];const h=document.createElement('h2');h.textContent=group;list.appendChild(h)}
+const row=document.createElement('label');row.className='row';const s=st[n]||{};
+row.innerHTML=`<input type="checkbox"><span class="num">${n}</span><span class="body"><span class="name"></span><div class="eff"></div><div class="tags"><span class="tag">${r[3]}</span><span class="tag">${r[4]}</span></div><input class="note" placeholder="Note (optional)"></span>`;
+row.querySelector('.name').textContent=r[1];row.querySelector('.eff').textContent=r[2];
+const cb=row.querySelector('input[type=checkbox]'),note=row.querySelector('.note');
+cb.checked=!!s.on;note.value=s.note||'';row.classList.toggle('on',cb.checked);
+cb.addEventListener('change',()=>{st[n]={...(st[n]||{}),on:cb.checked};row.classList.toggle('on',cb.checked);save();count()});
+note.addEventListener('click',e=>e.preventDefault());
+note.addEventListener('input',()=>{st[n]={...(st[n]||{}),note:note.value};save()});
+row._cb=cb;list.appendChild(row)});
+function count(){const c=Object.keys(st).filter(k=>st[k].on).length;document.getElementById('count').textContent=`${c} of ${L.length} ticked`}
+count();
+document.getElementById('all').onclick=()=>{L.forEach((r,i)=>{st[i+1]={...(st[i+1]||{}),on:true}});save();document.querySelectorAll('.row').forEach(r=>{r._cb.checked=true;r.classList.add('on')});count()};
+document.getElementById('none').onclick=()=>{L.forEach((r,i)=>{st[i+1]={...(st[i+1]||{}),on:false}});save();document.querySelectorAll('.row').forEach(r=>{r._cb.checked=false;r.classList.remove('on')});count()};
+document.getElementById('copy').onclick=async()=>{
+const on=[],notes=[];L.forEach((r,i)=>{const n=i+1,s=st[n]||{};if(s.on)on.push(`${n} ${r[1]}`);if(s.note&&s.note.trim())notes.push(`#${n} ${r[1]}: ${s.note.trim()}`)});
+const txt=`Legendaries (100 list) — approved ${on.length}:\n${on.join('\n')||'(none)'}${notes.length?`\n\nNotes:\n${notes.join('\n')}`:''}`;
+const out=document.getElementById('out'),msg=document.getElementById('msg');out.value=txt;
+try{await navigator.clipboard.writeText(txt);msg.textContent='Copied. Paste it into the chat.';out.style.display='none'}
+catch(e){out.style.display='block';out.focus();out.select();msg.textContent='Copy blocked: the text is selected below, copy it by hand.'}};
+</script>
+</body>
+</html>
