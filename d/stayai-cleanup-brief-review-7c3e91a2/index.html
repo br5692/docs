@@ -45,14 +45,12 @@ th{background:var(--bg)}
 
 <div class="top">
 <b>Summary</b>
-<ul>
-<li>We can build all of this. Her numbers match Salesforce, and each open blank has a proposed default.</li>
-</ul>
-<b>The three questions</b>
+<ul><li>All buildable. Her numbers check out.</li></ul>
+<b>Ask Gina</b>
 <ol>
-<li>When Pre Qualification is retired, do Chili Piper demo bookings and Lasso partner deals still create an opportunity, or do they only set the account to Prequal?</li>
-<li>What counts as a reply or a touch for the automatic follow ups (a logged call, an inbound email, an Outreach reply)?</li>
-<li>Can the top 300 accounts from Play 5 be the first quarter's Target Accounts?</li>
+<li>Demos and Lasso deals: opportunity at Discovery, or Prequal only?<br><i>We recommend: demos still create an opportunity, starting at Discovery. Keeps Chris's demo reports.</i></li>
+<li>What counts as a reply?<br><i>We recommend: inbound email, logged call or meeting.</i></li>
+<li>Play 5 top 300 as first Target Accounts?<br><i>We recommend: yes. Already ranked and worked by AEs.</i></li>
 </ol>
 </div>
 
@@ -61,10 +59,7 @@ th{background:var(--bg)}
 <p>Our market is finite. There are maybe 30,000 brands we could sell to, around 1,000 great ones, and about 500 customers today, of which roughly 100 are great. We've done a lot of enrichment in Salesforce, so we can sort by estimated revenue and see who matters.</p>
 <p>What we can't do is see, at the account level, which brands we're actively hunting, which are warm right now, and which we've given up on. Pipeline review turns into a scroll through noise. I want fewer accounts getting more attention, a weekly answer to "what did we do to break into this one," and follow-up that doesn't live on someone's personal calendar.</p>
 </div>
-<div class="note ctx"><b class="tag">Context</b><ul>
-<li>The enrichment is in place: estimated revenue, Fit score and segment are on every scored prospect account.</li>
-<li>The Play 1 to 5 reports already sort outbound by these fields.</li>
-</ul></div>
+<div class="note ctx"><b class="tag">Context</b><ul><li>Revenue, Fit and segment are on every scored prospect</li><li>Play 1 to 5 reports already use them</li></ul></div>
 
 <h2>Where it stands today</h2>
 <div class="orig"><ul>
@@ -79,17 +74,8 @@ th{background:var(--bg)}
 <p>Customers do rely on Account Status today, so we are not touching how it works for customers.</p>
 <p>Prospects don't rely on it, which is why we can clean it up.</p>
 </div>
-<div class="note ans"><b class="tag">Her numbers, checked in Salesforce on 10/14</b><ul>
-<li>No status: 57,283 (brief 57,134).</li>
-<li>Stale stamp: 644 stamped In Opportunity, 53 with an open opportunity (brief 612 and 55).</li>
-<li>Missed stamp: 61 of 114 (brief 62 of 117).</li>
-<li>Prequal pile: 79 on prospects, 82 across the org (brief about 80 to 84).</li>
-<li>Extra finding: 112 prospect accounts have the status "Customer". We clean these first, because the new validation rule blocks this mix.</li>
-</ul></div>
-<div class="note ctx"><b class="tag">Context</b><ul>
-<li>Three flows set Account Status today: opportunity opened, opportunity closed lost, and contact sequenced. The stale stamps come from gaps in these flows. We fix those gaps; there is no need to start over.</li>
-<li>Segment: since 10/15 an account's segment is never lower than the segment of its largest closed deal that reached Discovery. This makes Target Account eligibility more accurate.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Checked 10/14</b><ul><li>No status: 57,283</li><li>In Opportunity: 644 stamped, 53 real</li><li>Missed stamp: 61 of 114</li><li>Open Pre Qual: 82</li><li>New: 112 prospects marked Customer, clean first</li></ul></div>
+<div class="note ctx"><b class="tag">Context</b><ul><li>3 flows set status today; we fix their gaps</li><li>Segment now floors at largest closed deal (10/15)</li></ul></div>
 
 <h2>Part 1: Account statuses and target lists</h2>
 <h3>Ground rules</h3>
@@ -97,13 +83,8 @@ th{background:var(--bg)}
 <li><b>An opportunity means a qualified deal.</b> It gets created when a deal reaches Discovery. Nothing earlier gets an opportunity.</li>
 <li><b>Account Status carries everything before Discovery</b>, for prospects only. Customer values and prospect values stay separate, and a validation rule should enforce that.</li>
 </ul></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>A validation rule keeps customer status values on customers and prospect status values on prospects.</li>
-</ul></div>
-<div class="note ask"><b class="tag">Question 1</b><ul>
-<li>Today a Chili Piper demo booking creates a Pre Qualification opportunity with a default amount by segment. Lasso partner deals also arrive as Pre Qualification opportunities.</li>
-<li>After the change, do these create an opportunity at Discovery, or do they only set the account to Prequal?</li>
-</ul></div>
+<div class="note ans"><b class="tag">Plan</b><ul><li>Validation rule splits customer and prospect values</li></ul></div>
+<div class="note ask"><b class="tag">Question 1</b><ul><li>Demos and Lasso deals: opportunity at Discovery, or Prequal only?</li><li>We recommend: demos still create one, starting at Discovery</li></ul></div>
 
 <h3>Prospect statuses</h3>
 <div class="orig tbl"><table>
@@ -117,36 +98,18 @@ th{background:var(--bg)}
 <tr><td><b>Cooldown</b></td><td>We tried for a quarter and couldn't break in. This keeps abandoned accounts from falling back into the pile and getting forgotten.</td><td>Revisit date.</td></tr>
 <tr><td><b>Disqualified</b></td><td>Not a fit.</td><td>Stays as it is today.</td></tr>
 </table></div>
-<div class="note ans"><b class="tag">Proposed defaults (all can change later without a rebuild)</b><ul>
-<li>Hot Lead expires after 30 days. Yes to the alert: the owner gets an alert 7 days before expiry and on the day, and leadership gets a copy on expiry.</li>
-<li>Target Account cap: 50 per rep.</li>
-<li>In Opportunity: automation sets it when an opportunity opens and clears it when the last one closes.</li>
-<li>Nurture and Cooldown: the revisit date creates a task on that date.</li>
-</ul></div>
-<div class="note ctx"><b class="tag">Context</b><ul>
-<li>Hot Lead ads and contacts: Gina's LinkedIn lists (10/12) were two lists of 500 contacts each. If she wants that outreach tracked in Salesforce, it needs its own field, separate from the play tag.</li>
-<li>The play reports hide contacts with Email Opt Out or Do Not Contact checked (since 10/14). Ad and task lists should skip those contacts too.</li>
-</ul></div>
-<div class="note ask"><b class="tag">Question 3</b><ul>
-<li>Play 5 is the top 100 accounts per segment that use a competitor (300 accounts), and AEs already work it. Can these be the first quarter's Target Accounts?</li>
-</ul></div>
+<div class="note ans"><b class="tag">Defaults</b><ul><li>Hot Lead: 30 days, alert 7 days before</li><li>Target cap: 50 per rep</li><li>In Opportunity: automated</li><li>Nurture/Cooldown: revisit date creates task</li></ul></div>
+<div class="note ctx"><b class="tag">Context</b><ul><li>Skip Email Opt Out and Do Not Contact</li></ul></div>
+<div class="note ask"><b class="tag">Question 3</b><ul><li>Play 5 top 300 = first quarter's Target Accounts?</li><li>We recommend: yes, already ranked and worked</li></ul></div>
 
 <h3>Opportunity stages</h3>
 <div class="orig"><p>New opportunities start at Discovery, then Solution Validation, Proposal and Verbal. Pre Qualification is retired for new opportunities but stays in the picklist history so past win rates still read correctly.</p></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>Pre Qualification stays in the picklist and history. A rule stops new opportunities from starting there.</li>
-<li>The Chili Piper demo flow needs a rework to match. This depends on Question 1.</li>
-</ul></div>
-<div class="note ctx"><b class="tag">Context</b><ul>
-<li>Lasso default amounts: an automation that fills default amounts on new Lasso Pre Qual opportunities is built and on hold. It is not needed if Pre Qual is retired.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Conflict</b><ul><li>Chili Piper creates Pre Qual opps today</li><li>Chris's Demo Date, Demo Status, SQO reports run on them</li><li>Pre Qual default amounts become unused</li></ul></div>
+<div class="note ctx"><b class="tag">Context</b><ul><li>Lasso amount automation on hold until this is decided</li><li>Lasso deals: ask Nalu</li><li>We recommend: Chris signs off before the Chili Piper change</li></ul></div>
 
 <h3>Who fixes the existing Pre Qualification opportunities</h3>
 <div class="orig"><p>The reps who own them. I don't want a script moving them. Each owner goes through their own open Pre Qualification opportunities and, based on what they know about the deal, either advances it to Discovery or closes it out and sets the right account status. Please build a view each rep can use to see only their own, and a clear cleanup deadline [date to set]. There are about 84 open Pre Qualification opportunities across the org.</p></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>A "My Open Pre Qual" view for each rep. Count today: 82.</li>
-<li>Proposed deadline: 2 weeks after the views go live. Leadership gets a report of what is left; no script closes them.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Plan</b><ul><li>My Open Pre Qual view per rep (82)</li><li>Deadline: 2 weeks after views go live</li><li>Leftovers reported, not auto closed</li></ul></div>
 
 <h3>What reps should be able to see</h3>
 <div class="orig"><ul>
@@ -156,13 +119,8 @@ th{background:var(--bg)}
 <li>My Open Opportunities</li>
 </ul>
 <p>Eligibility for Target Account should come from the existing segment stamp and our revenue estimates, so the list stays on brands worth hunting. Tier stays a customer support tier and isn't used for this. Which segments qualify: [to confirm].</p></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>We build all four views, with the day counts.</li>
-<li>Eligibility uses segment and estimated revenue. Tier is not used.</li>
-</ul></div>
-<div class="note ask"><b class="tag">Confirm if time allows</b><ul>
-<li>Which segments qualify for Target Account? Our default: all three, ranked by Fit score.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Plan</b><ul><li>All 4 views, with day counts</li><li>Eligibility: segment + revenue, no Tier</li></ul></div>
+<div class="note ask"><b class="tag">If time</b><ul><li>Which segments qualify?</li><li>We recommend: all 3, ranked by Fit</li></ul></div>
 
 <h2>Part 2: Tasks and follow-up</h2>
 <div class="orig"><p>Anything that isn't fully in Discovery is not getting followed up on. Accounts sit in Prequal forever, and reps put reminders on their calendars three months out and miss them. I want a task in Salesforce for every account we're working, and I want reps held to breaking into a set number of accounts from their target list.</p></div>
@@ -179,15 +137,8 @@ th{background:var(--bg)}
 <tr><td><b>Many touches, no reply</b></td><td>After a set number of automatic follow-ups, the owner is prompted to decide: keep going, Nurture, or Cooldown. [Number to set]</td></tr>
 </table>
 <p>Tasks are the system of record for follow-up. Personal calendar reminders don't count.</p></div>
-<div class="note ans"><b class="tag">Proposed defaults</b><ul>
-<li>Target Account first outreach task: due 3 business days after the status is set.</li>
-<li>Prequal goes quiet: we use her thresholds as written (14 days without activity, 30 days without a demo).</li>
-<li>Many touches, no reply: the owner decides after 4 automatic follow ups.</li>
-</ul></div>
-<div class="note ask"><b class="tag">Question 2</b><ul>
-<li>What counts as a reply or a touch: a logged call, an inbound email, an Outreach reply, or all of these?</li>
-<li>This decides when the weekly follow up stops creating tasks.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Defaults</b><ul><li>Target first task: 3 business days</li><li>Prequal quiet: her 14 / 30 days</li><li>Owner decides after 4 follow ups</li></ul></div>
+<div class="note ask"><b class="tag">Question 2</b><ul><li>What counts as a reply?</li><li>Outreach logs emails and calls as Tasks</li><li>We recommend: inbound email, logged call or meeting = reply</li></ul></div>
 
 <h3>Weekly pipeline call (need to separate this from the open opps call that we call pipeline today)</h3>
 <div class="orig"><p>One dashboard by rep, so the call is about what we did to break in:</p><ul>
@@ -196,21 +147,14 @@ th{background:var(--bg)}
 <li>Overdue tasks.</li>
 <li>Accounts that moved from Target Account to Prequal this quarter.</li>
 </ul></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>One new dashboard by rep with these four parts. It is separate from the current open opportunities pipeline dashboard.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Plan</b><ul><li>New rep dashboard, separate from opps pipeline</li></ul></div>
 
 <h3>Accountability</h3>
 <div class="orig"><p>Each rep carries a target list and a quarterly goal for how many of those accounts they break into. I'm defining "broken into" as a demo booked, which is when the account moves to Prequal. The number per rep is [to confirm]. At quarter end every target gets a decision, as above, so the list never turns into another dumping ground.</p></div>
-<div class="note ans"><b class="tag">Plan</b><ul>
-<li>"Broken into" = a move from Target Account to Prequal. The dashboard counts it per rep.</li>
-<li>The goal per rep is a number on the dashboard. She can set or change it at any time.</li>
-</ul></div>
+<div class="note ans"><b class="tag">Plan</b><ul><li>Broken into = Target to Prequal</li><li>Goal per rep set on dashboard</li></ul></div>
 
 <h2>Heads up</h2>
-<div class="note ctx"><b class="tag">No decision needed</b><ul>
-<li>SE Cases: SEs often join before an opportunity exists. SE Cases link to the account first, and to the opportunity when one exists.</li>
-</ul></div>
+<div class="note ctx"><b class="tag">No decision needed</b><ul><li>SE Cases link to account first</li></ul></div>
 </main>
 </body>
 </html>
