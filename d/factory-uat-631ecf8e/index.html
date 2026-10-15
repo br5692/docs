@@ -58,13 +58,13 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <h2>1. Partner applications</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">1.1</span>A company applies</h3><ol>
 <li>Open the <a href="https://factory-partner-portal.pages.dev" target="_blank">partner portal</a> and click <b>Apply to become a partner</b>.</li>
-<li>Company name <code>[TEST] JD Alpha</code>, website <code>factory.ai</code>, Partner Type <b>Global System Integrator (GSI)</b>, your name, email <code>you+uat1@factory.ai</code>. Submit.</li>
+<li>Company name <code>[TEST] JD Alpha</code>, website <code>alpha-jd.example.com</code>, Partner Type <b>Global System Integrator (GSI)</b>, your first and last name, email <code>you+uat1@factory.ai</code>. Submit.</li>
 <li>Open the confirmation email and click the link.</li>
 <li>Apply again with the same email address.</li></ol>
 <div class="pass"><b>Passes when</b> the link confirms the application, it appears in Partner Review under Applications &gt; Pending, and the second application does not create a duplicate.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">1.2</span>Three more applications</h3><ol>
-<li>Apply and confirm three more companies the same way: <code>[TEST] JD Bravo</code> (uat2, Partner Type GSI), <code>[TEST] JD Charlie</code> (uat3) and <code>[TEST] JD Delta</code> (uat4). Use any example website, such as <code>bravo-jd.example.com</code>.</li></ol>
+<li>Apply and confirm three more companies the same way: <code>[TEST] JD Bravo</code> (uat2, Partner Type GSI), <code>[TEST] JD Charlie</code> (uat3, any Partner Type) and <code>[TEST] JD Delta</code> (uat4, any Partner Type). Give each its own example website, such as <code>bravo-jd.example.com</code>.</li></ol>
 <div class="pass"><b>Passes when</b> all three appear under Applications &gt; Pending.</div></div>
 
 <h2>2. Staff decisions on applications</h2>
@@ -72,15 +72,14 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <li>In Partner Review, approve Alpha. Open the email preview, then confirm.</li>
 <li>In the staff portal, open <b>Partner Review ↗</b> and approve Bravo the same way.</li>
 <li>Deny Charlie with a reason. Waitlist Delta.</li></ol>
-<div class="pass"><b>Passes when</b> each decision shows the email before it sends, uat1 and uat2 get an approval email, uat3 gets the denial with your reason, and uat4 gets no email.</div></div>
+<div class="pass"><b>Passes when</b> each decision shows the email before it sends, uat1 and uat2 get an approval email, uat3 gets the denial email (the reason you type is saved on the record, not sent), and uat4 gets no email.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.2</span>Invite a partner</h3><ol>
-<li>In Partner Review &gt; Applications, click <b>Invite partner</b>. Account <code>[TEST] JD Echo</code>, contact <code>you+uat5@factory.ai</code>. Leave <b>Send the contract now</b> unticked. Invite.</li></ol>
+<li>In Partner Review &gt; Applications, click <b>Invite partner</b>. Account <code>[TEST] JD Echo</code>, any example website, your first and last name, contact <code>you+uat5@factory.ai</code> and any Partner Type. Leave <b>Send the contract now</b> unticked. Invite.</li></ol>
 <div class="pass"><b>Passes when</b> uat5 gets the invitation email and Echo shows as approved.</div></div>
 
-<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.3</span>A colleague is approved automatically</h3><ol>
-<li>In a private window, apply with your own plain work address, <code>you@factory.ai</code> (no tag), company name <code>[TEST] JD Alpha</code> and website <code>factory.ai</code>. Confirm the email.</li></ol>
-<div class="pass"><b>Passes when</b> you are approved without a staff decision, because your email domain matches Alpha's website. You use this address again in 5.1.</div></div>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.3</span>A colleague is approved automatically</h3><p class="muted">One tester only. If someone on your team has already done 2.3, skip it and the email reply in 5.1.</p><ol><li>Apply as <code>you+uat6@factory.ai</code>: company <code>[TEST] JD Foxtrot</code>, website <code>factory.ai</code> (your email domain), any Partner Type. Confirm the email.</li><li>In Partner Review, approve Foxtrot.</li><li>In a private window, apply with your plain work address, <code>you@factory.ai</code> (no tag), company <code>[TEST] JD Foxtrot</code> and website <code>factory.ai</code>. Confirm the email.</li></ol>
+<div class="pass"><b>Passes when</b> your plain address is approved without a staff decision, because its domain matches Foxtrot's website. You use this address again in 5.1.</div></div>
 
 <h2>3. Partner agreement and sign-in</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.1</span>Sign the agreement</h3><ol>
@@ -92,27 +91,24 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.2</span>Links and sign out</h3><ol>
 <li>Click the same sign-in link from 3.1 again.</li>
 <li>Click <b>Sign out</b>, then open <code>https://factory-partner-portal.pages.dev/dashboard</code>.</li>
-<li>For Bravo, open the Account in Salesforce and click <b>Mark Contract Signed</b>, so Bravo can register deals too.</li></ol>
+<li>For Bravo, open the Account in Salesforce, click <b>▼</b> (Show more actions) at the top right, then <b>Mark Contract Signed</b>, then <b>Save</b>. Bravo can now register deals too.</li></ol>
 <div class="pass"><b>Passes when</b> the used link is refused and the dashboard asks you to sign in again.</div></div>
 
 <h2>4. Deal registration</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">4.1</span>Register a deal</h3><ol>
 <li>Sign in as uat1. Click <b>Register a deal</b>.</li>
-<li>Customer <code>[TEST] JD Harbor Coffee</code>, domain <code>harbor-jd.example.com</code>, a contact name and email, deal name <code>[TEST] JD Harbor rollout</code>, value <code>50000</code>, a close date and a role. Submit.</li>
+<li>Customer <code>[TEST] JD Harbor Coffee</code>, domain <code>harbor-jd.example.com</code>, a contact name and email, deal name <code>[TEST] JD Harbor rollout</code>, value <code>50000</code>, a close date, a short description and a role. Submit.</li>
 <li>Register a second deal, <code>[TEST] JD Cedar pilot</code>, for a new customer.</li></ol>
 <div class="pass"><b>Passes when</b> both deals show as Pending, a confirmation email arrives for each, and both appear in Partner Review &gt; Deals &gt; Pending.</div></div>
 
-<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">4.2</span>Duplicates and conflicts</h3><ol>
-<li>As uat1, register Harbor Coffee again with the same value.</li>
-<li>Sign in as uat2 (Bravo) in a private window and register Harbor Coffee with any value.</li>
-<li>In Partner Review &gt; Deals, find Bravo's Harbor Coffee deal.</li></ol>
-<div class="pass"><b>Passes when</b> the duplicate from uat1 is refused, and Bravo's deal shows a conflict warning and cannot be approved.</div></div>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">4.2</span>A duplicate is refused</h3><ol><li>As uat1, register Harbor Coffee again with the same value.</li></ol>
+<div class="pass"><b>Passes when</b> the portal refuses it: "You already have an open registration for this customer at this value."</div></div>
 
 <h2>5. Staff decisions on deals</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.1</span>Ask for more information</h3><ol>
 <li>In the staff portal, under <b>Most recent</b>, click <b>Needs info</b> on Cedar pilot. Type a question and click <b>Ask</b>.</li>
 <li>As uat1, open the dashboard. Reply to the request in the portal.</li>
-<li>Sign in as <code>you@factory.ai</code> (the colleague from 2.3) and register <code>[TEST] JD Willow order</code>. In the staff portal, click <b>Needs info</b> on it and ask a question.</li>
+<li>If you did 2.3: sign in as <code>you@factory.ai</code> (the colleague from 2.3) and register <code>[TEST] JD Willow order</code>. In the staff portal, click <b>Needs info</b> on it and ask a question.</li>
 <li>Reply to that email from your inbox. Replies by email need the plain address, because your inbox sends from it.</li></ol>
 <div class="pass"><b>Passes when</b> each partner gets the question by email and in the To do list, each reply returns its deal to Pending, and both replies show in the deal history in Partner Review and in the portal.</div></div>
 
@@ -120,6 +116,9 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <li>Approve Harbor rollout (uat1).</li>
 <li>Deny Cedar pilot with a reason.</li></ol>
 <div class="pass"><b>Passes when</b> approval creates an Opportunity on the Harbor Coffee Account linked to the deal, uat1 gets the approval email, and uat1 sees Cedar pilot as Denied with your reason.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.3</span>A conflict between partners</h3><ol><li>In a private window, sign in as <code>you+uat2@factory.ai</code> (Bravo, the same Partner Type as Alpha).</li><li>Register Harbor Coffee with the same deal name, <code>[TEST] JD Harbor rollout</code>, and any value.</li><li>In Partner Review &gt; Deals, find Bravo's Harbor rollout.</li></ol>
+<div class="pass"><b>Passes when</b> the deal shows "Another partner of the same type is already approved on this deal." and Approve is disabled.</div></div>
 
 <h2>6. Partner dashboard</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">6.1</span>Tiles and list</h3><ol>
@@ -130,16 +129,16 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <h2>7. Staff portal</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">7.1</span>Most recent, Program health and Partner Review</h3><ol>
 <li>Open the <a href="https://factory-partner-portal.pages.dev/staff" target="_blank">staff portal</a> and look at <b>Most recent</b>.</li>
-<li>Open <b>Program health</b>. Hover a chart title.</li>
+<li>Open <b>Program health</b>. Hover a revenue chart title, such as <b>Attributed revenue by quarter</b>.</li>
 <li>Open <b>Partner Review ↗</b>. Search for your initials. Then click <b>← Back to staff home</b>.</li></ol>
-<div class="pass"><b>Passes when</b> your test deals and applications appear, Program health shows totals and charts including revenue by month, quarter and year, and Partner Review in the portal matches the app in Salesforce.</div></div>
+<div class="pass"><b>Passes when</b> your test deals that are still waiting appear in Most recent, Program health shows totals and charts including revenue by month, quarter and year, and Partner Review in the portal matches the app in Salesforce.</div></div>
 
 <h2>8. Droid</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.1</span>Staff in Droid</h3><ol>
 <li>Add the portal to Droid:<pre>droid mcp add factory-partner-portal https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
-<li>Ask Droid "who am I in the partner portal?". Sign in to the Factory sandbox in the browser tab that opens and click <b>Allow</b>.</li>
+<li>Ask Droid "who am I in the partner portal?". In the browser tab that opens, under <b>Factory staff</b> click <b>Sign in with Salesforce</b>, sign in to the Factory sandbox, then click <b>Allow</b>.</li>
 <li>Ask Droid to show the most recent deals, then to ask for more information on one of your test deals.</li></ol>
-<div class="pass"><b>Passes when</b> Droid shows your name, shows a preview before the request is sent, and sends it only after you confirm. The partner gets the email.</div></div>
+<div class="pass"><b>Passes when</b> Droid shows your staff sign-in (staff and your Salesforce user Id), shows a preview before the request is sent, and sends it only after you confirm. The partner gets the email.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.2</span>A partner in Droid</h3><ol>
 <li>Add the portal a second time under another name, so the partner sign-in is separate from your staff one:<pre>droid mcp add factory-portal-partner https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
