@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Account Status Guide</title>
+    <style>
+      :root {
+        --bg: #fbfaf7;
+        --fg: #1d1d1b;
+        --mu: #6b6a65;
+        --ln: #e3e0d7;
+        --card: #fff;
+        --q: #f1efe8;
+        --acc: #2d5b9a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #17181a;
+          --fg: #e9e7e1;
+          --mu: #a09e97;
+          --ln: #2e3034;
+          --card: #1f2023;
+          --q: #25262a;
+          --acc: #8fb0e0;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #17181a;
+        --fg: #e9e7e1;
+        --mu: #a09e97;
+        --ln: #2e3034;
+        --card: #1f2023;
+        --q: #25262a;
+        --acc: #8fb0e0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          15px/1.55 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 28px 16px 70px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.6rem;
+      }
+      h2 {
+        font-size: 1.15rem;
+        margin: 32px 0 8px;
+        padding-top: 12px;
+        border-top: 1px solid var(--ln);
+      }
+      .sub {
+        color: var(--mu);
+        margin: 4px 0 16px;
+      }
+      .brief {
+        background: var(--q);
+        border-left: 3px solid var(--acc);
+        padding: 6px 10px;
+        margin: 8px 0;
+        font-size: 0.9rem;
+      }
+      .brief b {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--mu);
+        display: block;
+      }
+      .where {
+        font-size: 0.88rem;
+        color: var(--mu);
+      }
+      .where b {
+        color: var(--fg);
+      }
+      ul,
+      ol {
+        margin: 6px 0;
+        padding-left: 22px;
+      }
+      .tbl {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background: var(--card);
+        font-size: 0.92rem;
+      }
+      th,
+      td {
+        border: 1px solid var(--ln);
+        padding: 6px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--mu);
+      }
+      .toc {
+        background: var(--card);
+        border: 1px solid var(--ln);
+        border-radius: 10px;
+        padding: 10px 16px;
+      }
+      .toc a {
+        color: var(--acc);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Account Status Guide</h1>
+      <p class="sub">
+        What's new in Salesforce for working prospect accounts, and how to use
+        it. Based on the Salesforce Cleanup Brief and the 10/15 review call.
+      </p>
+
+      <div class="toc">
+        <b>Contents</b>
+        <ol>
+          <li><a href="#glance">At a glance</a></li>
+          <li><a href="#statuses">Account statuses</a></li>
+          <li><a href="#hot">Hot Leads</a></li>
+          <li><a href="#target">Target Accounts</a></li>
+          <li><a href="#working">Working, Nurture and Cooldown</a></li>
+          <li><a href="#dq">Disqualifying an account</a></li>
+          <li><a href="#opps">Demos and lost deals</a></li>
+          <li><a href="#renewal">Competitor contract end date</a></li>
+          <li>
+            <a href="#views">Your views, reports and the weekly dashboard</a>
+          </li>
+        </ol>
+      </div>
+
+      <h2 id="glance">1. At a glance</h2>
+      <ul>
+        <li>
+          Every prospect account has a clear status: Unworked, Hot Lead, Target
+          Account, Working, In Opportunity, Nurture, Cooldown, Closed Lost or
+          Disqualified.
+        </li>
+        <li>
+          Salesforce sets Working, In Opportunity, Closed Lost and Cooldown for
+          you. You set Hot Lead, Target Account, Nurture and Disqualified.
+        </li>
+        <li>
+          Follow ups are tasks in Salesforce, created for you at the right
+          moments.
+        </li>
+        <li>
+          Your lists ("My Hot Leads", "My Target Accounts" and more) and a
+          weekly dashboard by rep show what needs attention.
+        </li>
+      </ul>
+      <div class="brief">
+        <b>From the brief</b>"I want fewer accounts getting more attention, a
+        weekly answer to 'what did we do to break into this one,' and follow-up
+        that doesn't live on someone's personal calendar."
+      </div>
+
+      <h2 id="statuses">2. Account statuses</h2>
+      <p class="where">
+        <b>Where:</b> the status bar across the top of a prospect account page.
+        Click a step to see what it means and the fields to fill. The same
+        fields sit in the new <b>Account Status Details</b> section of the
+        account page.
+      </p>
+      <div class="tbl">
+        <table>
+          <tr>
+            <th>Status</th>
+            <th>What it means</th>
+            <th>Who sets it</th>
+          </tr>
+          <tr>
+            <td><b>Unworked</b></td>
+            <td>
+              Not being worked yet. The default, and what "New" used to be
+              called.
+            </td>
+            <td>Default</td>
+          </tr>
+          <tr>
+            <td><b>Hot Lead</b></td>
+            <td>
+              We heard they might be shopping, or someone can get us in the
+              door.
+            </td>
+            <td>You</td>
+          </tr>
+          <tr>
+            <td><b>Target Account</b></td>
+            <td>A brand we decided to hunt this quarter.</td>
+            <td>You</td>
+          </tr>
+          <tr>
+            <td><b>Working</b></td>
+            <td>A contact is in an active Outreach sequence.</td>
+            <td>Salesforce</td>
+          </tr>
+          <tr>
+            <td><b>In Opportunity</b></td>
+            <td>An opportunity is open.</td>
+            <td>Salesforce</td>
+          </tr>
+          <tr>
+            <td><b>Nurture</b></td>
+            <td>They said not now.</td>
+            <td>You</td>
+          </tr>
+          <tr>
+            <td><b>Cooldown</b></td>
+            <td>
+              We worked it and couldn't break in. Parked with a revisit date.
+            </td>
+            <td>Salesforce, when a sequence ends</td>
+          </tr>
+          <tr>
+            <td><b>Closed Lost</b></td>
+            <td>The last deal was lost.</td>
+            <td>Salesforce</td>
+          </tr>
+          <tr>
+            <td><b>Disqualified</b></td>
+            <td>Not a fit.</td>
+            <td>You, or Salesforce when a deal is disqualified</td>
+          </tr>
+        </table>
+      </div>
+      <ul>
+        <li>
+          An open opportunity always shows In Opportunity, whatever the status
+          was before.
+        </li>
+        <li>
+          Hot Lead, Target Account, Nurture and Disqualified stay as you set
+          them, even while a contact is in a sequence.
+        </li>
+        <li>
+          Customer accounts work as they do today. Nothing changed for
+          customers.
+        </li>
+      </ul>
+      <div class="brief">
+        <b>From the brief</b>"In Opportunity: Set by automation when an
+        opportunity opens and cleared when it closes. Nobody sets this by hand."
+      </div>
+
+      <h2 id="hot">3. Hot Leads</h2>
+      <p class="where">
+        <b>Where:</b> the status bar on the account, then
+        <b>Hot Lead Source</b> in Account Status Details.
+      </p>
+      <ol>
+        <li>Set the status to <b>Hot Lead</b>.</li>
+        <li>
+          Pick a <b>Hot Lead Source</b> (Dinner or event, Partner, Referral,
+          Customer or market intel, Inbound signal, Other). Salesforce won't
+          save the Hot Lead without one.
+        </li>
+        <li>You get a task, "Hot Lead: make the first move", due in 2 days.</li>
+      </ol>
+      <ul>
+        <li>
+          A Hot Lead has a 60 day window. <b>Hot Lead Days Left</b> counts it
+          down.
+        </li>
+        <li>
+          At 7 days left you get a reminder task. At 60 days you get a task to
+          move it to Target Account or Nurture, or into a demo.
+        </li>
+        <li>
+          Hot Leads and Nurture accounts feed the
+          <b>Ad Audience - Hot Leads and Nurture</b> report for LinkedIn ads and
+          event invites.
+        </li>
+      </ul>
+      <div class="brief">
+        <b>From the call (Gina)</b>"for the next sixty days, if somebody is a
+        hot lead, we should be hammering them, knowing that they're in market
+        shopping."
+      </div>
+
+      <h2 id="target">4. Target Accounts</h2>
+      <p class="where">
+        <b>Where:</b> the status bar on the account. The dates show in Account
+        Status Details.
+      </p>
+      <ol>
+        <li>Set the status to <b>Target Account</b>.</li>
+        <li>
+          Salesforce fills <b>Target Start Date</b> (today) and
+          <b>Target End Date</b> (end of the quarter).
+        </li>
+        <li>
+          You get a task, "Target Account: first outreach", due in 3 business
+          days.
+        </li>
+      </ol>
+      <ul>
+        <li><b>Target Days Left</b> counts down to quarter end.</li>
+        <li>
+          On the end date you get a task to decide: book a demo, keep it for
+          another quarter, or move it to Cooldown.
+        </li>
+        <li>
+          Target Accounts with no activity in 14 days show on the weekly
+          dashboard.
+        </li>
+      </ul>
+      <div class="brief">
+        <b>From the call (Gina)</b>"Target accounts need to be worked ... every
+        target account should have a task to it."
+      </div>
+
+      <h2 id="working">5. Working, Nurture and Cooldown</h2>
+      <ul>
+        <li>
+          <b>Working</b> is set when a contact on the account starts an Outreach
+          sequence. If the account has no open task, you get "Working: next
+          follow up" (3 business days).
+        </li>
+        <li>
+          When the sequence ends, the account moves to <b>Cooldown</b> with a
+          <b>Revisit Date</b> 90 days out and a revisit task.
+        </li>
+        <li>
+          <b>Nurture:</b> pick a Nurture Reason and set a <b>Revisit Date</b>.
+          You get a task on that date.
+        </li>
+        <li>You can change any Revisit Date. The task follows the new date.</li>
+      </ul>
+      <p class="where">
+        <b>Where:</b> Revisit Date is in Account Status Details and on the
+        Nurture and Cooldown steps of the status bar.
+      </p>
+      <div class="brief">
+        <b>From the brief</b>"The revisit date creates a task on that date, so
+        nobody has to remember it."
+      </div>
+
+      <h2 id="dq">6. Disqualifying an account</h2>
+      <p class="where">
+        <b>Where:</b> the status bar, then <b>Disqualified Reason</b> in Account
+        Status Details.
+      </p>
+      <ul>
+        <li>
+          Set the status to <b>Disqualified</b> and pick a reason: Not ICP, Not
+          a good fit, Not on Shopify, Direct to retail or Amazon, No
+          subscription potential, Not decision maker, or Other.
+        </li>
+        <li>
+          You can disqualify an account without ever opening an opportunity.
+        </li>
+        <li>
+          When a deal is disqualified, Salesforce sets the account to
+          Disqualified with the reason "Disqualified on opportunity".
+        </li>
+      </ul>
+
+      <h2 id="opps">7. Demos and lost deals</h2>
+      <ul>
+        <li>
+          <b>Opportunities start when a demo is booked.</b> Before that, use Hot
+          Lead or Target Account and a task, not an opportunity.
+        </li>
+        <li>
+          <b>Demo booked:</b> you get "Send demo follow-up email", due on the
+          demo day. If the demo moves, the task moves with it.
+        </li>
+        <li>
+          <b>Mark that task complete</b> once you've sent the email. You then
+          get "Follow up if no reply to demo follow-up", due 2 days later.
+        </li>
+        <li>
+          <b>Closing a deal as lost:</b> fill <b>Lost Follow Up Date</b> with
+          the date they asked you to come back (for example "August"). You get a
+          follow up task on that date, or in 90 days if you leave it blank.
+        </li>
+      </ul>
+      <p class="where">
+        <b>Where:</b> Lost Follow Up Date is on the opportunity page, next to
+        Closed Lost Reason.
+      </p>
+      <div class="brief">
+        <b>From the call (Gina)</b>"they want us to follow up in August ... And
+        then I'll be like, do we follow up in August? And they're like, oh, I
+        forgot."
+      </div>
+
+      <h2 id="renewal">8. Competitor contract end date</h2>
+      <p class="where">
+        <b>Where:</b> <b>Competitor Contract End Date</b> in Account Status
+        Details.
+      </p>
+      <ul>
+        <li>
+          When a prospect tells you when their contract with their current
+          provider ends, enter it here.
+        </li>
+        <li>
+          The date always shows the next renewal. Once it passes, it moves
+          forward a year on its own.
+        </li>
+        <li>
+          3 months before that date, the account owner gets a
+          <b>Competitor Renewal</b> task to start outreach.
+        </li>
+        <li>
+          Two reports use it: <b>Competitor Renewals Coming Up</b> (the renewal
+          tasks) and <b>Ad Audience - Renewals Next 3 Months</b> (for ads).
+        </li>
+        <li>This is separate from the customer Contract End Date.</li>
+      </ul>
+      <div class="brief">
+        <b>From the call (Gina)</b>"I want to be able to just to know, like,
+        July is the right time to talk to them."
+      </div>
+
+      <h2 id="views">9. Your views, reports and the weekly dashboard</h2>
+      <p class="where">
+        <b>Where:</b> the Accounts or Opportunities tab, then the list view menu
+        at the top left.
+      </p>
+      <div class="tbl">
+        <table>
+          <tr>
+            <th>View</th>
+            <th>Shows</th>
+          </tr>
+          <tr>
+            <td>My Hot Leads</td>
+            <td>Your Hot Leads, with source, days open and days left</td>
+          </tr>
+          <tr>
+            <td>My Target Accounts</td>
+            <td>Your targets, with days left in the quarter</td>
+          </tr>
+          <tr>
+            <td>My Working Accounts</td>
+            <td>Your accounts in a sequence</td>
+          </tr>
+          <tr>
+            <td>My Nurture and Cooldown</td>
+            <td>Accounts to revisit, with the revisit date</td>
+          </tr>
+          <tr>
+            <td>My Open Opportunities</td>
+            <td>All your open deals</td>
+          </tr>
+          <tr>
+            <td>My Open Pre Qual (cleanup)</td>
+            <td>Your Pre Qualification deals, for the cleanup</td>
+          </tr>
+        </table>
+      </div>
+      <ul>
+        <li><b>Today's tasks:</b> the Tasks tab, "Today's Tasks" view.</li>
+        <li><b>Reports:</b> the Reports tab, folder <b>Cleanup Brief</b>.</li>
+        <li>
+          <b>Weekly dashboard:</b> the Dashboards tab,
+          <b>Weekly - Breaking In by Rep</b>. It shows Hot Leads, Target
+          Accounts, quiet targets and overdue tasks for each rep. Use it for the
+          weekly pipeline call, separate from the open opportunity review.
+        </li>
+      </ul>
+      <div class="brief">
+        <b>From the brief</b>"One dashboard by rep, so the call is about what we
+        did to break in."
+      </div>
+
+      <h2>Coming next</h2>
+      <ul>
+        <li>
+          A Prequal status and its view, once we confirm how it works next to a
+          Pre Qual opportunity.
+        </li>
+        <li>A rule that every open opportunity has an open task.</li>
+        <li>Resetting stale statuses to Unworked, after review.</li>
+      </ul>
+    </main>
+  </body>
+</html>
