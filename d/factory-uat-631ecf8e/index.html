@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Partner Portal UAT</title>
+<style>
+:root{--bg:#faf9f5;--card:#fff;--ink:#1f1e1d;--muted:#5c5855;--line:#e3e0dc;--accent:#ee6018;--accent-ink:#b0430d;--ok:#0d7a6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b1a;--card:#262422;--ink:#f1efec;--muted:#b3ada7;--line:#3a3734;--accent:#ff7a33;--accent-ink:#ff9a62;--ok:#3fbfa9}}
+:root[data-theme="dark"]{--bg:#1c1b1a;--card:#262422;--ink:#f1efec;--muted:#b3ada7;--line:#3a3734;--accent:#ff7a33;--accent-ink:#ff9a62;--ok:#3fbfa9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:40px 16px 80px}
+.eyebrow{font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+h1{font:600 34px/1.15 Georgia,"Iowan Old Style",serif;margin:10px 0 8px}
+h2{font:600 22px/1.25 Georgia,"Iowan Old Style",serif;margin:44px 0 12px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:16px;margin:0 0 6px}
+p{margin:8px 0}.muted{color:var(--muted)}
+code{font:14px ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
+pre{font:13.5px/1.5 ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+a{color:var(--accent-ink)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.test{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
+.test ol{margin:6px 0 8px 20px;padding:0}.test li{margin:3px 0}
+.pass{border-top:1px dashed var(--line);margin-top:8px;padding-top:8px}
+.pass b{color:var(--ok)}
+.id{font:600 13px ui-monospace,Menlo,monospace;color:var(--accent-ink);margin-right:6px}
+label.done{float:right;font-size:13px;color:var(--muted);cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:15px}td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}td:first-child{white-space:nowrap;font-weight:600;width:1%}
+ul{padding-left:20px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+button.theme{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer}
+footer{margin-top:48px;color:var(--muted);font-size:13px}
+</style></head><body><main>
+<div class="top"><div class="eyebrow">Domestique × Factory.ai</div><button class="theme" onclick="toggleTheme()">Light / dark</button></div>
+<h1>Partner Portal UAT</h1>
+<p class="muted">The week of October 19. Work through the tests in order, in your own time. Each test lists its steps and what a pass looks like. UAT passes when every test passes and no launch-blocking issue is open.</p>
+
+<h2>Before you start</h2>
+<div class="box"><table>
+<tr><td>Partner portal</td><td><a href="https://factory-partner-portal.pages.dev">factory-partner-portal.pages.dev</a></td></tr>
+<tr><td>Staff portal</td><td>On the portal's sign-in page, click <b>Factory staff? Sign in here</b> and sign in to the Factory sandbox.</td></tr>
+<tr><td>Partner Review</td><td>The Partner Review app in the Factory sandbox, or <b>Partner Review ↗</b> in the staff portal.</td></tr>
+<tr><td>Your emails</td><td>Use your own work address with a tag for each test partner: <code>you+uat1@factory.ai</code>, <code>you+uat2@factory.ai</code> and so on. Every email arrives in your own inbox.</td></tr>
+<tr><td>Names</td><td>Start every company and deal name with <code>[TEST]</code> and your initials, for example <code>[TEST] JD Alpha</code>.</td></tr>
+<tr><td>First load</td><td>The sandbox service can take up to a minute to wake. If a page is slow the first time, wait and reload.</td></tr>
+</table></div>
+
+<h3>Reporting a problem</h3>
+<p>Post in the project Slack channel with: your email, the time it happened, the page, the steps you took, what you expected and what you saw, and a screenshot if you have one. We reply in the same thread.</p>
+<p class="muted"><b>Launch blocking</b> means a partner or staff task cannot be completed. Everything else is listed with an owner and a fix date.</p>
+
+<h2>1. Partner applications</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">1.1</span>A company applies</h3><ol>
+<li>On the partner portal, click <b>Apply to become a partner</b>.</li>
+<li>Company name <code>[TEST] JD Alpha</code>, website <code>factory.ai</code>, Partner Type <b>Global System Integrator (GSI)</b>, your name, email <code>you+uat1@factory.ai</code>. Submit.</li>
+<li>Open the confirmation email and click the link.</li>
+<li>Apply again with the same email address.</li></ol>
+<div class="pass"><b>Passes when</b> the link confirms the application, it appears in Partner Review under Applications &gt; Pending, and the second application does not create a duplicate.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">1.2</span>Three more applications</h3><ol>
+<li>Apply and confirm three more companies the same way: <code>[TEST] JD Bravo</code> (uat2, Partner Type GSI), <code>[TEST] JD Charlie</code> (uat3) and <code>[TEST] JD Delta</code> (uat4). Use any example website, such as <code>bravo-jd.example.com</code>.</li></ol>
+<div class="pass"><b>Passes when</b> all three appear under Applications &gt; Pending.</div></div>
+
+<h2>2. Staff decisions on applications</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.1</span>Approve, deny and waitlist</h3><ol>
+<li>In Partner Review, approve Alpha. Open the email preview, then confirm.</li>
+<li>In the staff portal, open <b>Partner Review ↗</b> and approve Bravo the same way.</li>
+<li>Deny Charlie with a reason. Waitlist Delta.</li></ol>
+<div class="pass"><b>Passes when</b> each decision shows the email before it sends, uat1 and uat2 get an approval email, uat3 gets the denial with your reason, and uat4 gets no email.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.2</span>Invite a partner</h3><ol>
+<li>In Partner Review &gt; Applications, click <b>Invite partner</b>. Account <code>[TEST] JD Echo</code>, contact <code>you+uat5@factory.ai</code>. Leave <b>Send the contract now</b> unticked. Invite.</li></ol>
+<div class="pass"><b>Passes when</b> uat5 gets the invitation email and Echo shows as approved.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.3</span>A colleague is approved automatically</h3><ol>
+<li>In a private window, apply with your own plain work address, <code>you@factory.ai</code> (no tag), company name <code>[TEST] JD Alpha</code> and website <code>factory.ai</code>. Confirm the email.</li></ol>
+<div class="pass"><b>Passes when</b> you are approved without a staff decision, because your email domain matches Alpha's website. You use this address again in 5.1.</div></div>
+
+<h2>3. Partner agreement and sign-in</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.1</span>Sign the agreement</h3><ol>
+<li>On the portal's sign-in page, type <code>you+uat1@factory.ai</code> and click <b>Send sign-in link</b>. Open the email and click the link.</li>
+<li>In Partner Review &gt; Applications &gt; Decided, find Alpha and click <b>Send contract</b>.</li>
+<li>Open the DocuSign email for uat1 and sign.</li></ol>
+<div class="pass"><b>Passes when</b> before signing, uat1 sees only the agreement; after signing, the status is Signed in Salesforce and uat1 reaches the dashboard.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.2</span>Links and sign out</h3><ol>
+<li>Click the same sign-in link from 3.1 again.</li>
+<li>Click <b>Sign out</b>, then open the portal's <code>/dashboard</code> address.</li>
+<li>For Bravo, open the Account in Salesforce and click <b>Mark Contract Signed</b>, so Bravo can register deals too.</li></ol>
+<div class="pass"><b>Passes when</b> the used link is refused and the dashboard asks you to sign in again.</div></div>
+
+<h2>4. Deal registration</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">4.1</span>Register a deal</h3><ol>
+<li>Sign in as uat1. Click <b>Register a deal</b>.</li>
+<li>Customer <code>[TEST] JD Harbor Coffee</code>, domain <code>harbor-jd.example.com</code>, a contact name and email, deal name <code>[TEST] JD Harbor rollout</code>, value <code>50000</code>, a close date and a role. Submit.</li>
+<li>Register a second deal, <code>[TEST] JD Cedar pilot</code>, for a new customer.</li></ol>
+<div class="pass"><b>Passes when</b> both deals show as Pending, a confirmation email arrives for each, and both appear in Partner Review &gt; Deals &gt; Pending.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">4.2</span>Duplicates and conflicts</h3><ol>
+<li>As uat1, register Harbor Coffee again with the same value.</li>
+<li>Sign in as uat2 (Bravo) in a private window and register Harbor Coffee with any value.</li>
+<li>In Partner Review &gt; Deals, find Bravo's Harbor Coffee deal.</li></ol>
+<div class="pass"><b>Passes when</b> the duplicate from uat1 is refused, and Bravo's deal shows a conflict warning and cannot be approved.</div></div>
+
+<h2>5. Staff decisions on deals</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.1</span>Ask for more information</h3><ol>
+<li>In the staff portal, under <b>Most recent</b>, click <b>Needs info</b> on Cedar pilot. Type a question and click <b>Ask</b>.</li>
+<li>As uat1, open the dashboard. Reply to the request in the portal.</li>
+<li>Sign in as <code>you@factory.ai</code> (the colleague from 2.3) and register <code>[TEST] JD Willow order</code>. In the staff portal, click <b>Needs info</b> on it and ask a question.</li>
+<li>Reply to that email from your inbox. Replies by email need the plain address, because your inbox sends from it.</li></ol>
+<div class="pass"><b>Passes when</b> each partner gets the question by email and in the To do list, each reply returns its deal to Pending, and both replies show in the deal history in Partner Review and in the portal.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.2</span>Approve and deny</h3><ol>
+<li>Approve Harbor rollout (uat1).</li>
+<li>Deny Cedar pilot with a reason.</li></ol>
+<div class="pass"><b>Passes when</b> approval creates an Opportunity on the Harbor Coffee Account linked to the deal, uat1 gets the approval email, and uat1 sees Cedar pilot as Denied with your reason.</div></div>
+
+<h2>6. Partner dashboard</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">6.1</span>Tiles and list</h3><ol>
+<li>As uat1, open the dashboard. Hover each tile.</li>
+<li>Open each registration.</li></ol>
+<div class="pass"><b>Passes when</b> the tile counts match the deals you made, each tile explains itself on hover, and each registration shows its status, decision, reason and Opportunity stage.</div></div>
+
+<h2>7. Staff portal</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">7.1</span>Most recent, Program health and Partner Review</h3><ol>
+<li>In the staff portal, look at <b>Most recent</b>.</li>
+<li>Open <b>Program health</b>. Hover a chart title.</li>
+<li>Open <b>Partner Review ↗</b>. Search for your initials. Then click <b>← Back to staff home</b>.</li></ol>
+<div class="pass"><b>Passes when</b> your test deals and applications appear, Program health shows totals and charts including revenue by month, quarter and year, and Partner Review in the portal matches the app in Salesforce.</div></div>
+
+<h2>8. Droid</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.1</span>Staff in Droid</h3><ol>
+<li>Add the portal to Droid:<pre>droid mcp add factory-partner-portal https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
+<li>Ask Droid "who am I in the partner portal?". Sign in to the Factory sandbox in the browser tab that opens and click <b>Allow</b>.</li>
+<li>Ask Droid to show the most recent deals, then to ask for more information on one of your test deals.</li></ol>
+<div class="pass"><b>Passes when</b> Droid shows your name, shows a preview before the request is sent, and sends it only after you confirm. The partner gets the email.</div></div>
+
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.2</span>A partner in Droid</h3><ol>
+<li>Add the portal a second time under another name, so the partner sign-in is separate from your staff one:<pre>droid mcp add factory-portal-partner https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
+<li>When the sign-in page opens, choose <b>Factory partners</b>, type <code>you+uat1@factory.ai</code>, open the emailed link and click <b>Allow</b>.</li>
+<li>Using that connection, ask Droid to show your dashboard, then to register a new deal.</li></ol>
+<div class="pass"><b>Passes when</b> Droid shows only uat1's records and the new deal appears in Partner Review &gt; Deals &gt; Pending.</div></div>
+
+<h2>9. Access</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">9.1</span>Partners see only their own records</h3><ol>
+<li>As uat1, copy the address of the Harbor rollout page. Open it while signed in as uat2.</li></ol>
+<div class="pass"><b>Passes when</b> uat2 cannot see uat1's deal.</div></div>
+
+<h2>10. By eye</h2>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">10.1</span>Emails and phone</h3><ol>
+<li>Look through the portal emails you received during UAT.</li>
+<li>Open the portal on your phone, sign in as uat1 and register a deal.</li></ol>
+<div class="pass"><b>Passes when</b> the emails arrive in the inbox and read correctly, and the portal reads and works correctly on the phone.</div></div>
+
+<h2>At launch</h2>
+<p>Email from partners@factory.com (with DKIM and SPF), the reply routing rule and DocuSign on Factory's account are checked in production on launch day.</p>
+<p class="muted">We remove all <code>[TEST]</code> records after UAT.</p>
+<footer>Domestique · Factory.ai Partner Portal · UAT guide</footer>
+</main>
+<script>
+function toggleTheme(){var r=document.documentElement;var dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";try{localStorage.setItem("uat-theme",r.dataset.theme)}catch(e){}}
+try{var t=localStorage.getItem("uat-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
+document.querySelectorAll('.done input').forEach(function(c,i){var k='uat-done-'+i;try{c.checked=localStorage.getItem(k)==='1'}catch(e){}c.addEventListener('change',function(){try{localStorage.setItem(k,c.checked?'1':'0')}catch(e){}})});
+</script>
+</body></html>
