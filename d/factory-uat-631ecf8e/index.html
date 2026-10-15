@@ -13,8 +13,8 @@ h1{font:600 34px/1.15 Georgia,"Iowan Old Style",serif;margin:10px 0 8px}
 h2{font:600 22px/1.25 Georgia,"Iowan Old Style",serif;margin:44px 0 12px;padding-top:8px;border-top:1px solid var(--line)}
 h3{font-size:16px;margin:0 0 6px}
 p{margin:8px 0}.muted{color:var(--muted)}
-code{font:14px ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
-pre{font:13.5px/1.5 ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+code{font:14px ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:4px;padding:1px 5px;overflow-wrap:anywhere}
+pre{font:13.5px/1.5 ui-monospace,Menlo,monospace;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px 70px 10px 12px;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
 a{color:var(--accent-ink)}
 .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
 .test{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:12px 0}
@@ -23,22 +23,30 @@ a{color:var(--accent-ink)}
 .pass b{color:var(--ok)}
 .id{font:600 13px ui-monospace,Menlo,monospace;color:var(--accent-ink);margin-right:6px}
 label.done{float:right;font-size:13px;color:var(--muted);cursor:pointer}
-table{width:100%;border-collapse:collapse;font-size:15px}td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}td:first-child{white-space:nowrap;font-weight:600;width:1%}
+table{width:100%;border-collapse:collapse;font-size:15px}td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}td:first-child{font-weight:600;width:28%}
 ul{padding-left:20px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 button.theme{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:13px;cursor:pointer}
 footer{margin-top:48px;color:var(--muted);font-size:13px}
+.cp{display:inline-flex;align-items:center;gap:2px;margin-left:4px;vertical-align:middle;font:600 11px/1 -apple-system,Helvetica,Arial,sans-serif;color:var(--accent-ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:3px 6px;cursor:pointer}
+.cp.ok{color:var(--ok);border-color:var(--ok)}
+.prewrap{position:relative}.prewrap .cp{position:absolute;top:6px;right:6px}
+.me{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}.me label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);gap:4px;flex:1 1 220px}
+.me input{font:15px -apple-system,Helvetica,Arial,sans-serif;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
 </style></head><body><main>
 <div class="top"><div class="eyebrow">Domestique × Factory.ai</div><button class="theme" onclick="toggleTheme()">Light / dark</button></div>
 <h1>Partner Portal UAT</h1>
 <p class="muted">The week of October 19. Work through the tests in order, in your own time. Each test lists its steps and what a pass looks like. UAT passes when every test passes and no launch-blocking issue is open.</p>
 
 <h2>Before you start</h2>
+<div class="box"><p><b>Fill these in once.</b> Every email, name and website below updates to match, ready to copy.</p><div class="me"><label>Your work email<input id="meEmail" type="email" placeholder="you@factory.ai" autocomplete="email"></label><label>Your initials<input id="meInit" maxlength="4" placeholder="JD"></label></div></div>
 <div class="box"><table>
-<tr><td>Partner portal</td><td><a href="https://factory-partner-portal.pages.dev">factory-partner-portal.pages.dev</a></td></tr>
-<tr><td>Staff portal</td><td>On the portal's sign-in page, click <b>Factory staff? Sign in here</b> and sign in to the Factory sandbox.</td></tr>
-<tr><td>Partner Review</td><td>The Partner Review app in the Factory sandbox, or <b>Partner Review ↗</b> in the staff portal.</td></tr>
-<tr><td>Your emails</td><td>Use your own work address with a tag for each test partner: <code>you+uat1@factory.ai</code>, <code>you+uat2@factory.ai</code> and so on. Every email arrives in your own inbox.</td></tr>
+<tr><td>Partner portal</td><td><a href="https://factory-partner-portal.pages.dev" target="_blank">factory-partner-portal.pages.dev</a> <button class="cp" data-copy="https://factory-partner-portal.pages.dev">Copy</button></td></tr>
+<tr><td>Sign-in page</td><td><a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank">factory-partner-portal.pages.dev/sign-in</a> <button class="cp" data-copy="https://factory-partner-portal.pages.dev/sign-in">Copy</button></td></tr>
+<tr><td>Staff portal</td><td><a href="https://factory-partner-portal.pages.dev/staff" target="_blank">factory-partner-portal.pages.dev/staff</a> <button class="cp" data-copy="https://factory-partner-portal.pages.dev/staff">Copy</button><br>Or click <b>Factory staff? Sign in here</b> on the sign-in page. Sign in with your Factory sandbox user.</td></tr>
+<tr><td>Salesforce sandbox</td><td><a href="https://factoryai--partial.sandbox.my.salesforce.com" target="_blank">factoryai--partial.sandbox.my.salesforce.com</a> <button class="cp" data-copy="https://factoryai--partial.sandbox.my.salesforce.com">Copy</button></td></tr>
+<tr><td>Partner Review</td><td><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank">Partner Review app in Salesforce</a> <button class="cp" data-copy="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review">Copy</button><br>Or <b>Partner Review ↗</b> in the staff portal.</td></tr>
+<tr><td>Your emails</td><td>Each test partner uses your own address with a tag, such as <code>you+uat1@factory.ai</code>. Every email arrives in your own inbox.</td></tr>
 <tr><td>Names</td><td>Start every company and deal name with <code>[TEST]</code> and your initials, for example <code>[TEST] JD Alpha</code>.</td></tr>
 <tr><td>First load</td><td>The sandbox service can take up to a minute to wake. If a page is slow the first time, wait and reload.</td></tr>
 </table></div>
@@ -49,7 +57,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <h2>1. Partner applications</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">1.1</span>A company applies</h3><ol>
-<li>On the partner portal, click <b>Apply to become a partner</b>.</li>
+<li>Open the <a href="https://factory-partner-portal.pages.dev" target="_blank">partner portal</a> and click <b>Apply to become a partner</b>.</li>
 <li>Company name <code>[TEST] JD Alpha</code>, website <code>factory.ai</code>, Partner Type <b>Global System Integrator (GSI)</b>, your name, email <code>you+uat1@factory.ai</code>. Submit.</li>
 <li>Open the confirmation email and click the link.</li>
 <li>Apply again with the same email address.</li></ol>
@@ -76,14 +84,14 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <h2>3. Partner agreement and sign-in</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.1</span>Sign the agreement</h3><ol>
-<li>On the portal's sign-in page, type <code>you+uat1@factory.ai</code> and click <b>Send sign-in link</b>. Open the email and click the link.</li>
+<li>On the <a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank">sign-in page</a>, type <code>you+uat1@factory.ai</code> and click <b>Send sign-in link</b>. Open the email and click the link.</li>
 <li>In Partner Review &gt; Applications &gt; Decided, find Alpha and click <b>Send contract</b>.</li>
 <li>Open the DocuSign email for uat1 and sign.</li></ol>
 <div class="pass"><b>Passes when</b> before signing, uat1 sees only the agreement; after signing, the status is Signed in Salesforce and uat1 reaches the dashboard.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.2</span>Links and sign out</h3><ol>
 <li>Click the same sign-in link from 3.1 again.</li>
-<li>Click <b>Sign out</b>, then open the portal's <code>/dashboard</code> address.</li>
+<li>Click <b>Sign out</b>, then open <code>https://factory-partner-portal.pages.dev/dashboard</code>.</li>
 <li>For Bravo, open the Account in Salesforce and click <b>Mark Contract Signed</b>, so Bravo can register deals too.</li></ol>
 <div class="pass"><b>Passes when</b> the used link is refused and the dashboard asks you to sign in again.</div></div>
 
@@ -121,7 +129,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <h2>7. Staff portal</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">7.1</span>Most recent, Program health and Partner Review</h3><ol>
-<li>In the staff portal, look at <b>Most recent</b>.</li>
+<li>Open the <a href="https://factory-partner-portal.pages.dev/staff" target="_blank">staff portal</a> and look at <b>Most recent</b>.</li>
 <li>Open <b>Program health</b>. Hover a chart title.</li>
 <li>Open <b>Partner Review ↗</b>. Search for your initials. Then click <b>← Back to staff home</b>.</li></ol>
 <div class="pass"><b>Passes when</b> your test deals and applications appear, Program health shows totals and charts including revenue by month, quarter and year, and Partner Review in the portal matches the app in Salesforce.</div></div>
@@ -159,5 +167,21 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 function toggleTheme(){var r=document.documentElement;var dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";try{localStorage.setItem("uat-theme",r.dataset.theme)}catch(e){}}
 try{var t=localStorage.getItem("uat-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
 document.querySelectorAll('.done input').forEach(function(c,i){var k='uat-done-'+i;try{c.checked=localStorage.getItem(k)==='1'}catch(e){}c.addEventListener('change',function(){try{localStorage.setItem(k,c.checked?'1':'0')}catch(e){}})});
+
+var codes=[].slice.call(document.querySelectorAll('main code, main pre'));
+codes.forEach(function(el){el.dataset.orig=el.textContent});
+function apply(){var em=(document.getElementById('meEmail').value||'').trim();var ini=(document.getElementById('meInit').value||'').trim().toUpperCase();
+ var local='you',dom='factory.ai';if(/^[^@\s]+@[^@\s]+$/.test(em)){local=em.split('@')[0];dom=em.split('@')[1]}
+ codes.forEach(function(el){var t=el.dataset.orig;t=t.replace(/you(\+uat\d+)?@factory\.ai/g,function(m,tag){return local+(tag||'')+'@'+dom});
+  if(ini){t=t.replace(/\bJD\b/g,ini).replace(/-jd\./g,'-'+ini.toLowerCase()+'.')}
+  if(dom!=='factory.ai'){t=t.replace(/^factory\.ai$/,dom)}
+  el.textContent=t;});
+ try{localStorage.setItem('uat-me',JSON.stringify({em:em,ini:ini}))}catch(e){}}
+try{var me=JSON.parse(localStorage.getItem('uat-me')||'{}');if(me.em)document.getElementById('meEmail').value=me.em;if(me.ini)document.getElementById('meInit').value=me.ini}catch(e){}
+document.getElementById('meEmail').addEventListener('input',apply);document.getElementById('meInit').addEventListener('input',apply);apply();
+function copyBtn(get){var b=document.createElement('button');b.className='cp';b.textContent='Copy';b.addEventListener('click',function(){var v=get();(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).catch(function(){var ta=document.createElement('textarea');ta.value=v;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}).finally(function(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1400)})});return b}
+document.querySelectorAll('main code').forEach(function(el){if(el.closest('pre'))return;el.after(copyBtn(function(){return el.textContent}))});
+document.querySelectorAll('main pre').forEach(function(el){var w=document.createElement('div');w.className='prewrap';el.parentNode.insertBefore(w,el);w.appendChild(el);w.appendChild(copyBtn(function(){return el.textContent}))});
+document.querySelectorAll('button.cp[data-copy]').forEach(function(b){b.addEventListener('click',function(){var v=b.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).catch(function(){}).finally(function(){b.textContent='Copied';b.classList.add('ok');setTimeout(function(){b.textContent='Copy';b.classList.remove('ok')},1400)})})});
 </script>
 </body></html>
