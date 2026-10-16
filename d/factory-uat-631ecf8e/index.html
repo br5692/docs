@@ -93,7 +93,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <h2>3. Partner agreement and sign-in</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.1</span>Sign the agreement</h3><ol>
 <li>On the <a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank">sign-in page</a>, type <code>you+uat1@factory.ai</code> and click <b>Send sign-in link</b>. Open the email and click the link.</li>
-<li>In Partner Review &gt; Applications &gt; Decided, find Alpha and click <b>Send contract</b>.</li>
+<li>In Partner Review &gt; Applications &gt; Decided, find Alpha and click <b>Send contract</b>. At "Send the partner agreement to &lt;name&gt; (&lt;email&gt;)?", click <b>Send</b>.</li>
 <li>Open the DocuSign email for uat1 and sign.</li></ol>
 <div class="pass"><b>Passes when</b> before signing, uat1 sees only the agreement; after signing, the status is Signed in Salesforce and uat1 reaches the dashboard.</div></div>
 
@@ -117,6 +117,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.1</span>Ask for more information</h3><ol>
 <li>In the staff portal, under <b>Most recent</b>, click <b>Needs info</b> on Cedar pilot. Type a question and click <b>Ask</b>.</li>
 <li>As uat1, open the dashboard. Reply to the request in the portal.</li>
+<li>If you did 2.3: in Salesforce, type <code>[TEST] JD Foxtrot</code> in the search box at the top and open the Account. Click <b>▼</b> at the right end of the row of buttons under the Account name. Choose <b>Mark Contract Signed</b>, then click <b>Save</b>.</li>
 <li>If you did 2.3: sign in as <code>you@factory.ai</code> (the colleague from 2.3) and register <code>[TEST] JD Willow order</code>. In the staff portal, click <b>Needs info</b> on it and ask a question.</li>
 <li>Reply to that email from your inbox. Replies by email need the plain address, because your inbox sends from it.</li></ol>
 <div class="pass"><b>Passes when</b> each partner gets the question by email and in the To do list, each reply returns its deal to Pending, and both replies show in the deal history in Partner Review and in the portal.</div></div>
