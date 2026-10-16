@@ -80,14 +80,14 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.1</span>Approve, deny and waitlist</h3><ol>
 <li>In Partner Review, click <b>Approve</b> on Alpha's row, then <b>Preview email</b> to read the email. Click <b>APPROVE</b>, then <b>Send email</b>.</li>
 <li>In the staff portal, open <b>Partner Review ↗</b> and approve Bravo the same way.</li>
-<li>Type a reason in Charlie's <b>Decision note</b> box, then click <b>Deny</b> and confirm. Click <b>Waitlist</b> on Delta.</li></ol>
+<li>Type a reason in Charlie's <b>Decision note</b> box, then click <b>Deny</b> and confirm. Click <b>Waitlist</b> on Delta, then <b>WAITLIST</b> to confirm.</li></ol>
 <div class="pass"><b>Passes when</b> each decision shows the email before it sends, uat1 and uat2 get an approval email, uat3 gets the denial email (the reason you type is saved on the record, not sent), and uat4 gets no email.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.2</span>Invite a partner</h3><ol>
 <li>In Partner Review &gt; Applications, click <b>Invite partner</b>. Account <code>[TEST] JD Echo</code>, any example website, your first and last name, contact <code>you+uat5@factory.ai</code> and any Partner Type. Leave <b>Send the contract now</b> unticked. Click <b>Invite partner</b>.</li></ol>
 <div class="pass"><b>Passes when</b> uat5 gets the invitation email, and Echo is under Applications &gt; Decided with Joined via Invitation and Status Approved.</div></div>
 
-<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.3</span>A colleague is approved automatically</h3><p class="muted">One tester only. If someone on your team has already done 2.3, skip it and the email reply in 5.1.</p><ol><li>Apply as <code>you+uat6@factory.ai</code>: company <code>[TEST] JD Foxtrot</code>, website <code>factory.ai</code> (your email domain), any Partner Type. Confirm the email. If the page says "Your company is already an approved Factory partner, and you're signed in.", someone has already done 2.3 for your domain: skip the rest of 2.3 and the email reply in 5.1.</li><li>In Partner Review, approve Foxtrot.</li><li>In a private window, apply with your plain work address, <code>you@factory.ai</code> (no tag), company <code>[TEST] JD Foxtrot</code> and website <code>factory.ai</code>. Confirm the email.</li></ol>
+<div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">2.3</span>A colleague is approved automatically</h3><p class="muted">One tester only. If someone on your team has already done 2.3, skip it and the email reply in 5.1.</p><ol><li>Apply as <code>you+uat6@factory.ai</code>: company <code>[TEST] JD Foxtrot</code>, website <code>factory.ai</code> (your email domain), any Partner Type. Confirm the email. If the page says "Your company is already an approved Factory partner, and you're signed in.", your email domain already belongs to an approved partner: skip the rest of 2.3 and the email reply in 5.1.</li><li>In Partner Review, approve Foxtrot.</li><li>In a private window, apply with your plain work address, <code>you@factory.ai</code> (no tag), company <code>[TEST] JD Foxtrot</code> and website <code>factory.ai</code>. Confirm the email.</li></ol>
 <div class="pass"><b>Passes when</b> your plain address is approved without a staff decision, because its domain matches Foxtrot's website. You use this address again in 5.1.</div></div>
 
 <h2>3. Partner agreement and sign-in</h2>
@@ -99,7 +99,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">3.2</span>Links and sign out</h3><ol>
 <li>Click the same sign-in link from 3.1 again.</li>
-<li>Open <code>https://factory-partner-portal.pages.dev/dashboard</code>, click <b>Sign out</b> at the top right, then open the same address again.</li>
+<li>Open <code>https://factory-partner-portal.pages.dev/dashboard</code>, click <b>Sign out</b> in the black bar at the top (after Register a deal), then open the same address again.</li>
 <li>In Salesforce, type <code>[TEST] JD Bravo</code> in the search box at the top and open the Account. Click <b>▼</b> at the right end of the row of buttons under the Account name (after Approve Partner Application). Choose <b>Mark Contract Signed</b>, not Send Partner Contract, then click <b>Save</b>.</li></ol>
 <div class="pass"><b>Passes when</b> the used link says "That link has expired or was already used.", the dashboard asks you to sign in again, and Bravo's Contract Status, in the Partner Portal section of the Account, reads Signed.</div></div>
 
@@ -123,7 +123,7 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.2</span>Approve and deny</h3><ol>
 <li>In Partner Review &gt; Deals &gt; Pending, approve Harbor rollout (uat1), with the preview and <b>Send email</b> as in 2.1.</li>
-<li>Click <b>Deny</b> on Cedar pilot, type a reason in <b>Message to the partner</b> (it goes in the email), then click <b>DENY</b> and confirm.</li></ol>
+<li>Click <b>Deny</b> on Cedar pilot, type a reason in <b>Message to the partner</b> (it goes in the email), then click <b>DENY</b> to confirm.</li></ol>
 <div class="pass"><b>Passes when</b> approval creates an Opportunity on the Harbor Coffee Account linked to the deal, uat1 gets the approval email, and uat1 sees Cedar pilot as Denied with your reason.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">5.3</span>A conflict between partners</h3><ol><li>In a private window, sign in as <code>you+uat2@factory.ai</code> (Bravo, the same Partner Type as Alpha).</li><li>Register Harbor Coffee with the same deal name, <code>[TEST] JD Harbor rollout</code>, and any value.</li><li>In Partner Review &gt; Deals, find Bravo's Harbor rollout.</li></ol>
@@ -145,13 +145,13 @@ footer{margin-top:48px;color:var(--muted);font-size:13px}
 <h2>8. Droid</h2>
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.1</span>Staff in Droid</h3><ol>
 <li>Add the portal to Droid:<pre>droid mcp add factory-partner-portal https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
-<li>Ask Droid "who am I in the partner portal?". In the browser tab that opens, under <b>Factory staff</b> click <b>Sign in with Salesforce</b>, sign in to the Factory sandbox, then click <b>Allow</b>.</li>
+<li>Ask Droid "who am I in the partner portal?". In the browser tab that opens, under <b>Factory staff</b> click <b>Sign in with Salesforce</b>, sign in to the Factory sandbox if asked, then click <b>Allow</b>.</li>
 <li>Ask Droid to show the most recent deals, then to ask for more information on one of your test deals.</li></ol>
 <div class="pass"><b>Passes when</b> Droid answers with something like <code>staff-ae:005…</code>, which means you are signed in as staff (the part after the colon is your Salesforce user Id), shows a preview before the request is sent, and sends it only after you confirm. The partner gets the email.</div></div>
 
 <div class="test"><label class="done"><input type="checkbox"> Done</label><h3><span class="id">8.2</span>A partner in Droid</h3><ol>
 <li>Add the portal a second time under another name, so the partner sign-in is separate from your staff one:<pre>droid mcp add factory-portal-partner https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</pre></li>
-<li>When the sign-in page opens, choose <b>Factory partners</b>, type <code>you+uat1@factory.ai</code>, open the emailed link and click <b>Allow</b>.</li>
+<li>When the sign-in page opens, under <b>Factory partners</b>, type <code>you+uat1@factory.ai</code>, open the emailed link and click <b>Allow</b>.</li>
 <li>Using that connection, ask Droid to show your dashboard, then to register a new deal.</li></ol>
 <div class="pass"><b>Passes when</b> Droid shows only uat1's records and the new deal appears in Partner Review &gt; Deals &gt; Pending.</div></div>
 
