@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Partner Portal Walkthrough</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<style>
+:root{--bg:#f6f5f0;--card:#fffefa;--ink:#1d211f;--muted:#5d6560;--line:#e2e0d6;--accent:#0d7a6e;--accent-ink:#fff;--soft:#e8f2ef;--mono:ui-monospace,"SF Mono",Menlo,monospace;--serif:"Charter","Iowan Old Style",Palatino,Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141816;--card:#1b201e;--ink:#e7ebe8;--muted:#9aa49f;--line:#2c3330;--accent:#4fd0be;--accent-ink:#0b1311;--soft:#1f2b28}}
+:root[data-theme="dark"]{--bg:#141816;--card:#1b201e;--ink:#e7ebe8;--muted:#9aa49f;--line:#2c3330;--accent:#4fd0be;--accent-ink:#0b1311;--soft:#1f2b28}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 64px}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 34px/1.15 var(--serif);margin:10px 0 8px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 18px}
+.top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+button.theme{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:13px var(--mono);cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+h2{font:600 21px/1.25 var(--serif);margin:0 0 4px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.num{font:600 13px var(--mono);color:var(--accent)}
+.time{font:12px var(--mono);color:var(--muted);margin-left:auto}
+.sub{color:var(--muted);margin:0 0 10px;font-size:15px}
+ol,ul{margin:6px 0 0;padding-left:20px}
+li{margin:4px 0}
+.row{display:flex;align-items:center;gap:8px;margin:8px 0;flex-wrap:wrap}
+.lbl{font:600 12px var(--mono);color:var(--muted);min-width:118px;text-transform:uppercase;letter-spacing:.06em}
+.val{flex:1 1 260px;min-width:0;font:13.5px var(--mono);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:7px 10px;overflow-wrap:anywhere}
+.val a{color:var(--ink);text-decoration:none}
+.val a:hover{color:var(--accent);text-decoration:underline}
+input.val{color:var(--ink)}
+.copy{border:0;background:var(--accent);color:var(--accent-ink);font:600 13px var(--mono);border-radius:8px;padding:8px 12px;cursor:pointer;min-width:72px}
+.copy.done{opacity:.75}
+.note{font-size:14px;color:var(--muted);margin:8px 0 0}
+footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <div>
+    <div class="eyebrow">Factory × Domestique · Partner Portal · Sandbox</div>
+    <h1>Partner Portal <em>walkthrough</em></h1>
+  </div>
+  <button class="theme" id="theme" type="button">Theme</button>
+</div>
+<p class="lede">Links and text for a 30-minute walkthrough in the Factory sandbox: application, approval, sign-in, deal registration and review, dashboards and Droid. Every value has a Copy button.</p>
+
+<section class="card">
+  <h2><span class="num">00</span>Fill in once</h2>
+  <p class="sub">These stay in this browser only. Use a new address for the new partner each time.</p>
+  <div class="row"><span class="lbl">New partner email</span><input class="val" id="newEmail" placeholder="name+tag@yourdomain.com" autocomplete="off"><button class="copy" data-from="newEmail">Copy</button></div>
+  <div class="row"><span class="lbl">Demo partner email</span><input class="val" id="demoEmail" placeholder="the established demo partner's sign-in address" autocomplete="off"><button class="copy" data-from="demoEmail">Copy</button></div>
+</section>
+
+<section class="card">
+  <h2><span class="num">01</span>Before the call<span class="time">5 min before</span></h2>
+  <p class="sub">The web service sleeps when idle. Open this first and wait for "ok".</p>
+  <div class="row"><span class="lbl">Wake</span><span class="val"><a href="https://factory-partner-portal-tool-layer.onrender.com/health" target="_blank" rel="noopener">https://factory-partner-portal-tool-layer.onrender.com/health</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Portal</span><span class="val"><a href="https://factory-partner-portal.pages.dev/" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Salesforce</span><span class="val"><a href="https://factoryai--partial.sandbox.my.salesforce.com/" target="_blank" rel="noopener">https://factoryai--partial.sandbox.my.salesforce.com/</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Partner Review</span><span class="val"><a href="https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review" target="_blank" rel="noopener">https://factoryai--partial--c.sandbox.my.salesforce.app/app/c__Partner_Review</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Staff portal</span><span class="val"><a href="https://factory-partner-portal.pages.dev/staff" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/staff</a></span><button class="copy">Copy</button></div>
+  <p class="note">Use plain company and person names, with no "[TEST]". DocuSign does not deliver emails for names that contain it.</p>
+</section>
+
+<section class="card">
+  <h2><span class="num">02</span>A company applies<span class="time">0–3 min</span></h2>
+  <div class="row"><span class="lbl">Apply page</span><span class="val"><a href="https://factory-partner-portal.pages.dev/apply" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/apply</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Company name</span><span class="val">Northwind Advisory</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Company website</span><span class="val">northwind-advisory.example.com</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">First name</span><span class="val">Alex</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Last name</span><span class="val">Carter</span><button class="copy">Copy</button></div>
+  <ol><li>Enter the new partner email from step 00 and submit.</li><li>Open the confirmation email and click its link.</li><li>The application appears in Partner Review.</li></ol>
+</section>
+
+<section class="card">
+  <h2><span class="num">03</span>Staff approve and send the agreement<span class="time">3–9 min</span></h2>
+  <ol><li>In Partner Review, open the application and show the conflict check.</li><li>Click <b>Approve</b>. Show the email preview, then send.</li><li>Click <b>Send contract</b>. Sign from DocuSign's email.</li><li>If DocuSign is slow, use <b>Mark Contract Signed</b> on the Account in Salesforce.</li><li>Show the Account at Signed.</li></ol>
+</section>
+
+<section class="card">
+  <h2><span class="num">04</span>The partner signs in<span class="time">9–11 min</span></h2>
+  <div class="row"><span class="lbl">Sign-in page</span><span class="val"><a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/sign-in</a></span><button class="copy">Copy</button></div>
+  <ol><li>Type the new partner email and check it before submitting.</li><li>Click the link in the sign-in email (valid 15 minutes).</li><li>The dashboard opens. It is nearly empty for a new partner.</li></ol>
+</section>
+
+<section class="card">
+  <h2><span class="num">05</span>The partner registers a deal<span class="time">11–14 min</span></h2>
+  <div class="row"><span class="lbl">Register</span><span class="val"><a href="https://factory-partner-portal.pages.dev/register" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/register</a></span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Customer name</span><span class="val">Lakeside Analytics</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Customer domain</span><span class="val">lakeside-analytics.example.com</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Contact name</span><span class="val">Jamie Rivera</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Contact email</span><span class="val">jamie.rivera@lakeside-analytics.example.com</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Deal name</span><span class="val">Lakeside Analytics platform rollout</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Estimated value</span><span class="val">85000</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Expected close</span><span class="val">2026-12-15</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Description</span><span class="val">Introduced Factory to the data platform team and set up the first technical review.</span><button class="copy">Copy</button></div>
+  <ol><li>If the form still asks for a partner role, pick any. That step is being removed this week.</li><li>Submit. The customer Account and Contact are matched or created, and the deal is Pending.</li><li>Show the confirmation email.</li></ol>
+</section>
+
+<section class="card">
+  <h2><span class="num">06</span>Staff review and approve the deal<span class="time">14–18 min</span></h2>
+  <ol><li>In Partner Review, open the deal.</li><li>Optional: choose <b>Needs information</b> and send a question.</li><li>Click <b>Approve</b>.</li><li>Open the new Opportunity on the customer Account.</li></ol>
+  <div class="row"><span class="lbl">Sample question</span><span class="val">What is the expected close date and who is the decision maker?</span><button class="copy">Copy</button></div>
+</section>
+
+<section class="card">
+  <h2><span class="num">07</span>Dashboard of an established partner<span class="time">18–21 min</span></h2>
+  <ol><li>Sign out, then sign in with the demo partner email from step 00.</li><li>Show the six tiles and their hover help, the To do list and the latest registrations.</li></ol>
+  <div class="row"><span class="lbl">Sign-in page</span><span class="val"><a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/sign-in</a></span><button class="copy">Copy</button></div>
+</section>
+
+<section class="card">
+  <h2><span class="num">08</span>Staff dashboard<span class="time">21–24 min</span></h2>
+  <div class="row"><span class="lbl">Staff portal</span><span class="val"><a href="https://factory-partner-portal.pages.dev/staff" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/staff</a></span><button class="copy">Copy</button></div>
+  <ol><li>Sign in with Salesforce.</li><li>Show Most recent, then Program health and its charts.</li></ol>
+</section>
+
+<section class="card">
+  <h2><span class="num">09</span>Droid<span class="time">24–27 min</span></h2>
+  <div class="row"><span class="lbl">Server URL</span><span class="val">https://factory-partner-portal-tool-layer.onrender.com/mcp</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Add to Droid</span><span class="val">droid mcp add factory-partner-portal https://factory-partner-portal-tool-layer.onrender.com/mcp --type http</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Ask</span><span class="val">List pending deal registrations.</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Ask</span><span class="val">Show me the Lakeside Analytics registration and check it for conflicts.</span><button class="copy">Copy</button></div>
+  <div class="row"><span class="lbl">Ask</span><span class="val">Show program health.</span><button class="copy">Copy</button></div>
+  <p class="note">The first call opens a browser tab: sign in to Salesforce and click Allow. Decisions show a preview and save only after confirming.</p>
+</section>
+
+<section class="card">
+  <h2><span class="num">10</span>Questions<span class="time">27–30 min</span></h2>
+  <ul><li>Who signs off UAT, and by when?</li><li>A sandbox user for Naresh.</li></ul>
+</section>
+
+<footer>Factory sandbox · October 20, 2026</footer>
+</main>
+<script>
+(function(){
+  var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  ["newEmail","demoEmail"].forEach(function(id){var el=document.getElementById(id);var v=store.get("wt-"+id);if(v)el.value=v;el.addEventListener("input",function(){store.set("wt-"+id,el.value)})});
+  function text(btn){var from=btn.getAttribute("data-from");if(from)return document.getElementById(from).value;var v=btn.parentNode.querySelector(".val");return (v.textContent||"").trim()}
+  function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);return Promise.resolve()}
+  document.querySelectorAll("button.copy").forEach(function(b){b.addEventListener("click",function(){var t=text(b);if(!t)return;copy(t).then(function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy";b.classList.remove("done")},1400)})})});
+  var root=document.documentElement,saved=store.get("wt-theme");if(saved)root.setAttribute("data-theme",saved);
+  document.getElementById("theme").addEventListener("click",function(){var dark=root.getAttribute("data-theme")?root.getAttribute("data-theme")==="dark":matchMedia("(prefers-color-scheme: dark)").matches;var next=dark?"light":"dark";root.setAttribute("data-theme",next);store.set("wt-theme",next)});
+})();
+</script>
+</body>
+</html>
