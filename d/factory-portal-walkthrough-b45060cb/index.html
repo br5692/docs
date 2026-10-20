@@ -51,8 +51,9 @@ footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
 
 <section class="card">
   <h2><span class="num">00</span>Fill in once</h2>
-  <p class="sub">These stay in this browser only. Use a new address for the new partner each time.</p>
-  <div class="row"><span class="lbl">New partner email</span><input class="val" id="newEmail" placeholder="name+tag@yourdomain.com" autocomplete="off"><button class="copy" data-from="newEmail">Copy</button></div>
+  <p class="sub">These stay in this browser only. Enter your own inbox once. <b>New address</b> makes a fresh plus-address for each run and copies it.</p>
+  <div class="row"><span class="lbl">Your inbox</span><input class="val" id="baseEmail" placeholder="name@yourdomain.com" autocomplete="off"></div>
+  <div class="row"><span class="lbl">New partner email</span><input class="val" id="newEmail" placeholder="press New address" autocomplete="off"><button class="copy" id="gen" type="button">New address</button><button class="copy" data-from="newEmail">Copy</button></div>
   <div class="row"><span class="lbl">Demo partner email</span><input class="val" id="demoEmail" placeholder="the established demo partner's sign-in address" autocomplete="off"><button class="copy" data-from="demoEmail">Copy</button></div>
 </section>
 
@@ -140,10 +141,20 @@ footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
 <script>
 (function(){
   var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-  ["newEmail","demoEmail"].forEach(function(id){var el=document.getElementById(id);var v=store.get("wt-"+id);if(v)el.value=v;el.addEventListener("input",function(){store.set("wt-"+id,el.value)})});
+  ["baseEmail","newEmail","demoEmail"].forEach(function(id){var el=document.getElementById(id);var v=store.get("wt-"+id);if(v)el.value=v;el.addEventListener("input",function(){store.set("wt-"+id,el.value)})});
   function text(btn){var from=btn.getAttribute("data-from");if(from)return document.getElementById(from).value;var v=btn.parentNode.querySelector(".val");return (v.textContent||"").trim()}
   function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);return Promise.resolve()}
-  document.querySelectorAll("button.copy").forEach(function(b){b.addEventListener("click",function(){var t=text(b);if(!t)return;copy(t).then(function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy";b.classList.remove("done")},1400)})})});
+  document.querySelectorAll("button.copy:not(#gen)").forEach(function(b){b.addEventListener("click",function(){var t=text(b);if(!t)return;copy(t).then(function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy";b.classList.remove("done")},1400)})})});
+  document.getElementById("gen").addEventListener("click",function(){
+    var base=document.getElementById("baseEmail").value.trim(),at=base.indexOf("@");
+    var out=document.getElementById("newEmail");
+    if(at<1){document.getElementById("baseEmail").focus();return}
+    var local=base.slice(0,at).split("+")[0],dom=base.slice(at);
+    var a=new Uint8Array(3);(window.crypto||window.msCrypto).getRandomValues(a);
+    var tag="partner"+Array.prototype.map.call(a,function(x){return ("0"+x.toString(16)).slice(-2)}).join("");
+    out.value=local+"+"+tag+dom;store.set("wt-newEmail",out.value);
+    var b=this;copy(out.value).then(function(){b.textContent="Copied";setTimeout(function(){b.textContent="New address"},1400)});
+  });
   var root=document.documentElement,saved=store.get("wt-theme");if(saved)root.setAttribute("data-theme",saved);
   document.getElementById("theme").addEventListener("click",function(){var dark=root.getAttribute("data-theme")?root.getAttribute("data-theme")==="dark":matchMedia("(prefers-color-scheme: dark)").matches;var next=dark?"light":"dark";root.setAttribute("data-theme",next);store.set("wt-theme",next)});
 })();
