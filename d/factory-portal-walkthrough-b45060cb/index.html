@@ -54,7 +54,7 @@ footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
   <p class="sub">These stay in this browser only. Enter your own inbox once. <b>New address</b> makes a fresh plus-address for each run and copies it.</p>
   <div class="row"><span class="lbl">Your inbox</span><input class="val" id="baseEmail" placeholder="name@yourdomain.com" autocomplete="off"></div>
   <div class="row"><span class="lbl">New partner email</span><input class="val" id="newEmail" placeholder="press New address" autocomplete="off"><button class="copy" id="gen" type="button">New address</button><button class="copy" data-from="newEmail">Copy</button></div>
-  <div class="row"><span class="lbl">Demo partner email</span><input class="val" id="demoEmail" placeholder="the established demo partner's sign-in address" autocomplete="off"><button class="copy" data-from="demoEmail">Copy</button></div>
+  <div class="row"><span class="lbl">Established partner</span><input class="val" id="demoEmail" value="blair.purdy+invite74018@domestique.info" autocomplete="off"><button class="copy" data-from="demoEmail">Copy</button></div>
 </section>
 
 <section class="card">
@@ -111,7 +111,7 @@ footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
 
 <section class="card">
   <h2><span class="num">07</span>Dashboard of an established partner<span class="time">18–21 min</span></h2>
-  <ol><li>Sign out, then sign in with the demo partner email from step 00.</li><li>Show the six tiles and their hover help, the To do list and the latest registrations.</li></ol>
+  <ol><li>Sign out, then sign in as the established partner (Harborline Partners), whose email is in step 00.</li><li>Show the six tiles and their hover help, the To do list and the latest registrations.</li></ol>
   <div class="row"><span class="lbl">Sign-in page</span><span class="val"><a href="https://factory-partner-portal.pages.dev/sign-in" target="_blank" rel="noopener">https://factory-partner-portal.pages.dev/sign-in</a></span><button class="copy">Copy</button></div>
 </section>
 
@@ -141,7 +141,7 @@ footer{font:12px var(--mono);color:var(--muted);margin-top:28px}
 <script>
 (function(){
   var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-  ["baseEmail","newEmail","demoEmail"].forEach(function(id){var el=document.getElementById(id);var v=store.get("wt-"+id);if(v)el.value=v;el.addEventListener("input",function(){store.set("wt-"+id,el.value)})});
+  ["baseEmail","newEmail"].forEach(function(id){var el=document.getElementById(id);var v=store.get("wt-"+id);if(v)el.value=v;el.addEventListener("input",function(){store.set("wt-"+id,el.value)})});
   function text(btn){var from=btn.getAttribute("data-from");if(from)return document.getElementById(from).value;var v=btn.parentNode.querySelector(".val");return (v.textContent||"").trim()}
   function copy(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t);var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);return Promise.resolve()}
   document.querySelectorAll("button.copy:not(#gen)").forEach(function(b){b.addEventListener("click",function(){var t=text(b);if(!t)return;copy(t).then(function(){b.textContent="Copied";b.classList.add("done");setTimeout(function(){b.textContent="Copy";b.classList.remove("done")},1400)})})});
