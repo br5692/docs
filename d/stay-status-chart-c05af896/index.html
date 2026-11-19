@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stay Account Types and Statuses</title>
+<style>
+:root{--bg:#fff;--ink:#1d1d1f;--mute:#5f6368;--line:#d9dce1;--box:#f6f7f9;--pink:#d6336c;--pinkbg:#fdecf2;--blue:#1a5fb4;--bluebg:#e9f0fb;--green:#2b7a3d;--greenbg:#e8f5ec;--grey:#6b6f76;--greybg:#f0f1f3}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
+.lvl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:18px 0 8px}
+.row{display:grid;gap:12px}.r3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:760px){.r3{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--box)}
+.card h3{margin:0 0 6px;font-size:15px}.card p{margin:0;color:var(--mute);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.pros{border-color:var(--pink);background:var(--pinkbg)}.cust{border-color:var(--green);background:var(--greenbg)}.part{border-color:var(--grey);background:var(--greybg)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
+th{background:var(--box);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+td.s{font-weight:700;white-space:nowrap}.auto{color:var(--blue);font-weight:600}.man{color:var(--pink);font-weight:600}
+.flag{border:1px dashed var(--blue);background:var(--bluebg);border-radius:10px;padding:12px 14px;margin-top:12px}
+.flag b{color:var(--blue)}
+</style></head><body><div class="wrap">
+<h1>Stay accounts: types and statuses</h1>
+<p class="sub">How an account is classified, and what moves it from one status to the next.</p>
+
+<div class="lvl">1 · Account Type: what the account is</div>
+<div class="row r3">
+ <div class="card pros"><h3>Prospect</h3><p>Not a customer yet, or a lost deal. Uses <b>Account Status</b> (below).</p>
+  <div class="chips"><span class="chip">Prospect</span></div></div>
+ <div class="card cust"><h3>Customer</h3><p>Signed with Stay. Uses <b>Customer Status</b>; Account Status is not used.</p>
+  <div class="chips"><span class="chip">Onboarding</span><span class="chip">Active Customer</span><span class="chip">Churned Customer</span><span class="chip">Failed to Launch</span><span class="chip">Dev Store</span></div></div>
+ <div class="card part"><h3>Partner</h3><p>Agencies and tech partners. No status automation.</p>
+  <div class="chips"><span class="chip">Partner</span></div></div>
+</div>
+
+<div class="lvl">2 · Account Status (prospects only): where the account stands</div>
+<table>
+<tr><th>Status</th><th>Set by</th><th>Moves here when</th><th>Moves out when</th></tr>
+<tr><td class="s">Unworked</td><td class="man">Default</td><td>New prospect, or nobody is working it</td><td>A rep sets Hot Lead, a sequence starts, or an opp opens</td></tr>
+<tr><td class="s">Hot Lead</td><td class="man">Rep / Gina</td><td>Real interest but no meeting yet (event, partner, referral, inbound, outbound reply). Source required</td><td>An opp opens. Day 53: owner reminder. Day 60: Gina decides (Unworked or restart 60 days)</td></tr>
+<tr><td class="s">Working</td><td class="auto">Automatic</td><td>A contact enters an Outreach sequence</td><td>Sequence ends with no reply → Nurture. An opp opens → In Opportunity</td></tr>
+<tr><td class="s">In Opportunity</td><td class="auto">Automatic</td><td>Any open opp (overrides every other status)</td><td>Last opp closes: Lost → Closed Lost, Disqualified → Disqualified</td></tr>
+<tr><td class="s">Nurture</td><td class="auto">Auto or rep</td><td>Sequence ended with no reply (reason "No response"), or the rep chose it</td><td>A new sequence starts → Working</td></tr>
+<tr><td class="s">Closed Lost</td><td class="auto">Automatic</td><td>Last open opp is Closed Lost</td><td>A new sequence (→ Working) or a new opp. Win-back is its own play</td></tr>
+<tr><td class="s">Disqualified</td><td class="man">Rep (reason required)</td><td>Not a fit, or the last opp was Disqualified</td><td>Only by hand</td></tr>
+</table>
+
+<div class="flag"><b>Target Account = a checkbox, not a status (agreed 11/19).</b> Leadership ticks it on the accounts reps should break into this quarter (owner Sam for SMB / Mid-Market, Ryley for Enterprise). It sits on top of any status, so a Target can be Unworked, Working or In Opportunity. At quarter end, each Target is reviewed: keep, or untick.</div>
+
+<div class="lvl">3 · Customer Status (customers only)</div>
+<div class="card cust"><div class="chips" style="margin-top:0"><span class="chip">Onboarding</span><span class="chip">Active</span><span class="chip">At Risk</span><span class="chip">Churned</span></div>
+<p style="margin-top:8px">A prospect can be set to Customer only once it has a Closed Won opportunity.</p></div>
+</div></body></html>
