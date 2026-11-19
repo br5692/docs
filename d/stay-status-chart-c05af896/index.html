@@ -17,7 +17,7 @@ h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
 table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
 th{background:var(--box);font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
-td.s{font-weight:700;white-space:nowrap}.auto{color:var(--blue);font-weight:600}.man{color:var(--pink);font-weight:600}
+td.s{font-weight:700;white-space:nowrap}.def{color:var(--grey);font-weight:600}.legend{display:flex;gap:16px;font-size:12px;color:var(--mute);margin:0 0 8px}.legend b{font-weight:700}.auto{color:var(--blue);font-weight:600}.man{color:var(--pink);font-weight:600}
 .flag{border:1px dashed var(--blue);background:var(--bluebg);border-radius:10px;padding:12px 14px;margin-top:12px}
 .flag b{color:var(--blue)}
 </style></head><body><div class="wrap">
@@ -35,9 +35,10 @@ td.s{font-weight:700;white-space:nowrap}.auto{color:var(--blue);font-weight:600}
 </div>
 
 <div class="lvl">2 · Account Status (prospects only): where the account stands</div>
+<div class="legend"><span><b class="man">Pink</b> = set by a person</span><span><b class="auto">Blue</b> = set automatically</span><span><b class="def">Grey</b> = starting status</span></div>
 <table>
 <tr><th>Status</th><th>Set by</th><th>Moves here when</th><th>Moves out when</th></tr>
-<tr><td class="s">Unworked</td><td class="man">Default</td><td>New prospect, or nobody is working it</td><td>A rep sets Hot Lead, a sequence starts, or an opp opens</td></tr>
+<tr><td class="s">Unworked</td><td class="def">Default</td><td>New prospect, or nobody is working it</td><td>A rep sets Hot Lead, a sequence starts, or an opp opens</td></tr>
 <tr><td class="s">Hot Lead</td><td class="man">Rep / Gina</td><td>Real interest but no meeting yet (event, partner, referral, inbound, outbound reply). Source required</td><td>An opp opens. Day 53: owner reminder. Day 60: Gina decides (Unworked or restart 60 days)</td></tr>
 <tr><td class="s">Working</td><td class="auto">Automatic</td><td>A contact enters an Outreach sequence</td><td>Sequence ends with no reply → Nurture. An opp opens → In Opportunity</td></tr>
 <tr><td class="s">In Opportunity</td><td class="auto">Automatic</td><td>Any open opp (overrides every other status)</td><td>Last opp closes: Lost → Closed Lost, Disqualified → Disqualified</td></tr>
