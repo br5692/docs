@@ -12,7 +12,7 @@ h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mute);margin:0 0 20px}
 @media(max-width:760px){.r3{grid-template-columns:1fr}}
 .card{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--box)}
 .card h3{margin:0 0 6px;font-size:15px}.card p{margin:0;color:var(--mute);font-size:13px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.tl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);margin:10px 0 -2px}.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chip{font-size:12px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid var(--line)}
 .pros{border-color:var(--pink);background:var(--pinkbg)}.cust{border-color:var(--green);background:var(--greenbg)}.part{border-color:var(--grey);background:var(--greybg)}
 table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13px}
@@ -24,14 +24,14 @@ td.s{font-weight:700;white-space:nowrap}.def{color:var(--grey);font-weight:600}.
 <h1>Stay accounts: types and statuses</h1>
 <p class="sub">How an account is classified, and what moves it from one status to the next.</p>
 
-<div class="lvl">1 · Account Type: what the account is</div>
+<div class="lvl">1 · Record type (the box) and Type field (the values inside)</div>
 <div class="row r3">
  <div class="card pros"><h3>Prospect</h3><p>Not a customer yet, or a lost deal. Uses <b>Account Status</b> (below).</p>
-  <div class="chips"><span class="chip">Prospect</span></div></div>
+  <div class="tl">Type values</div><div class="chips"><span class="chip">Prospect</span><span class="chip">Churned Customer</span></div><p style="margin-top:6px">Churned Customer here = a former customer moved back into prospecting (about 220). Status automation only runs on Type = Prospect.</p></div>
  <div class="card cust"><h3>Customer</h3><p>Signed with Stay. Uses <b>Customer Status</b>; Account Status is not used.</p>
-  <div class="chips"><span class="chip">Onboarding</span><span class="chip">Active Customer</span><span class="chip">Churned Customer</span><span class="chip">Failed to Launch</span><span class="chip">Dev Store</span></div></div>
+  <div class="tl">Type values</div><div class="chips"><span class="chip">Onboarding</span><span class="chip">Active Customer</span><span class="chip">Churned Customer</span><span class="chip">Failed to Launch</span><span class="chip">Dev Store</span></div></div>
  <div class="card part"><h3>Partner</h3><p>Agencies and tech partners. No status automation.</p>
-  <div class="chips"><span class="chip">Partner</span></div></div>
+  <div class="tl">Type values</div><div class="chips"><span class="chip">Partner</span></div></div>
 </div>
 
 <div class="lvl">2 · Account Status (prospects only): where the account stands</div>
