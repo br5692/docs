@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>Steel Tide: the game dev guide</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1117;--surface:#151b23;--surface-2:#1c232d;--border:#30363d;--border-strong:#444c56;--ink:#e6edf3;--ink-dim:#b4bec9;--ink-mute:#8d98a5;--accent:#7cb7ff;--warm:#e3b341;--good:#56d364;--bad:#ff7b72;--chip-ink:#0d1117;--sel:#1f4b7a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 -apple-system,system-ui,"Segoe UI",sans-serif}
+::selection{background:var(--sel);color:var(--ink)}
+a{color:var(--accent)}a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.tabs{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex-wrap:wrap}
+.tabs a{padding:8px 14px;border:1px solid var(--border-strong);border-radius:6px;color:var(--ink-dim);text-decoration:none;font-size:14px;font-weight:600}
+.tabs a:hover{color:var(--ink);border-color:var(--accent)}
+.tabs a.on{background:var(--surface-2);color:var(--ink);border-color:var(--accent)}
+.wrap{display:grid;grid-template-columns:290px minmax(0,1fr);max-width:1180px;margin:0 auto}
+aside{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:20px 12px 40px 16px;border-right:1px solid var(--border)}
+aside h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin:0 0 8px}
+aside ol{list-style:none;margin:0;padding:0;counter-reset:none}
+aside li a{display:block;padding:5px 8px;border-radius:5px;color:var(--ink-dim);text-decoration:none;font-size:14px;line-height:1.35}
+aside li a:hover{background:var(--surface-2);color:var(--ink)}
+aside li a b{color:var(--ink-mute);font-weight:600;display:inline-block;min-width:22px}
+aside .part{margin:14px 0 4px;padding-left:8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warm)}
+main{padding:24px 28px 120px;max-width:800px;min-width:0}
+h1{font-size:30px;line-height:1.2;margin:8px 0 6px}
+.sub{color:var(--ink-dim);margin:0 0 6px}.stamp{color:var(--ink-mute);font-size:14px;margin:0 0 24px}
+section{padding-top:28px;margin-top:28px;border-top:1px solid var(--border)}
+h2{font-size:24px;line-height:1.25;margin:0 0 4px}
+h2 .n{color:var(--warm);font-size:14px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
+h3{font-size:18px;margin:26px 0 6px;color:var(--ink)}
+p{margin:0 0 14px}ul,ol{margin:0 0 14px;padding-left:24px}li{margin:4px 0}
+.lede{color:var(--ink-dim);font-size:18px}
+code{background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 5px;font:14px ui-monospace,Menlo,monospace;color:var(--ink)}
+table{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:15px;line-height:1.45}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin:8px 0 18px}.tw table{margin:0;min-width:560px}
+th{background:var(--surface-2);color:var(--ink);text-align:left;font-weight:600}
+th,td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}td{color:var(--ink-dim)}td b,td strong{color:var(--ink)}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:14px 0 18px}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-radius:4px;padding:2px 8px;margin-bottom:8px;color:var(--chip-ink)}
+.say .chip{background:var(--accent)}.tool .chip{background:var(--good)}.cost .chip{background:var(--warm)}.risk .chip{background:var(--bad)}
+.bar{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid var(--border-strong);margin:10px 0 6px;font-size:12px;font-weight:600}
+.bar span{display:flex;align-items:center;justify-content:center;color:var(--chip-ink);white-space:nowrap;overflow:hidden}
+.k1{background:#7cb7ff}.k2{background:#56d364}.k3{background:#e3b341}.k4{background:#444c56;color:var(--ink)!important}
+.cap{font-size:13px;color:var(--ink-mute);margin:0 0 16px}
+details.idx{display:none}
+@media(max-width:900px){.wrap{display:block}aside{display:none}details.idx{display:block;margin:0 0 20px;border:1px solid var(--border);border-radius:8px;background:var(--surface);padding:10px 14px}
+details.idx summary{cursor:pointer;font-weight:600}details.idx ol{list-style:none;padding:0;margin:10px 0 0}details.idx a{display:block;padding:7px 0;color:var(--ink-dim);text-decoration:none;border-top:1px solid var(--border)}
+main{padding:16px 16px 100px}h1{font-size:25px}h2{font-size:21px}body{font-size:16px}}
+</style></head><body>
+<div class="tabs"><a href="./">To review</a><a class="on" href="guide.html">Game dev guide</a></div>
+<div class="wrap">
+<aside><h2>Chapters</h2><ol id="toc"></ol></aside>
+<main>
+<h1>Steel Tide: the game dev guide</h1>
+<p class="sub">How the game works, why it is built this way, the words for the problems we hit, and where a year takes us.</p>
+<p class="stamp">Written November 22, 2026, from the live code and the rulings ledger. Chapter numbers are stable so they can be cited.</p>
+<details class="idx"><summary>Chapters</summary><ol id="toc2"></ol></details>
+
+<section id="c0" data-part="Start here"><h2><span class="n">Chapter 0</span>How to use this guide</h2>
+<p class="lede">This is a reference, not a novel. Read chapters 1 to 3 once, in order. Use the rest when a problem shows up.</p>
+<ul>
+<li><b>Chapter 14 is the field guide.</b> It maps what you see in play ("it stutters when I fire", "enemies pop in") to the real name of the problem, the usual causes, and what to ask for. Start there when something looks wrong.</li>
+<li><b>Blue "Say it like this" boxes</b> give the wording that gets a fix on the first try.</li>
+<li><b>Green "Tool to propose" boxes</b> name the technique that fits a situation and why.</li>
+<li><b>Chapter 18</b> is the glossary. Every term used here is defined there in one line.</li>
+</ul>
+<p>Where a number is measured, it comes from the code or a benchmark. Where something is my estimate or opinion, it says so.</p>
+</section>
+
+<section id="c1" data-part="The game"><h2><span class="n">Chapter 1</span>The game in one page</h2>
+<p class="lede">Steel Tide is a co-op pilot and mech looter-shooter with extraction. You drop onto a hostile planet, fight a sea of alien enemies on foot, in a mech, and in the air, take what you earned, and get out.</p>
+<h3>The loop</h3>
+<ol>
+<li><b>Hangar.</b> Pick a pilot class, build the mech from parts, forge and tune gear, choose a planet.</li>
+<li><b>Drop.</b> A pod fires you to the surface. The drop is short and fully steerable.</li>
+<li><b>Mission.</b> Objectives on foot as the pilot, with the mech one call away. The mech glides, never walks, and transforms into a jet. Air Support abilities are called from above.</li>
+<li><b>Boss.</b> Acidrix is the one boss. Hive Mother, Blight and Lantern Seer are elites.</li>
+<li><b>Extract.</b> The Petrel lands, you board, and what you carried out is yours. One currency, crystal.</li>
+<li><b>Back to the hangar</b> with loot and parts, and a harder planet to try.</li>
+</ol>
+<h3>The pillars, in your words</h3>
+<div class="tw"><table><tr><th>Pillar</th><th>What it means for every decision</th></tr>
+<tr><td><b>Constant action</b></td><td>Nothing sends the player away from the fight. No repair trips, no build phase, nothing tied to standing still.</td></tr>
+<tr><td><b>A sea of enemies</b></td><td>Scale is the spectacle. The engine holds 50,000 live enemies in one match.</td></tr>
+<tr><td><b>The mech is the hero</b></td><td>The pilot, the mech and the jet are one character at three scales. With a hard lock, every ability goes for the locked target first.</td></tr>
+<tr><td><b>Smooth</b></td><td>Performance is a P0. A frame-time regression blocks a ship.</td></tr>
+<tr><td><b>Its own look</b></td><td>Cel shaded, readable, its own names. No borrowed terms from other games.</td></tr></table></div>
+<h3>Where it came from</h3>
+<p>The project started as a real-time strategy game where a mech held a base against waves (the Fortress mode). On November 14 you ruled that it is no longer an RTS. That history matters for one reason. The horde engine, the deterministic simulation and the co-op were built for the hardest version of the problem, and the game we are making now inherits all of it.</p>
+<h3>The long target</h3>
+<p>Infinite seeded planets. One seed defines a whole planet (layout, terrain, light, objectives, enemy mix and the modifiers enemies roll). The same seed gives every player the same planet, so a planet can have a difficulty rating and a leaderboard. Chapter 11 covers how.</p>
+</section>
+
+<section id="c2" data-part="The game"><h2><span class="n">Chapter 2</span>The tech stack and why</h2>
+<p class="lede">There is no game engine. Steel Tide is a web page. It is written in TypeScript and drawn with three.js on WebGL, and everything else is our own code.</p>
+<div class="tw"><table><tr><th>Piece</th><th>What we use</th><th>What it does</th></tr>
+<tr><td><b>Language</b></td><td>TypeScript</td><td>JavaScript with types. Types catch a whole class of mistakes before the game runs.</td></tr>
+<tr><td><b>Drawing</b></td><td>three.js on WebGL 2</td><td>A library that talks to the graphics card. We write our own shaders on top of it.</td></tr>
+<tr><td><b>Build</b></td><td>Vite</td><td>Bundles the code into the files the browser downloads. A guard fails the build if the bundle grows past its limit.</td></tr>
+<tr><td><b>Tests</b></td><td>Vitest and Playwright</td><td>Vitest runs the simulation with no graphics. Playwright drives a real browser for captures and perf runs.</td></tr>
+<tr><td><b>Co-op</b></td><td>PeerJS (WebRTC), plus a relay</td><td>Players connect directly to each other. A relay carries the link when a direct one fails.</td></tr>
+<tr><td><b>Hosting</b></td><td>Static pages and one small cloud worker</td><td>The game is files on a web host. The worker only receives bug reports.</td></tr>
+<tr><td><b>Models</b></td><td>Built in code, some in Blender</td><td>Most models are generated by scripts, so a change is a number edit, not a re-sculpt.</td></tr></table></div>
+<h3>Why no engine (Unity, Unreal, Godot)</h3>
+<ul>
+<li><b>Instant play.</b> A link opens the game. No install, no store, no 40 GB download. Every ship is live for you in minutes.</li>
+<li><b>The horde.</b> General engines are built around one object per thing. Fifty thousand of anything fights that design. Our simulation is a custom data layout made for this exact job (chapter 4).</li>
+<li><b>Determinism.</b> Our co-op needs every machine to compute the same bits. We control every math call. In a big engine the physics and animation systems are not built for that.</li>
+<li><b>Everything is text.</b> Code, models, effects and tuning are all text files, which is what lets a fleet of AI workers build, test and review the game in parallel.</li>
+</ul>
+<div class="box cost"><span class="chip">What it costs us</span>
+<ul><li>No editor. There is no scene view to drag things around in. We built our own viewer, Test Range and tuning panel instead.</li>
+<li>No asset store and no ready-made systems. Animation blending, particles, navigation, UI and audio are ours to write.</li>
+<li>The browser is the ceiling. Memory, threads and the graphics API are all more limited than a native game. Shader compile stutter (chapter 7) is the browser tax we pay most often.</li>
+<li>Selling on Steam means wrapping the web build in a desktop shell. That is a known path, but it is work we have not started.</li></ul></div>
+</section>
+
+<section id="c3" data-part="How a game runs"><h2><span class="n">Chapter 3</span>The frame: where the time goes</h2>
+<p class="lede">Almost every performance conversation is about one number. At 60 frames a second, each frame has 16.7 milliseconds to do everything. At 144 it has 6.9.</p>
+<div class="bar"><span class="k1" style="width:32%">Simulation</span><span class="k2" style="width:26%">Render prep (CPU)</span><span class="k3" style="width:30%">Drawing (GPU)</span><span class="k4" style="width:12%">Slack</span></div>
+<p class="cap">One 16.7 ms frame. The split is illustrative. The three workloads are real and they fail in different ways.</p>
+<h3>Three workloads</h3>
+<ul>
+<li><b>Simulation (CPU).</b> The rules of the game. Movement, damage, AI. Cost grows with how many things exist.</li>
+<li><b>Render prep (CPU).</b> Deciding what to draw and handing it to the graphics card. Cost grows with the number of separate draw requests (draw calls) and with how much data changes each frame.</li>
+<li><b>Drawing (GPU).</b> Filling pixels. Cost grows with resolution, with how many layers cover each pixel (overdraw), and with how heavy the shader for each pixel is.</li>
+</ul>
+<h3>Low frame rate and stutter are different problems</h3>
+<div class="tw"><table><tr><th>What you feel</th><th>Real name</th><th>Typical cause</th></tr>
+<tr><td>Always slow, evenly</td><td><b>Low frame rate</b> (high average frame time)</td><td>Too much work every frame. Too many draw calls, too many pixels, too heavy a simulation.</td></tr>
+<tr><td>Smooth, then one freeze</td><td><b>Hitch</b> (a spike)</td><td>A one-time cost landed in one frame. A shader compiled, a model built, a big memory cleanup ran.</td></tr>
+<tr><td>Smooth, with a regular tick-tick</td><td><b>Periodic stutter</b></td><td>Memory cleanup (garbage collection), or something on a timer.</td></tr>
+<tr><td>Frame counter says 60 but it looks jerky</td><td><b>Judder</b> (bad frame pacing)</td><td>The picture is not moving evenly between frames. Usually a camera or blending bug, not a speed problem.</td></tr>
+<tr><td>My input feels late</td><td><b>Input latency</b></td><td>A delay between the press and the result. Can be by design (co-op input delay, chapter 6) or a bug.</td></tr></table></div>
+<div class="box say"><span class="chip">Say it like this</span>
+<p>"It hitches once the first time I fire the hand cannon, then never again" points straight at a first-use cost (a shader or a model built on demand). "It is slow the whole time I look at the coast" points at overdraw or draw calls in that view. The two reports go to different fixes, so the when and the how often matter more than the how bad.</p></div>
+<h3>Why we measure the worst frames, not the average</h3>
+<p>An average hides hitches. We track <b>p99</b>, the frame time that 99 percent of frames beat. The horde benchmark's budget is a simulation tick p99 of 16 ms and a worst tick of 25 ms with 50,000 enemies alive. A change that keeps the average and worsens p99 is a regression.</p>
+<h3>Garbage collection</h3>
+<p>JavaScript cleans up unused memory on its own schedule, and that cleanup pauses the game. The fix is to create no new objects in code that runs every frame. Hot loops reuse the same memory forever. This rule is called <b>zero allocation</b> and it is why much of our simulation code looks more like C than like typical web code.</p>
+</section>
+
+<section id="c4" data-part="How a game runs"><h2><span class="n">Chapter 4</span>The simulation</h2>
+<p class="lede">The simulation is the game with the screen turned off. It can run with no graphics at all, which is what makes it testable, benchmarkable and identical on every player's machine.</p>
+<h3>Simulation and rendering are separate programs</h3>
+<p>The simulation runs on its own thread (a web worker). The renderer runs on the main thread. They share one block of memory. The simulation writes positions and state into it, and the renderer reads from it. Neither waits for the other, so a slow frame does not slow the rules of the game, and a heavy tick does not freeze the picture.</p>
+<h3>A fixed tick</h3>
+<p>The simulation advances in equal steps (ticks), not once per frame. A fast monitor draws more frames between ticks and the renderer blends between the last two known positions (<b>interpolation</b>). When that blending is wrong you see jitter on a thing that is moving smoothly underneath. Most "jitter" reports in our history were this, not a simulation fault.</p>
+<h3>The data layout that makes the horde possible</h3>
+<p>A typical game stores each enemy as an object with its own fields. We store the opposite way. There is one long array of every x position, one of every z position, one of every health value, and so on. This is called <b>structure of arrays</b>.</p>
+<ul>
+<li>A loop that moves enemies only touches the position arrays. The processor reads them in a straight line, which is the fastest thing a processor can do.</li>
+<li>Nothing is created or destroyed during play. A dead enemy's slot is reused.</li>
+<li>The whole state is plain numbers in one block, so it can be shared with the renderer, hashed for co-op checks, and saved for replays.</li>
+</ul>
+<div class="box cost"><span class="chip">What it costs us</span><p>Adding a new property to enemies means adding an array and wiring it through, which is more work than adding a field to an object. A new enemy that behaves unlike the others (a boss, a vehicle) often lives outside the horde arrays as its own record. That is why bosses and the swarm are different code and why a fix to one does not automatically reach the other.</p></div>
+<h3>Phases</h3>
+<p>Each tick runs in named phases (movement, combat, spawning and so on). The benchmark times each phase, so a slowdown is traced to the phase that grew, and a profiler shows the function inside it.</p>
+</section>
+
+<section id="c5" data-part="How a game runs"><h2><span class="n">Chapter 5</span>Fifty thousand enemies</h2>
+<p class="lede">No single trick does this. It is six techniques stacked, and each removes one kind of work that would otherwise grow out of control.</p>
+<h3>1. Flow fields instead of pathfinding</h3>
+<p>Classic pathfinding plans a route for each unit. Fifty thousand routes is impossible. A <b>flow field</b> flips it. For each goal we compute one map of arrows, where every cell of the ground points toward the goal around obstacles. Every unit just reads the arrow under its feet. One calculation serves any number of units.</p>
+<p>The field is refined in two levels. Open ground is merged into large cells so the search is cheap, and detail is kept only near walls. The work is also spread over several ticks under a budget so that a changed goal never causes a spike.</p>
+<h3>2. A spatial hash for "who is near me"</h3>
+<p>Combat and collision need neighbors. Checking every unit against every other is 2.5 billion pairs at 50,000. We drop every unit into a grid of 8-unit cells, rebuilt from scratch each tick, and a unit only looks at its own and adjacent cells. The rebuild is a counting sort that touches each unit once.</p>
+<h3>3. Coasting and sleeping</h3>
+<p>Not every enemy needs to think every tick. Past a threshold of live units, enemies far from the action <b>coast</b>. They keep their heading and speed and still collide correctly, but skip the steering decision. Units very far out sleep. You cannot see the difference, and it is the single largest saving at the cap.</p>
+<h3>4. Instancing on the graphics card</h3>
+<p>Drawing 50,000 enemies as 50,000 draw calls would take seconds per frame. <b>Instancing</b> sends one model and a list of 50,000 positions in one call. The rule that goes with it is to never re-send data that did not change. A standing object's position is uploaded once, not every frame.</p>
+<h3>5. Level of detail and culling</h3>
+<p>Far enemies use simpler shapes and cheaper shading (<b>LOD</b>). Things outside the camera's view are skipped (<b>culling</b>). The visible cost of LOD is <b>pop</b>, the moment a far model swaps to its near version. The fix for pop is a wider or blended swap distance, never removing LOD.</p>
+<h3>6. Budgets and a benchmark that fails the ship</h3>
+<p>A headless benchmark plays a real match until the swarm reaches the cap, then times every tick for a minute. If p99 or the worst tick crosses the budget, the gate is red. This is what keeps the first five techniques from quietly eroding.</p>
+<div class="box tool"><span class="chip">Tool to propose</span>
+<p>When you want more enemies on screen, the question is which cost grows. "More on the island from the start" is a spawn number, since the engine has headroom. "More that all chase me at once in a small space" stresses neighbor checks and may need coasting rules for that mode. "More with unique behaviors" is the expensive one, because unique logic does not batch. Ask for variety through shared systems (modifiers every enemy can roll) and it stays cheap.</p></div>
+<div class="box cost"><span class="chip">Trade-offs we accepted</span>
+<ul><li>Horde enemies are simple individually. The intelligence is in the crowd (flow, packs, surges), not in each unit.</li>
+<li>Swarm units collide with a simplified model, not full physics.</li>
+<li>Today's island missions use far fewer than the cap. The cap is headroom, proven in the older Fortress mode, and it is what makes density a tuning choice and not an engineering project.</li></ul></div>
+</section>
+
+<section id="c6" data-part="How a game runs"><h2><span class="n">Chapter 6</span>Determinism and co-op</h2>
+<p class="lede">Our co-op does not send the world over the network. It sends only what each player pressed, and every machine computes the same world from it. This is called deterministic lockstep.</p>
+<h3>Why lockstep</h3>
+<p>The usual approach has a server that owns the truth and streams object positions to players. Streaming 50,000 enemies is not possible on home connections. Inputs for three players are a few bytes per tick, no matter how large the horde is. Lockstep is how the classic RTS games did armies, and it is the only known way to do our scale without a server farm.</p>
+<h3>What it demands</h3>
+<p>Every machine must produce exactly the same result, down to the last bit, forever. One different bit flips one comparison, one enemy turns left on one machine and right on another, and within seconds the players are in different games. That is a <b>desync</b>.</p>
+<ul>
+<li><b>Our own math library.</b> Sine, cosine and friends give slightly different last digits on a Mac and a Windows PC in the same browser. We measured it. So the simulation uses our own versions that give identical bits everywhere, and a guard test fails if any simulation code calls the built-in ones.</li>
+<li><b>No outside randomness or clocks.</b> Random numbers come from a seeded generator inside the simulation. Nothing in the rules may read the real time.</li>
+<li><b>Fixed order.</b> Everything iterates in a fixed order. The spatial hash and flow field are built to give the same order on every machine.</li>
+<li><b>The graphics card never decides gameplay.</b> Graphics results differ between cards, so nothing drawn can feed back into the rules.</li>
+</ul>
+<h3>How we catch a desync</h3>
+<p>Every 20 ticks each machine computes a fingerprint (a hash) of its state, split by area, and compares with the others. A mismatch names the area that diverged. The input log can then be replayed in a test to find the exact tick and cause.</p>
+<h3>Input delay</h3>
+<p>For every machine to apply your input on the same tick, the input is scheduled 3 ticks into the future so it has time to reach the other players. Your own camera and aim respond instantly. The shot itself lands on the scheduled tick. This is the standard design and it is why some actions will always have a small, constant delay in co-op.</p>
+<div class="box cost"><span class="chip">Trade-offs we accepted</span>
+<ul><li>The match runs at the pace of the slowest machine or link.</li>
+<li>Joining mid-fight is hard, because a newcomer needs the entire state. Our plan is joining at mission boundaries.</li>
+<li>Every gameplay feature must be deterministic. This rules out some convenient shortcuts and is the hidden cost of each new mechanic.</li>
+<li>Co-op is capped at 3 players by your ruling.</li></ul></div>
+<div class="box tool"><span class="chip">What it buys beyond co-op</span>
+<p>Replays are free, since a replay is just the input log. Bug reports can carry the log and reproduce the exact match. And the same property is what makes seeded planets and cheat-resistant leaderboards possible. A score can be verified by replaying its inputs. Few games have this, and none of the big live-service shooters do.</p></div>
+<div class="box say"><span class="chip">Say it like this</span><p>"My partner and I saw different things" is a desync and is always a P0. "It happened for both of us the same way" is a normal bug. That one detail changes who looks at it and how.</p></div>
+</section>
+
+<section id="c7" data-part="What you see"><h2><span class="n">Chapter 7</span>Rendering and the look</h2>
+<p class="lede">The renderer turns the simulation's numbers into a picture. Its job is to look like Steel Tide and to stay inside the frame budget on a mid-range laptop.</p>
+<h3>Cel shading</h3>
+<p>Realistic lighting fades smoothly from light to dark. Ours snaps to three bands (a cool shadow, a neutral middle and a warm sunlit band) and the darkest band is lifted so nothing goes black. One shared piece of shader code does this for every lit surface, and a guard test fails if a new material skips it. Glows, beams and effects are unlit on purpose and do not pass through it.</p>
+<p>Outlines are the second half. Enemies share one red outline, which is a readability rule first and a style second.</p>
+<h3>Shaders</h3>
+<p>A <b>shader</b> is a small program that runs on the graphics card for every point of a model (vertex shader) and every pixel it covers (fragment shader). Most of our surface looks (sand, ocean, exhaust, shields, fog) are shader work, not textures. That keeps the download small and makes looks tunable by number.</p>
+<h3>Shader compile stutter, our most common hitch</h3>
+<p>The first time a shader is needed, the browser must compile it for your graphics card. On Windows this passes through a translation layer and one compile can take from a fraction of a second to several seconds on a slow laptop. If it happens mid-fight, the game freezes for that long.</p>
+<p>The defense is <b>warm-up</b>. We keep a list of every shader the match will need (the start set) and compile them behind the loading screen. The trade is direct. A longer list means a longer load and fewer hitches. A budget test watches the size of that list, and the measured Windows load times are why boot time is a tracked number.</p>
+<div class="box say"><span class="chip">Say it like this</span><p>"First time only, then smooth" is nearly always a shader or asset that was missing from warm-up. Mention which weapon, ability or enemy was new on screen at that moment, and whether it was on the Windows machine.</p></div>
+<h3>Transparency, overdraw and sorting</h3>
+<p>Solid surfaces are cheap, because the card skips anything hidden behind them. See-through things (smoke, fog, sand in the wind, glows) cannot be skipped, so every layer is paid for at every pixel. Fifty soft particles stacked in front of the camera can cost more than the whole terrain. This is <b>overdraw</b>, and it is why effects get heavy exactly when they fill the screen.</p>
+<p>Transparent things must also be drawn back to front. When the order is wrong you see an effect cut through another, flicker, or vanish behind something it should be in front of. These <b>sorting</b> problems are a property of the technique, and the fixes are specific (a fixed draw order, depth tricks, or merging two effects into one).</p>
+<h3>Post-processing</h3>
+<p>After the scene is drawn, full-screen passes adjust the whole image (bloom for glow, tone mapping, fog). Each pass costs a full screen of pixels, so the list is kept short.</p>
+<h3>Pop-in and draw distance</h3>
+<p>Things appear suddenly when they are created or switched on inside the visible range. The cures are to spawn them farther out, fade them in, or hide the edge with fog. Fog is a visual effect and also a performance tool, because it lets the world end softly.</p>
+<h3>World-anchored and camera-anchored effects</h3>
+<p>An effect lives either in the world (it stays put when you turn) or on the camera (it moves with your view). Weather tied to the camera reads as fake the moment you rotate, which is exactly what you saw with the blowing sand. Atmosphere should be anchored in the world and generated around the player as they move.</p>
+</section>
+
+<section id="c8" data-part="What you see"><h2><span class="n">Chapter 8</span>Effects and animation</h2>
+<p class="lede">Effects sell weight and danger. Animation sells life. Both are built from 3D geometry, shaders and procedural motion. Flat painted sprites are banned.</p>
+<h3>The anatomy of a good effect</h3>
+<ol><li><b>Anticipation.</b> A short tell before the event. For enemy attacks this is the telegraph, and it must show the real hit area.</li>
+<li><b>Impact.</b> A few frames of the brightest, largest shape. This is where the read happens.</li>
+<li><b>Follow-through.</b> Smoke, embers, a fading scorch. This is where the weight is felt.</li></ol>
+<p>When an effect feels weak, one of the three beats is usually missing. "It has no weight" tends to mean no follow-through. "I did not see it coming" means no anticipation. "It is messy" means the impact shape does not read.</p>
+<h3>Particles</h3>
+<p>A particle system draws many small pieces from one description (how many, how fast, how they fade). Ours run on the graphics card where possible and reuse a fixed pool, so a big explosion does not create memory or stutter. House rules that came from your rulings include reusing the Orbital Laser's molten sparks wherever sparks are needed, rounded blasts with no tall pillars, no straight impact lines, and no flipbook flames.</p>
+<h3>Procedural animation</h3>
+<p>Most motion in Steel Tide is computed, not hand-keyed. Legs are placed by rules, bodies lean by speed, tails follow with springs. The upside is that every creature moves correctly on any terrain and at any speed, and new enemies get motion nearly for free. The downside is that a specific acted moment (a boss finisher, boarding the Petrel) needs a hand-built sequence on top.</p>
+<h3>Easing</h3>
+<p>Easing is the speed curve of a motion. Linear motion (constant speed) looks robotic. Ease-out (fast then settling) feels responsive. Ease-in-out feels heavy and deliberate. When a move feels "off" and the start and end are right, the curve is the suspect.</p>
+<h3>Readability rules that are measured</h3>
+<p>We compute how many pixels a thing covers at each camera. A target the jet must hit needs about 50 pixels across at engagement range. A ground ring needs a 4-pixel stroke at the farthest view that shows it. If a thing is hard to see, the first check is its size on screen at that camera, before any detail work.</p>
+<div class="box tool"><span class="chip">Tool to propose</span>
+<div class="tw"><table><tr><th>You want</th><th>Ask for</th></tr>
+<tr><td>A bigger, more memorable blast</td><td>A stronger impact shape and a longer follow-through, same footprint. Size does not need to change for weight to change.</td></tr>
+<tr><td>Atmosphere (dust, fog, embers)</td><td>World-anchored layers with depth, and a note on what must stay readable through it.</td></tr>
+<tr><td>A new look for an existing effect</td><td>A second version behind a toggle, default on, so the old one is one switch away.</td></tr>
+<tr><td>Polish on something approved</td><td>A refine pass that lists what is locked and proposes small additions on top.</td></tr></table></div></div>
+</section>
+
+<section id="c9" data-part="What you see"><h2><span class="n">Chapter 9</span>Models and the art pipeline</h2>
+<p class="lede">Most models in the game are written, not sculpted. A script describes the shapes and the game builds the mesh from it.</p>
+<h3>Why models in code</h3>
+<ul><li>A change request ("round the wing root", "thicker legs") is an edit to numbers and takes minutes.</li>
+<li>Models can be checked by tests. Part counts, clipping, left and right symmetry and size at the play camera are all measurable.</li>
+<li>Variants come cheap. A mech built from parts is the same idea the player uses in the hangar.</li>
+<li>There is nothing to download but code.</li></ul>
+<div class="box cost"><span class="chip">What it costs us</span><p>Organic shapes (faces, hands, creature skin) are hard to describe in code and are where our models look weakest. Hard-surface machines are where they look best. That is a real reason the game's cast is mechs, ships and armored bugs. Generated models from AI tools are a possible supplement for organic work, and that pilot is paused by your ruling.</p></div>
+<h3>The words for model problems</h3>
+<div class="tw"><table><tr><th>Term</th><th>Meaning</th></tr>
+<tr><td><b>Silhouette</b></td><td>The outline shape alone. If two units share a silhouette, players mix them up no matter the detail.</td></tr>
+<tr><td><b>Clipping</b></td><td>Two parts passing through each other. A pose problem or a size problem.</td></tr>
+<tr><td><b>Faceting</b></td><td>A surface meant to be round that shows flat panels. Needs more segments or smooth shading.</td></tr>
+<tr><td><b>Z-fighting</b></td><td>Two surfaces at the same depth flickering against each other.</td></tr>
+<tr><td><b>Rig and pivot</b></td><td>The joints a model bends at. A part that rotates around the wrong point has a wrong pivot.</td></tr>
+<tr><td><b>Three detail scales</b></td><td>Big mass reads from far, secondary shapes from the chase camera, fine detail only up close. Fine detail that shows from far turns to noise.</td></tr></table></div>
+<h3>The process that has worked</h3>
+<p>Real references, a locked list of your rulings, a builder script, review rounds by a separate critic at the real camera, and a guard test for each thing you asked for so it cannot regress. A mockup is a direction, never the final model.</p>
+</section>
+
+<section id="c10" data-part="What you see"><h2><span class="n">Chapter 10</span>Cameras and game feel</h2>
+<p class="lede">Feel is the gap between what the player intends and what the screen does. Most feel problems are timing or camera problems, and they have precise names.</p>
+<h3>Cameras</h3>
+<ul><li><b>Transitions.</b> Moving between camera modes (pod to play, on foot to mech, boarding the ship) is a blend of position and rotation over time. Our rule is that a rotation goes one way and never overshoots or reverses. Reversal usually comes from blending angles the long way around, or from two systems steering the camera in the same frames.</li>
+<li><b>Who owns the camera.</b> At any moment exactly one system should drive it. Fights between a cinematic and the player's mouse are ownership bugs.</li>
+<li><b>Collision.</b> A third-person camera must not pass through terrain or walls. When it pulls in suddenly, that is the collision rule firing.</li>
+<li><b>Field of view.</b> A wider angle feels faster and shows more. A narrow one feels heavy and zoomed.</li></ul>
+<h3>Timing terms</h3>
+<div class="tw"><table><tr><th>Term</th><th>Meaning</th><th>Example from our game</th></tr>
+<tr><td><b>Wind-up</b></td><td>Delay before an action takes effect</td><td>The hand cannon needing a hold before its first shot. The fix is to fire on press and put the delay after.</td></tr>
+<tr><td><b>Recovery</b></td><td>Delay after an action before the next one</td><td>The pause between cannon shots.</td></tr>
+<tr><td><b>Cooldown</b></td><td>Time before an ability can be used again</td><td>Shown on the shared cooldown icon.</td></tr>
+<tr><td><b>Input buffering</b></td><td>Remembering a press made slightly too early</td><td>Pressing dash during a reload and having it fire as soon as it can.</td></tr>
+<tr><td><b>Coyote time</b></td><td>A grace window after leaving an edge</td><td>Jumping just after running off a ledge still works.</td></tr>
+<tr><td><b>Hit stop</b></td><td>A few frozen frames on a heavy hit</td><td>Sells weight without screen shake.</td></tr>
+<tr><td><b>Animation lock</b></td><td>Being unable to act during an animation</td><td>The source of most "it ate my input" complaints.</td></tr>
+<tr><td><b>Hitbox and hurtbox</b></td><td>The shape that deals damage and the shape that receives it</td><td>A blast landing under an airborne mech is a hitbox placed at the wrong height.</td></tr></table></div>
+<div class="box say"><span class="chip">Say it like this</span><p>Describe the order of events and where the delay sits. "I press, nothing for half a second, then it fires" (wind-up) is a different fix from "it fires, then I cannot move for half a second" (recovery), and both get reported as "it feels slow".</p></div>
+<h3>State machines</h3>
+<p>The pilot, the mech, the pod and each boss are each a <b>state machine</b>. That is a list of states (falling, landed, boarding) and the allowed moves between them. A large share of our strangest bugs are a state entered twice or left by a path nobody planned, such as a pod that drops again. When something happens that "should be impossible", the question to ask is what state it was in and what moved it there.</p>
+</section>
+
+<section id="c11" data-part="Design systems"><h2><span class="n">Chapter 11</span>Worlds from a seed</h2>
+<p class="lede">Procedural generation means the game builds content from rules and a number (the seed) and does not store it. The same seed always builds the same thing.</p>
+<h3>What is live and what is planned</h3>
+<p>The first bricks are in the game. A seed produces a planet record with a version stamp, using whole-number math so every machine agrees. Carrying the seed into missions and co-op, enemy modifiers, difficulty weights and the Mission Control web of planets are the approved next steps. Run records and leaderboards are not yet approved.</p>
+<h3>The rules that make it work</h3>
+<ul><li><b>Seeds arrange approved pieces. They never invent quality.</b> Each look, layout, objective and modifier you approve multiplies the number of distinct planets. Variety is bought with approved pieces, not with a cleverer generator.</li>
+<li><b>The generator is frozen per version.</b> Any change to generation changes what old seeds produce, so every planet and score carries the generator version.</li>
+<li><b>All mission randomness must come from the seed</b> for "same planet, same experience" to be true. Spawns, loot and events included.</li>
+<li><b>Difficulty is a sum of weights.</b> Each attribute and modifier carries a weight, the planet shows the total, and rare brutal combinations fall out of the dice on their own.</li></ul>
+<h3>The known failure of procedural games</h3>
+<p>Infinite content that all feels the same. Players stop seeing planets and start seeing the generator. The defenses are strong hand-made pieces, modifiers that change how you play and not just numbers, and a few rare combinations that become stories players tell. Your instinct about the one notorious planet roll is the right target.</p>
+<div class="box tool"><span class="chip">Tool to propose</span><p>When you want more variety, ask what new <b>piece</b> or <b>axis</b> to add (a time of day, a ground type, an objective, a modifier family). One new axis with four values multiplies the planet count by four. One new hand-made planet adds one.</p></div>
+</section>
+
+<section id="c12" data-part="Design systems"><h2><span class="n">Chapter 12</span>Loot, builds and balance</h2>
+<p class="lede">A looter-shooter lives on two loops. The fight has to feel good for ten minutes, and the build has to stay interesting for a hundred hours.</p>
+<h3>Vocabulary for build design</h3>
+<div class="tw"><table><tr><th>Term</th><th>Meaning</th></tr>
+<tr><td><b>Build</b></td><td>The combination of class, weapons, mech parts and perks a player commits to.</td></tr>
+<tr><td><b>Synergy</b></td><td>Two choices that are stronger together than apart. The source of "I found a build" excitement.</td></tr>
+<tr><td><b>Affix or modifier</b></td><td>A rolled property on an item or an enemy.</td></tr>
+<tr><td><b>Power curve</b></td><td>How fast the player grows compared with the enemies.</td></tr>
+<tr><td><b>Time to kill</b></td><td>How long a target survives under fire. The most useful single balance number.</td></tr>
+<tr><td><b>Sink and source</b></td><td>Where currency enters the game and where it leaves. With one currency this must stay in balance.</td></tr>
+<tr><td><b>Dominant strategy</b></td><td>One choice so strong that the others stop mattering. The thing balance exists to prevent.</td></tr></table></div>
+<h3>How we tune</h3>
+<ul><li><b>Numbers live in one place.</b> Balance values sit in shared tables and a Tuning panel exposes them in the game. Your rule is that a balance ask is a number change that ships, and you judge it in play.</li>
+<li><b>The Test Range</b> runs the real simulation with no graphics and reports results as data. It answers "how long does this weapon take to kill that elite" in seconds, without a play session.</li>
+<li><b>Standing design rules</b> from your rulings. Nothing reduces main weapon damage. Nothing rewards standing still. Nothing is priced in a currency the match cannot earn.</li></ul>
+<div class="box say"><span class="chip">Say it like this</span><p>Give the target experience, not only the number. "Elites should die in about five seconds of focused fire from any class" lets the whole class of numbers be set correctly. A single example ("this ability should melt that elite") is treated as a test case for the general rule.</p></div>
+</section>
+
+<section id="c13" data-part="How we work"><h2><span class="n">Chapter 13</span>How the studio runs</h2>
+<p class="lede">The studio is you, a planner, and a fleet of AI workers. Understanding the pipeline explains why some things are fast and others stall.</p>
+<h3>The path of one change</h3>
+<ol><li><b>Ruling.</b> Your words are recorded in the rulings ledger. The latest ruling on a topic wins. Code comments and old documents are never a source of intent.</li>
+<li><b>Job.</b> A brief quotes you and states what done means. It goes onto the work graph so it cannot be forgotten.</li>
+<li><b>Lane.</b> A worker builds it on its own branch, with a regression test for every bug fix (red before the fix, green after).</li>
+<li><b>Review.</b> Separate reviewers check correctness, look and performance at the exact version.</li>
+<li><b>Ship.</b> Passed changes are merged in a batch, a test gate runs, and the build goes live.</li></ol>
+<h3>Why things stall</h3>
+<ul><li><b>Merge conflicts.</b> Two jobs edited the same file. The second has to be rebuilt on top of the first.</li>
+<li><b>Review queues.</b> A finished job waiting for a reviewer is invisible unless someone looks.</li>
+<li><b>Small fixes inside big jobs.</b> A one-line fix folded into a large job ships only when the large job does. Named fixes now get their own job.</li>
+<li><b>Machine limits.</b> Too many jobs at once and the launch gate holds the next one.</li></ul>
+<h3>Tests and the gate</h3>
+<p>The full test suite takes hours, so a ship runs only the tests related to what changed plus a fixed smoke set. A separate loop runs everything and traces any new failure to the ship that caused it. Tests that are known to fail sit on a list that is only allowed to shrink.</p>
+<h3>Toggles</h3>
+<p>Every new major system and every new look ships behind a switch, default on. That lets work go live without waiting for a review session, and makes a bad change a switch flip instead of a rollback. We fix forward and do not roll back.</p>
+<h3>Bug reports</h3>
+<p>The in-game report captures a screenshot, your settings, the build and the last events. It is context around the moment, not always the moment itself, so your description of what you saw is the primary evidence. The most useful report says what you expected, what happened, and whether it repeats.</p>
+</section>
+
+<section id="c14" data-part="How we work"><h2><span class="n">Chapter 14</span>Field guide: from symptom to cause</h2>
+<p class="lede">Find what you saw. The second column is the term to use, the third is what usually causes it, and the last points to the chapter.</p>
+<div class="tw"><table><tr><th>What you see</th><th>Real name</th><th>Usual causes</th><th>Ch.</th></tr>
+<tr><td>A freeze the first time something appears</td><td><b>First-use hitch</b></td><td>Shader compile or a model built on demand, missing from warm-up</td><td>7</td></tr>
+<tr><td>Slow whenever effects fill the screen</td><td><b>Overdraw</b></td><td>Too many transparent layers. Needs fewer, smaller or cheaper particles near the camera</td><td>7</td></tr>
+<tr><td>Slow in one area or view</td><td><b>Draw call or fill cost</b></td><td>Many separate objects, or a heavy full-screen surface (water, fog)</td><td>3, 7</td></tr>
+<tr><td>Regular small stutters</td><td><b>Garbage collection</b></td><td>Code creating objects every frame</td><td>3</td></tr>
+<tr><td>A moving thing vibrates</td><td><b>Jitter</b></td><td>Wrong blending between ticks, or the camera and its target updating in the wrong order</td><td>4</td></tr>
+<tr><td>Things appear from nothing</td><td><b>Pop-in</b></td><td>Spawned or enabled inside view range. Spawn farther, fade, or cover with fog</td><td>7</td></tr>
+<tr><td>A model changes shape at a distance</td><td><b>LOD pop</b></td><td>Swap distance too close, or the two versions differ too much</td><td>5</td></tr>
+<tr><td>Flickering where surfaces meet</td><td><b>Z-fighting</b></td><td>Two surfaces at the same depth</td><td>9</td></tr>
+<tr><td>An effect cuts through or hides behind another</td><td><b>Transparency sorting</b></td><td>Draw order of see-through things</td><td>7</td></tr>
+<tr><td>Parts passing through each other</td><td><b>Clipping</b></td><td>Pose or size. Needs a clearance check on that pose</td><td>9</td></tr>
+<tr><td>Camera swings one way then back</td><td><b>Rotation reversal</b></td><td>Angle blended the long way, or two systems steering at once</td><td>10</td></tr>
+<tr><td>Camera snaps or cuts</td><td><b>Unblended transition</b></td><td>A mode change with no ease, or ownership handed over mid-move</td><td>10</td></tr>
+<tr><td>Weather turns with my view</td><td><b>Camera-anchored effect</b></td><td>The effect is attached to the camera, not the world</td><td>7</td></tr>
+<tr><td>My press did nothing</td><td><b>Dropped input</b></td><td>Animation lock with no input buffer, or the wrong state</td><td>10</td></tr>
+<tr><td>It reacts late</td><td><b>Wind-up or input latency</b></td><td>A designed delay in the wrong place, or the co-op input delay</td><td>6, 10</td></tr>
+<tr><td>The hit landed in the wrong place</td><td><b>Hitbox mismatch</b></td><td>The damage shape and the drawn effect are placed by different rules</td><td>10</td></tr>
+<tr><td>Something happened twice or out of order</td><td><b>State machine bug</b></td><td>A state re-entered or skipped</td><td>10</td></tr>
+<tr><td>My partner saw something different</td><td><b>Desync</b></td><td>A non-deterministic calculation in the rules. Always a P0</td><td>6</td></tr>
+<tr><td>An old bug came back</td><td><b>Regression</b></td><td>A later change undid a fix. Means the fix lacked a test, or a merge dropped it</td><td>13</td></tr>
+<tr><td>A leftover glow or tint that should be gone</td><td><b>Residual layer</b></td><td>An effect made of several stacked layers where one was not updated</td><td>8</td></tr>
+<tr><td>It looked right in the clip but wrong in play</td><td><b>Capture mismatch</b></td><td>The clip was staged in conditions that differ from the real path</td><td>13</td></tr>
+<tr><td>Enemies stand around or bunch at a spot</td><td><b>Navigation fault</b></td><td>A flow field with an unreachable or stale goal</td><td>5</td></tr>
+<tr><td>Long load before the match</td><td><b>Warm-up cost</b></td><td>The price of avoiding hitches. Tuned by what is in the start set</td><td>7</td></tr></table></div>
+<h3>Five questions that make any report twice as useful</h3>
+<ol><li>Does it happen every time, or once?</li><li>Was anything new on screen at that moment?</li><li>Solo or co-op, and did your partner see the same?</li><li>Which machine?</li><li>What did you expect to happen?</li></ol>
+</section>
+
+<section id="c15" data-part="The big picture"><h2><span class="n">Chapter 15</span>The trade-offs we have made</h2>
+<div class="tw"><table><tr><th>We chose</th><th>Over</th><th>We gained</th><th>We pay</th></tr>
+<tr><td><b>Browser and WebGL</b></td><td>A native engine</td><td>Instant play, minutes from ship to live, text-only project</td><td>Shader stutter, memory and thread limits, no store presence yet</td></tr>
+<tr><td><b>Custom simulation</b></td><td>Engine objects and physics</td><td>50,000 enemies, determinism, headless tests</td><td>Every system is ours to build and maintain</td></tr>
+<tr><td><b>Lockstep co-op</b></td><td>A server that owns the world</td><td>Horde scale over home internet, replays, verifiable scores, no server bill</td><td>Small player count, input delay, slowest machine sets the pace, strict coding rules</td></tr>
+<tr><td><b>Cel shading</b></td><td>Realistic lighting</td><td>Readable at every camera, cheap, distinct, forgiving of simple models</td><td>Less atmosphere for free. Mood must come from color, fog and effects</td></tr>
+<tr><td><b>Models in code</b></td><td>Sculpted assets</td><td>Fast edits, testable, tiny download</td><td>Organic shapes are weak</td></tr>
+<tr><td><b>Procedural animation</b></td><td>Hand animation</td><td>Works on any terrain, cheap per enemy</td><td>Acted moments need extra hand work</td></tr>
+<tr><td><b>Seeds arranging approved pieces</b></td><td>Full hand-built levels</td><td>Unlimited planets, leaderboards per planet</td><td>Risk of sameness. Variety depends on how many pieces exist</td></tr>
+<tr><td><b>Ship live behind toggles</b></td><td>Review before release</td><td>You judge in the real game the same day</td><td>The live build sometimes carries rough edges</td></tr>
+<tr><td><b>Related tests at ship, full suite in a loop</b></td><td>Full suite on every ship</td><td>Ships in minutes</td><td>Some breaks are found after they are live</td></tr>
+<tr><td><b>AI workers in parallel</b></td><td>A small human team</td><td>Very high output across many fronts at once</td><td>Coordination cost, stalls between steps, and quality that depends on clear rulings</td></tr></table></div>
+</section>
+
+<section id="c16" data-part="The big picture"><h2><span class="n">Chapter 16</span>Why this is not a Helldivers clone</h2>
+<p class="lede">The honest answer has two halves. The overlap is real and visible, and the differences are structural, not cosmetic. This is my assessment, not a ruling.</p>
+<h3>The overlap, stated plainly</h3>
+<p>Co-op against alien swarms, a drop from orbit, support abilities called from above, extraction by a ship, a map of planets. A first-time viewer of a short clip will make the comparison. Pretending otherwise would be a mistake.</p>
+<h3>What is different in kind</h3>
+<div class="tw"><table><tr><th></th><th>The squad shooter formula</th><th>Steel Tide</th></tr>
+<tr><td><b>Who you are</b></td><td>A disposable soldier among many</td><td>One pilot with one machine. Foot, mech and jet are a single character at three scales, switched in the middle of a fight</td></tr>
+<tr><td><b>Scale of the enemy</b></td><td>Dozens to a few hundred</td><td>A simulated horde that reaches tens of thousands, moving as a tide with fronts and surges</td></tr>
+<tr><td><b>What you keep</b></td><td>Unlocks from a shared catalog</td><td>Loot. Rolled parts and a mech you build, so two pilots do not fly the same machine</td></tr>
+<tr><td><b>The world</b></td><td>Planets on a shared campaign map run by a live team</td><td>Infinite planets from seeds. The same seed is the same planet for everyone, with a rating and a record to beat</td></tr>
+<tr><td><b>Competition</b></td><td>None directly</td><td>Replay-verified times and scores per planet, with friends or alone</td></tr>
+<tr><td><b>Tone and look</b></td><td>Realistic military satire</td><td>Cel-shaded mech action with its own vocabulary</td></tr>
+<tr><td><b>Getting in</b></td><td>A large install and an account</td><td>A link</td></tr></table></div>
+<h3>The three that matter most</h3>
+<ol><li><b>The transform.</b> No shipped co-op shooter lets you go from a pilot on foot to a gliding mech to a jet in one continuous fight against one enemy force. Every scale must be fun on its own and each must need the others. This is the identity of the game.</li>
+<li><b>The tide.</b> Our horde is a different kind of opponent, a mass with shape and pressure. That only counts if missions are designed around it, which is why your call for much higher density from the first minute is the right one.</li>
+<li><b>The seed.</b> Determinism gives us shareable planets and honest leaderboards nearly for free. It is technically hard for competitors to copy because it has to be built in from the first line of the simulation.</li></ol>
+<div class="box risk"><span class="chip">The risk</span>
+<p>The differences are in the systems, and the similarities are in the first thirty seconds (a pod drop, bugs, a soldier with a rifle). A demo has to put the differences up front. A player should call a mech, transform, and see a horde no other game shows them inside the first five minutes. Whenever we model a moment closely on that game, as with the blink, it is worth asking what our version does that theirs cannot.</p></div>
+</section>
+
+<section id="c17" data-part="The big picture"><h2><span class="n">Chapter 17</span>The next year and the demo</h2>
+<p class="lede">These are my estimates, based on the pace of the last two months. The pace of building is high. The limits are the things that do not speed up, which are your decisions, playtesting, and the quality of the pieces you approve.</p>
+<h3>Where we are today</h3>
+<ul><li><b>Strong.</b> The engine. Horde simulation, determinism, co-op, the ship pipeline, the look, the mech and jet, a boss with a finisher, the hangar, drop and extraction.</li>
+<li><b>Thin.</b> Mission variety, planet variety, the loot game's depth, sound, onboarding, and performance on weak laptops.</li>
+<li><b>Fragile.</b> A list of known failing tests, boot time over its target, and a steady stream of regressions from the speed of change.</li></ul>
+<h3>What a year can realistically hold</h3>
+<div class="tw"><table><tr><th>Quarter</th><th>Focus</th><th>Outcome</th></tr>
+<tr><td><b>1</b></td><td>The core ten minutes</td><td>One mission type that is excellent start to finish. Drop, foot, mech, jet, boss, extract, with horde density that shows off the tide. Open reports at zero. Sound pass on every weapon and ability.</td></tr>
+<tr><td><b>2</b></td><td>The build game</td><td>Loot with real choices. Enemy modifiers across the four elements. Three to four classes that play differently. Difficulty weights and planet ratings.</td></tr>
+<tr><td><b>3</b></td><td>The planets</td><td>Mission Control and the web of planets. Several ground types, times of day, layouts and objective types, enough that two planets feel different. Run records and replay checks if approved.</td></tr>
+<tr><td><b>4</b></td><td>Demo hardening</td><td>Onboarding, a desktop wrapper for store release, performance floor on mid-range laptops, co-op stability at scale, leaderboards for the demo planets.</td></tr></table></div>
+<h3>What a demo should be</h3>
+<p>Small and sharp. A fixed set of hand-picked seeds (say five planets across three difficulty ratings), two or three classes, the full transform loop, one boss, co-op for three, and a leaderboard per planet. The seeded leaderboard is the hook that gives a short demo long life, because players compete on the same planet.</p>
+<h3>Demo or early access</h3>
+<p>A free demo proves the identity and builds an audience with low risk. Early access means paying players, who expect regular content, saved progress that survives updates, and support. I would plan for the demo inside the year and treat early access as the decision the demo's reception informs.</p>
+<div class="box risk"><span class="chip">What decides whether we get there</span>
+<ul><li><b>Depth before breadth.</b> One excellent mission beats four unfinished ones. Our history leans toward breadth.</li>
+<li><b>Approved pieces.</b> Planet variety is limited by how many looks and objectives you sign off, not by code.</li>
+<li><b>Sound.</b> It is the least developed part of the game and carries half of the feel.</li>
+<li><b>The first five minutes.</b> Onboarding is parked by your ruling until the game is locked. It has to be unparked a full quarter before any public build.</li>
+<li><b>The platform question.</b> A browser link is our superpower for testing, and stores are where players are. The wrapper should be proven early, not in the last month.</li></ul></div>
+</section>
+
+<section id="c18" data-part="Reference"><h2><span class="n">Chapter 18</span>Glossary and study list</h2>
+<h3>Glossary</h3>
+<div class="tw"><table><tr><th>Term</th><th>One line</th></tr>
+<tr><td><b>Allocation</b></td><td>Creating new memory. Avoided in per-frame code because cleanup causes stutter.</td></tr>
+<tr><td><b>Bloom</b></td><td>A full-screen pass that makes bright things glow.</td></tr>
+<tr><td><b>Culling</b></td><td>Skipping things that cannot be seen.</td></tr>
+<tr><td><b>Desync</b></td><td>Two co-op machines computing different worlds.</td></tr>
+<tr><td><b>Determinism</b></td><td>Same inputs always give exactly the same result.</td></tr>
+<tr><td><b>Draw call</b></td><td>One request to the graphics card to draw something. Fewer is faster.</td></tr>
+<tr><td><b>Easing</b></td><td>The speed curve of a motion.</td></tr>
+<tr><td><b>Flow field</b></td><td>A map of arrows that steers any number of units toward a goal.</td></tr>
+<tr><td><b>Frame time</b></td><td>How long one frame took. 16.7 ms is 60 frames a second.</td></tr>
+<tr><td><b>Garbage collection</b></td><td>The automatic memory cleanup that can pause the game.</td></tr>
+<tr><td><b>Hash</b></td><td>A short fingerprint of a large amount of data, used to compare states.</td></tr>
+<tr><td><b>Hitch</b></td><td>A single long frame.</td></tr>
+<tr><td><b>Instancing</b></td><td>Drawing many copies of one model in one draw call.</td></tr>
+<tr><td><b>Interpolation</b></td><td>Blending between two known positions to draw smooth motion.</td></tr>
+<tr><td><b>LOD</b></td><td>Level of detail. Simpler versions of things when they are far away.</td></tr>
+<tr><td><b>Lockstep</b></td><td>Co-op where machines share inputs and each computes the same world.</td></tr>
+<tr><td><b>Overdraw</b></td><td>Paying for the same pixel several times because of stacked transparent layers.</td></tr>
+<tr><td><b>p99</b></td><td>The value 99 percent of samples beat. Our measure for worst-case smoothness.</td></tr>
+<tr><td><b>Post-processing</b></td><td>Full-screen adjustments after the scene is drawn.</td></tr>
+<tr><td><b>Profiler</b></td><td>A tool that shows which code used the time.</td></tr>
+<tr><td><b>Regression</b></td><td>Something that worked and was broken by a later change.</td></tr>
+<tr><td><b>Seed</b></td><td>The number that generation starts from. Same seed, same result.</td></tr>
+<tr><td><b>Shader</b></td><td>A program that runs on the graphics card per point or per pixel.</td></tr>
+<tr><td><b>Spatial hash</b></td><td>A grid used to find nearby things quickly.</td></tr>
+<tr><td><b>State machine</b></td><td>A set of states and the allowed moves between them.</td></tr>
+<tr><td><b>Structure of arrays</b></td><td>Storing each property of all units together, for speed.</td></tr>
+<tr><td><b>Telegraph</b></td><td>The warning that shows where and when an attack will land.</td></tr>
+<tr><td><b>Tick</b></td><td>One fixed step of the simulation.</td></tr>
+<tr><td><b>Time to kill</b></td><td>How long a target survives under fire.</td></tr>
+<tr><td><b>Warm-up</b></td><td>Compiling shaders and building assets during loading so play does not hitch.</td></tr>
+<tr><td><b>World unit</b></td><td>Our unit of distance in the game world. The mech is 9 tall.</td></tr></table></div>
+<h3>Study list, in order of payoff</h3>
+<ol>
+<li><b>Frame time, hitches and profiling.</b> Being able to tell slow from stuttering is the single most useful skill for directing performance work.</li>
+<li><b>Deterministic lockstep.</b> Search for the classic article on networking 1500 archers. It explains our whole co-op model in an afternoon.</li>
+<li><b>Game feel.</b> The book of that name by Steve Swink, and the talks "Juice it or lose it" and "The art of screenshake". They give names to everything in chapter 10.</li>
+<li><b>Flow fields and crowd movement.</b> Any illustrated explainer of flow field pathfinding makes chapter 5 concrete.</li>
+<li><b>Real-time effects.</b> Conference talks from effects artists on stylized games, for the anticipation, impact and follow-through vocabulary.</li>
+<li><b>Procedural generation.</b> Postmortems of roguelikes and of large procedural space games, especially on why variety felt thin and what fixed it.</li>
+<li><b>Looter economy design.</b> Talks on loot and build design from action role-playing games, for chapter 12's terms.</li>
+<li><b>Shaders, lightly.</b> You do not need to write them. Knowing what a vertex and a fragment shader do is enough to direct look work.</li>
+</ol>
+</section>
+</main></div>
+<script>(function(){var s=document.querySelectorAll('main section'),a=document.getElementById('toc'),b=document.getElementById('toc2'),part='';s.forEach(function(x){var h=x.querySelector('h2'),n=h.querySelector('.n').textContent.replace('Chapter ',''),t=h.lastChild.textContent,p=x.getAttribute('data-part');if(p!==part){part=p;var d=document.createElement('li');d.className='part';d.textContent=p;a.appendChild(d)}[a,b].forEach(function(o){var li=document.createElement('li'),k=document.createElement('a');k.href='#'+x.id;k.innerHTML='<b>'+n+'</b> ';k.appendChild(document.createTextNode(t));li.appendChild(k);o.appendChild(li)})});b.addEventListener('click',function(e){if(e.target.closest('a'))b.parentNode.open=false})})();</script>
+</body></html>
